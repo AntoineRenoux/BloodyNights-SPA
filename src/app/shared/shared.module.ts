@@ -12,14 +12,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 @NgModule({
   declarations: [],
-  imports: [],
+  imports: [
+    ModalModule.forRoot()
+  ],
   exports: [
     CommonModule,
     TranslateModule,
     ReactiveFormsModule,
     FormsModule,
+    ModalModule,
 
     MatFormFieldModule,
     MatInputModule,

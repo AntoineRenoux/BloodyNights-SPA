@@ -1,8 +1,37 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">{{'APPLICATION_NAME' | translate}}</a>
 
-  <ul>
-    
-  </ul>
+  <a class="navbar-brand" [routerLink]='["/"]' routerLinkActive='active'>{{'APPLICATION_NAME' | translate}}</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto" *ngIf="(authService.currentUser$ | async)">
+      <li class="nav-item"><a class="nav-link" href="#">Rules<span class="sr-only"></span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Cadre<span class="sr-only"></span></a></li>
+      <li class="nav-item dropdown" dropdown>
+        <a href dropdownToggle class="nav-link dropdown-toggle" (click)="false">My Account</a>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+          <li role="menuitem"><a class="dropdown-item">Action</a></li>
+          <li role="menuitem"><a class="dropdown-item">Another action</a></li>
+          <li role="menuitem"><a class="dropdown-item">Something else here</a></li>
+          <li class="divider dropdown-divider"></li>
+          <li role="menuitem"><a class="dropdown-item" (click)="logout()">{{'DISCONNECT' | translate}}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto" *ngIf="(authService.currentUser$ | async) === null">
+      <li class="nav-item">
+        <a [routerLink]='["/auth/connexion"]' class="nav-link">{{"SING_IN" | translate}}</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]='["/auth/register"]' class="nav-link">{{"SING_UP" | translate}}</a>
+      </li>
+    </ul>
+  </div>
 
 </nav>
+

@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { SharedModule } from '@shared/shared.module';
 
 
 registerLocaleData(localeFr);
@@ -22,6 +23,7 @@ registerLocaleData(localeFr);
   ],
   imports: [
     CoreModule,
+    SharedModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {provide: TranslateLoader, useFactory: HttpLoaderFactory, deps:[TranslationService]},

@@ -5,12 +5,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ValidatorService } from '@shared/services/validator.service';
 import { AuthService } from '@core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.scss']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class InscriptionComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
@@ -18,7 +19,8 @@ export class InscriptionComponent implements OnInit {
     private validatorService: ValidatorService,
     private authService: AuthService,
     private toastr: ToastrService,
-    private translate: TranslateService) { }
+    private translate: TranslateService,
+    private route: Router) { }
 
   ngOnInit(): void {
     this.initializeRegisterForm();
@@ -50,6 +52,7 @@ export class InscriptionComponent implements OnInit {
       this.authService.register(userRegister).subscribe(() => {
         this.translate.get("ACCOUNT_CREATION_SUCCESSED").subscribe(trad => {
           this.toastr.success(trad);
+          this.route.navigate(['/']);
         });
 
       }, (error) => {

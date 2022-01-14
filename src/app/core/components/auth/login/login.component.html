@@ -1,0 +1,52 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title">{{"FORGOTEN_PASSWORD" | translate}}</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{"FORGOTEN_PASSWORD_BODY" | translate}}</p>
+    <form #resetpassword="ngForm" (submit)="ResetPassword()">
+      <input type="text" [(ngModel)]="resetUser.email" name="email" class="col form-control" placeholder="votre.email@mascarade.fr" required>
+      <div class="col text-center mt-1">
+        <button type="submit" mat-flat-button color="primary">{{'SEND' | translate}}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<div class="container-fluid d-flex align-items-center justify-content-center fullscreen">
+  <div class="row">
+    <mat-card class="col pb-0">
+      <mat-card-title>
+        <h1 class="text-center">{{"SING_IN" | translate}}</h1>
+      </mat-card-title>
+
+      <form #connexionForm="ngForm" (submit)="Login()">
+        <mat-card-content>
+          <mat-form-field appearance="legacy" class="col">
+            <mat-label>{{"EMAIL" | translate}} / {{"ALIAS" | translate}}</mat-label>
+            <input [(ngModel)]="user.emailOrPseudo" name="emailOrPseudo" #emailOrPseudo="ngModel" type="text" matInput
+              placeholder="Ex. xxxFrançoisDu95xxx" required>
+            <mat-error [hidden]="emailOrPseudo.valid"> {{'MANDATORY_FIELD' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy" class="col">
+            <mat-label>{{"PASSWORD" | translate}}</mat-label>
+            <input [(ngModel)]="user.password" name="password" #password="ngModel" autocomplete="off" type="password"
+              matInput placeholder="*******" required>
+            <mat-error [hidden]="password.valid"> {{'MANDATORY_FIELD' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-card-actions class="text-center">
+            <button type="submit" mat-flat-button color="primary">{{'CONNEXION' | translate}}</button>
+            <p class="mt-3">
+              <button type="button" mat-flat-button (click)="openModal(template)">{{"FORGOTEN_PASSWORD" | translate}} ?</button>
+            </p>
+          </mat-card-actions>
+        </mat-card-content>
+      </form>
+    </mat-card>
+  </div>
+</div>

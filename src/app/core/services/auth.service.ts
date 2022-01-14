@@ -1,3 +1,4 @@
+import { UserResetPassword } from '@core/models/userResetPassword';
 import { UserLogin } from './../models/userLogin';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -33,6 +34,24 @@ export class AuthService {
         }
       })
     );
+  }
+
+  resetPassword(model: UserResetPassword){
+    return this.http.put(this.baseUrl + 'reset-password', model);
+  }
+
+  validEmail(email: string, token: string) {
+
+    const model = {
+      email: email,
+      token: token
+    }
+
+    return this.http.post(this.baseUrl + 'email-validation', model)
+  }
+
+  sendEmailResetPassword(email: string) {
+    return this.http.get(this.baseUrl + 'send-email-reset-password?' + 'email=' + email);
   }
 
   setCurrentUser(user: User) {

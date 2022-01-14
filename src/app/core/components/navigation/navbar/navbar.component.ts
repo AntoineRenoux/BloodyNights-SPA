@@ -1,7 +1,6 @@
 import { AuthService } from '@core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '@core/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bloodynights-navbar',
@@ -10,15 +9,14 @@ import { User } from '@core/models/user';
 })
 export class NavbarComponent implements OnInit {
 
-  currentUser$: Observable<User>;
-
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService,
+    private route: Router) { }
 
   ngOnInit(): void {
-    this.currentUser$ = this.authService.currentUser$;
   }
 
   logout() {
     this.authService.logout();
+    this.route.navigate(["/"]);
   }
 }
