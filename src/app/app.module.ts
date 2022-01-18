@@ -13,7 +13,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { SharedModule } from '@shared/shared.module';
-
+import { JwtInterceptor } from '@core/interceptors/jwt.interceptor';
 
 registerLocaleData(localeFr);
 
@@ -43,6 +43,7 @@ registerLocaleData(localeFr);
     NgxSpinnerModule,
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'fr-FR' }
   ],

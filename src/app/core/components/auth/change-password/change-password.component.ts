@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '@core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserResetPassword } from '@core/models/userResetPassword';
 
 @Component({
@@ -21,7 +21,8 @@ export class ChangePasswordComponent implements OnInit {
     private trad: TranslateService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private validatorService: ValidatorService) { }
+    private validatorService: ValidatorService,
+    private route: Router) { }
 
   ngOnInit(): void {
     this.activeRoute.queryParams.subscribe(params => {
@@ -45,6 +46,7 @@ export class ChangePasswordComponent implements OnInit {
 
     this.authService.resetPassword(this.model).subscribe(() => {
       this.trad.get('CHANGE_PASSWORD_SUCCESSED').subscribe((trad) => {
+        this.route.navigate['/auth/connexion'];
         this.toastr.success(trad);
       });
     })

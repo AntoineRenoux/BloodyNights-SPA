@@ -8,8 +8,6 @@ import { User } from '@core/models/user';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'BloodyNights-SPA';
-
   constructor(private authService: AuthService) {
   }
 
