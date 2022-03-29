@@ -17,6 +17,9 @@ export class DisciplineComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    console.log("DisciplineComponent loaded");
+
     this.gameService.getDisciplines().subscribe((disciplines) => {
       this.disciplines.emit(disciplines);
     })

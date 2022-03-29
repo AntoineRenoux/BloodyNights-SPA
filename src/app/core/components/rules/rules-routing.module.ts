@@ -1,4 +1,4 @@
-import { MainComponent } from './main/main.component';
+import { RulesComponent } from './rules.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -7,13 +7,12 @@ const routes: Routes = [
     path : '',
     // runGuardsAndResolvers: 'always',
     // canActivate: [AuthGuard]
+    component: RulesComponent,
     children: [
-      { path: 'disciplines', component: MainComponent },
-      { path: 'disciplines/:discipline', component: MainComponent },
-      { path: 'disciplines/:discipline/:path', component: MainComponent },
-      { path: 'clans', component: MainComponent },
-      { path: 'clans/:clan', component: MainComponent },
-      { path: 'clans/:clan/:bloodline', component: MainComponent },
+      { path: 'disciplines', loadChildren: () => import('./disciplines/discipline.module').then(m => m.DisciplineModule) },
+      // { path: 'clans', component: RulesComponent },
+      // { path: 'clans/:clan', component: RulesComponent },
+      // { path: 'clans/:clan/:bloodline', component: RulesComponent },
     ]
   }
 ];

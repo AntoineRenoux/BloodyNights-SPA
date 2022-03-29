@@ -1,25 +1,23 @@
+import { DisciplineModule } from './disciplines/discipline.module';
 import { SharedModule } from '@shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RulesRoutingModule } from './rules-routing.module';
-import { DisciplineComponent } from './disciplines/discipline.component';
 import { LeftFixedMenuComponent } from './left-fixed-menu/left-fixed-menu.component';
-import { MainComponent } from './main/main.component';
+import { RulesComponent } from './rules.component';
 import { CommonModule } from '@angular/common';
-import { ClansComponent } from './clans/clans.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     SharedModule,
-    RulesRoutingModule
+    RulesRoutingModule,
+    DisciplineModule
   ],
   declarations: [
-    DisciplineComponent,
     LeftFixedMenuComponent,
-    MainComponent,
-    ClansComponent
+    RulesComponent,
   ],
   exports: [
   ]
