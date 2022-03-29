@@ -11,6 +11,9 @@ const routes: Routes = [
       { path: 'disciplines', component: MainComponent },
       { path: 'disciplines/:discipline', component: MainComponent },
       { path: 'disciplines/:discipline/:path', component: MainComponent },
+      { path: 'clans', component: MainComponent },
+      { path: 'clans/:clan', component: MainComponent },
+      { path: 'clans/:clan/:bloodline', component: MainComponent },
     ]
   }
 ];

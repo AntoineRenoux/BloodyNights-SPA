@@ -34,7 +34,6 @@ export class DisciplineComponent implements OnInit {
   getDisciplineByKey(key: string) {
     this.gameService.getDisciplineByKey(key).subscribe((d: Discipline) => {
       this.discipline = d;
-      console.log(d);
     })
   }
 }

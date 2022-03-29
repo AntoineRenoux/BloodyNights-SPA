@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class GameService {
 
-  baseUrl = environment.apiUrl + 'game/';
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +18,10 @@ export class GameService {
 
   getDisciplineByKey(key: string) {
     return this.http.get(this.baseUrl + 'disciplines/' + key);
+  }
+
+  getClans(): Observable<any> {
+    return this.http.get(this.baseUrl + 'clans');
   }
 
 }

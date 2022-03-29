@@ -6,6 +6,7 @@ import { DisciplineComponent } from './disciplines/discipline.component';
 import { LeftFixedMenuComponent } from './left-fixed-menu/left-fixed-menu.component';
 import { MainComponent } from './main/main.component';
 import { CommonModule } from '@angular/common';
+import { ClansComponent } from './clans/clans.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     DisciplineComponent,
     LeftFixedMenuComponent,
     MainComponent,
+    ClansComponent
   ],
   exports: [
   ]

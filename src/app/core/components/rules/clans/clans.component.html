@@ -1,0 +1,26 @@
+<div *ngIf="clan == null">
+  <div class="row">
+    <div class="col-12">
+      <h1 [innerHTML]=" 'GAME_CLANS'| translate"></h1>
+    </div>
+    <div class="col-12">
+      <h3 [innerHTML]=" 'GAME_CLANS_HOME_PAGE'| translate"></h3>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="clan != null">
+  <div class="row">
+    <div class="col-12">
+      <h1>{{clan.name | translate}}</h1>
+    </div>
+    <div class="col-12">
+      <p [innerHTML]="clan.description | translate"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h1 [innerHTML]=" 'GAME_POWERS'| translate"></h1>
+    </div>
+  </div>
+</div>
