@@ -1,7 +1,6 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { GameService } from '@shared/services/game.service';
+import { Component, OnInit } from '@angular/core';
 import { ItemMenu } from '@core/models/itemMenu';
-import { AdDirective } from '@shared/directives/ad.directive';
 
 @Component({
   templateUrl: './rules.component.html',
@@ -9,14 +8,15 @@ import { AdDirective } from '@shared/directives/ad.directive';
 })
 export class RulesComponent implements OnInit {
 
-  @ViewChild(AdDirective, { static: true }) adHost!: AdDirective;
   navigationMenu = new Array<ItemMenu>();
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-    private route: Router) { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
-    console.log("RulesComposent loaded");
-  }
+    console.log("RulesComponent loaded");
 
+    this.gameService.itemsMenuForNavigation$.subscribe((d) => {
+      this.navigationMenu = d;
+    });
+  }
 }
