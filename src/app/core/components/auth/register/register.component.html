@@ -63,27 +63,28 @@
             <mat-form-field appearance="legacy" class="col">
               <mat-label>{{"PASSWORD" | translate}}</mat-label>
               <input matInput #password formControlName="password" type="password" required placeholder="********" />
-              <mat-error *ngIf="registerForm.get('password').touched && registerForm.get('password').hasError('required')"> {{'MANDATORY_FIELD' | translate}}</mat-error>
+              <mat-error
+                *ngIf="registerForm.get('password').touched && registerForm.get('password').hasError('required')">
+                {{'MANDATORY_FIELD' | translate}}</mat-error>
             </mat-form-field>
-
-            <div class="col pb-1">
-              <mat-password-strength #passwordComponent [password]="password.value"></mat-password-strength>
-            </div>
 
             <mat-form-field appearance="legacy" class="col">
               <mat-label>{{"CONFIRMED_PASSWORD" | translate}}</mat-label>
-              <input matInput #confirmedPassword formControlName="confirmedPassword" type="password" required placeholder="********" />
-              <mat-error *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('required')"> {{'MANDATORY_FIELD' | translate}}</mat-error>
-              <mat-error *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('isMatching') && !registerForm.get('confirmedPassword').hasError('required')"> {{'CONFIRMED_PASSWORD_DOESNT_MATCH' | translate}}</mat-error>
+              <input matInput #confirmedPassword formControlName="confirmedPassword" type="password" required
+                placeholder="********" />
+              <mat-error
+                *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('required')">
+                {{'MANDATORY_FIELD' | translate}}</mat-error>
+              <mat-error
+                *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('isMatching') && !registerForm.get('confirmedPassword').hasError('required')">
+                {{'CONFIRMED_PASSWORD_DOESNT_MATCH' | translate}}</mat-error>
             </mat-form-field>
 
-            <div class="col pt-1">
-              <mat-password-strength #confirmPasswordComponent [password]="confirmedPassword.value"></mat-password-strength>
-            </div>
           </mat-card-content>
 
           <mat-card-actions class="text-center">
-            <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">{{'REGISTER' | translate}}</button>
+            <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">{{'REGISTER' |
+              translate}}</button>
           </mat-card-actions>
 
         </mat-card>
@@ -91,5 +92,3 @@
     </div>
   </div>
 </div>
-
-

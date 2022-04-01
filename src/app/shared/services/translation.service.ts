@@ -30,6 +30,6 @@ export class TranslationService {
   getTranslation(lang: string | number): Observable<any> {
     if (lang === 'fr')
       lang = 1036;
-    return this.http.get(this.baseUrl + 'get-generics-traductions/' + lang);
+    return this.http.get(this.baseUrl + 'get-traductions/' + lang);
   }
 }

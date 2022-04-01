@@ -13,9 +13,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AdDirective } from '@shared/directives/ad.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    AdDirective
+  ],
   imports: [
     ModalModule.forRoot()
   ],
@@ -34,7 +37,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     MatDatepickerModule,
     MatPasswordStrengthModule,
 
-    NavigationModule
+    NavigationModule,
+    AdDirective
   ]
 })
 export class SharedModule { }
