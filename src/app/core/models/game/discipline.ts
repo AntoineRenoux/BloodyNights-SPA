@@ -9,4 +9,6 @@ export class Discipline {
   powers: Power[];
   childrenDisciplines: Discipline[];
   rituals: Ritual[];
+
+  url: string;
 }

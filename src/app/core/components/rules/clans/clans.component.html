@@ -1,26 +1,55 @@
 <div *ngIf="clan == null">
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-12">
       <h1 [innerHTML]=" 'GAME_CLANS'| translate"></h1>
+      <hr>
     </div>
     <div class="col-12">
-      <h3 [innerHTML]=" 'GAME_CLANS_HOME_PAGE'| translate"></h3>
+      <p [innerHTML]=" 'GAME_CLANS_HOME_PAGE'| translate"></p>
     </div>
   </div>
 </div>
 
 <div *ngIf="clan != null">
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-12">
       <h1>{{clan.name | translate}}</h1>
+      <hr>
     </div>
     <div class="col-12">
-      <p [innerHTML]="clan.description | translate"></p>
+      <p class="font-italic" [innerHTML]="clan.description | translate"></p>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <h1 [innerHTML]=" 'GAME_POWERS'| translate"></h1>
+      <h2 [innerHTML]=" 'GAME_POWERS'| translate"></h2>
+    </div>
+    <div class="col text-center" *ngFor="let disci of clan.disciplines">
+      <a [innerHTML]=" disci.name | translate" [routerLink]='["/rules/disciplines/", disci.url]' routerLinkActive='active'></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h2 [innerHTML]=" 'GAME_HISTORY'| translate"></h2>
+    </div>
+    <div class="col-12">
+      <p [innerHTML]="clan.history | translate"></p>
+    </div>
+  </div>
+  <div class="row" *ngIf="clan.organization">
+    <div class="col-12">
+      <h2 [innerHTML]=" 'GAME_ORGANIZATION'| translate"></h2>
+    </div>
+    <div class="col-12">
+      <p [innerHTML]="clan.organization | translate"></p>
+    </div>
+  </div>
+  <div class="row" *ngIf="clan.weakness">
+    <div class="col-12">
+      <h2 [innerHTML]=" 'GAME_CLAN_WEAKNESS'| translate"></h2>
+    </div>
+    <div class="col-12">
+      <p [innerHTML]="clan.weakness | translate"></p>
     </div>
   </div>
 </div>

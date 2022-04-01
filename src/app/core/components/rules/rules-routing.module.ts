@@ -10,6 +10,7 @@ const routes: Routes = [
     component: RulesComponent,
     children: [
       { path: 'disciplines', loadChildren: () => import('./disciplines/discipline.module').then(m => m.DisciplineModule) },
+      { path: 'clans', loadChildren: () => import('./clans/clans.module').then(m => m.ClanModule) },
     ]
   }
 ];
