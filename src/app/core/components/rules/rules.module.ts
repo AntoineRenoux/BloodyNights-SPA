@@ -1,3 +1,4 @@
+import { SkillsModule } from './skills/skills.module';
 import { DisciplineModule } from './disciplines/discipline.module';
 import { SharedModule } from '@shared/shared.module';
 import { RouterModule } from '@angular/router';
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
     RouterModule,
     SharedModule,
     RulesRoutingModule,
-    DisciplineModule
+    DisciplineModule,
+    SkillsModule
   ],
   declarations: [
     LeftFixedMenuComponent,

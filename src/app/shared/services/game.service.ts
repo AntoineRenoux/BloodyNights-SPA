@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Clan } from '@core/models/game/clan';
 import { Discipline } from '@core/models/game/discipline';
+import { Skill } from '@core/models/game/skill';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class GameService {
   itemsMenuForNavigation$: BehaviorSubject<ItemMenu[]> = new BehaviorSubject<ItemMenu[]>(null);
   private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
   private clans$: BehaviorSubject<Clan[]> = new BehaviorSubject<Clan[]>(null);
+  private skills$: BehaviorSubject<Skill[]> = new BehaviorSubject<Skill[]>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -54,6 +56,15 @@ export class GameService {
       }
     }
     return this.http.get<Clan>(this.baseUrl + 'clans/' + key);
+  }
+
+  getSkills(): Observable<Skill[]> {
+    if (this.skills$.value == null) {
+      this.http.get<Skill[]>(this.baseUrl + 'skills').subscribe((skills: Skill[]) => {
+        this.skills$.next(skills);
+      })
+    }
+    return this.skills$;
   }
 
 }

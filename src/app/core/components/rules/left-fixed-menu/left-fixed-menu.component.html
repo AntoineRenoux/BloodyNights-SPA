@@ -1,4 +1,4 @@
-<div class="d-flex flex-column h-100 pt-4" style="position: fixed; background-color: lightgrey; left: 0;">
+<div class="d-flex flex-column h-100 pt-4">
   <ul>
     <li *ngFor="let item of menus">
       <a href (click)="false" [routerLink]='item.redirectTo | lowercase' routerLinkActive='active'>{{item.name | translate}}</a>

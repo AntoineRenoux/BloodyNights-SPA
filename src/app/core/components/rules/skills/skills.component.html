@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12 mt-3">
+    <h1 [innerHTML]="'GAME_INITIALS_SKILLS'| translate"></h1>
+    <hr>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="'GAME_INITIALS_SKILLS_DESCRIPTION'| translate"></p>
+  </div>
+  <div class="col-12 col-md-8 offset-md-4 mt-3">
+    <div>
+      <p [innerHTML]="'GAME_SKILLS_LEVEL_1'| translate"></p>
+      <p [innerHTML]="'GAME_SKILLS_LEVEL_2'| translate"></p>
+      <p [innerHTML]="'GAME_SKILLS_LEVEL_3'| translate"></p>
+      <p [innerHTML]="'GAME_SKILLS_LEVEL_4'| translate"></p>
+      <p [innerHTML]="'GAME_SKILLS_LEVEL_5'| translate"></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2 [innerHTML]="'GAME_SKILLS_FIELD'| translate"></h2>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="'GAME_SKILLS_FIELD_DESCRIPTION'| translate"></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2 [innerHTML]="'GAME_SKILLS_REPARE_MODIFIACTION'| translate"></h2>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="'GAME_SKILLS_REPARE_MODIFIACTION_DESCRIPTION'| translate"></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h2 [innerHTML]="'GAME_SKILLS_DESCRIPTION'| translate"></h2>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="'GAME_SKILLS_DESCRIPTION_DESCRIPTION'| translate"></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12" *ngFor="let skill of skills">
+    <h3>{{skill.name | translate}}</h3>
+    <p>{{skill.description | translate}}</p>
+    <h4>{{ "GAME_SYSTEM" | translate }}</h4>
+    <p>{{skill.system | translate}}</p>
+  </div>
+</div>

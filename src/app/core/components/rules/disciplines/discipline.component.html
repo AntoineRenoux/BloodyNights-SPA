@@ -1,12 +1,20 @@
 <div *ngIf="discipline == null">
-  <h1>{{'GAME_DISCIPLINES' | translate}}</h1>
-  <p style="text-align: justify;" [innerHTML]="'GAME_DISCIPLINES_HOME_PAGE' | translate"></p>
+  <div class="row mt-3">
+    <div class="col-12">
+      <h1>{{'GAME_DISCIPLINES' | translate}}</h1>
+      <hr>
+    </div>
+    <div class="col-12">
+      <p [innerHTML]="'GAME_DISCIPLINES_HOME_PAGE' | translate"></p>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="discipline != null">
   <div class="row mt-3">
     <div class="col-12">
       <h1>{{discipline.name | translate}}</h1>
+      <hr>
     </div>
     <div class="col-12">
       <p [innerHTML]="discipline.description | translate"></p>
@@ -20,7 +28,13 @@
 
   <div class="row" *ngFor="let power of discipline.powers">
     <div class="col-12">
-      <h2 [innerHTML]="power.name | translate"></h2>
+      <span *ngIf="power.level == 1">•</span>
+      <span *ngIf="power.level == 2">••</span>
+      <span *ngIf="power.level == 3">•••</span>
+      <span *ngIf="power.level == 4">••••</span>
+      <span *ngIf="power.level == 5">•••••</span>
+      <span *ngIf="power.level == 6">••••• •</span>
+      <h2 class="d-inline pl-1" [innerHTML]="power.name | translate">•</h2>
     </div>
     <div class="col-12">
       <p [innerHTML]='power.description | translate'></p>
@@ -29,7 +43,7 @@
       <h3 [innerHTML]=" 'GAME_SYSTEM' | translate"></h3>
       <p [innerHTML]='power.system | translate'></p>
     </div>
-    <div class="col-12" *ngIf="power.exceptionnalSuccess != null">
+    <div class="col-12" *ngIf="power.exceptionnalSuccess">
       <h3 [innerHTML]=" 'GAME_EXECPTIONEL_SUCCESS' | translate"></h3>
       <p [innerHTML]='power.exceptionnalSuccess | translate'></p>
     </div>

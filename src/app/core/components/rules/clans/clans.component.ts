@@ -43,10 +43,10 @@ export class ClansComponent implements OnInit {
   setListItemsMenu() {
     this.listItems = new Array<ItemMenu>();
 
-    this.gameService.getClans().subscribe((d: Clan[]) => {
-      if (d != null) {
-        d.forEach(disci => {
-          this.listItems.push(this.converteClanToItemMenu(disci, null));
+    this.gameService.getClans().subscribe((c: Clan[]) => {
+      if (c != null) {
+        c.forEach(clan => {
+          this.listItems.push(this.converteClanToItemMenu(clan, null));
         });
         this.gameService.itemsMenuForNavigation$.next(this.listItems);
       }
