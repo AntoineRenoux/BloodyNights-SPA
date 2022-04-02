@@ -25,23 +25,21 @@ export class SkillsComponent implements OnInit {
   }
 
   setListItemsMenu() {
-    this.listItems = new Array<ItemMenu>();
-
     this.gameService.getSkills().subscribe((s: Skill[]) => {
       if (s != null) {
+        this.listItems = new Array<ItemMenu>();
+
         s.forEach(skill => {
           this.listItems.push(this.converteSkillToItemMenu(skill));
         });
+
         this.gameService.itemsMenuForNavigation$.next(this.listItems);
       }
     });
   }
 
   private converteSkillToItemMenu(skill: Skill): ItemMenu {
-
-    let url = 'skills' + skill.name;
-
+    let url = 'skills#' + skill.name.split('_')[0];
     return new ItemMenu(skill.name, skill.name, url);
   }
-
 }

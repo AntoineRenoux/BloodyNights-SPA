@@ -46,7 +46,7 @@
 
 <div class="row">
   <div class="col-12" *ngFor="let skill of skills">
-    <h3>{{skill.name | translate}}</h3>
+    <h3 id="{{skill.name.split('_')[0] | lowercase}}">{{skill.name | translate}}</h3>
     <p>{{skill.description | translate}}</p>
     <h4>{{ "GAME_SYSTEM" | translate }}</h4>
     <p>{{skill.system | translate}}</p>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemMenu } from '@core/models/itemMenu';
+import { GameService } from '@shared/services/game.service';
 
 @Component({
   selector: 'bn-rules-left-fixed-menu',
@@ -8,11 +9,16 @@ import { ItemMenu } from '@core/models/itemMenu';
 })
 export class LeftFixedMenuComponent implements OnInit {
 
-  @Input() menus: ItemMenu[];
+  menus: ItemMenu[];
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
+    console.log("LeftFixedMenuComponent loaded");
+
+    this.gameService.itemsMenuForNavigation$.subscribe((d) => {
+      this.menus = d;
+    });
   }
 
 }
