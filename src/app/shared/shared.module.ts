@@ -1,3 +1,4 @@
+import { ErrorModule } from './errors/errors.module';
 import { NavigationModule } from '@core/components/navigation/navigation.module';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +29,7 @@ import { AdDirective } from '@shared/directives/ad.directive';
     ReactiveFormsModule,
     FormsModule,
     ModalModule,
+    ErrorModule,
 
     MatFormFieldModule,
     MatInputModule,

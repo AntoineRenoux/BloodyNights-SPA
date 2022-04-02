@@ -9,6 +9,9 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     path: 'rules',
     loadChildren: () => import('./core/components/rules/rules.module').then(m => m.RulesModule)
+  },
+  {
+    path: '**', redirectTo: 'not-found'
   }
 ];
 

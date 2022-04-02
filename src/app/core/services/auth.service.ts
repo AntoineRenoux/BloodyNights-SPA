@@ -1,5 +1,5 @@
 import { UserResetPassword } from '@core/models/userResetPassword';
-import { UserLogin } from './../models/userLogin';
+import { UserLogin } from '@core/models/userLogin';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserRegister } from '@core/models/userRegister';
