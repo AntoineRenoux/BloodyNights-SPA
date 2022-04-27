@@ -1,15 +1,17 @@
-export class User {
+export class UserSettings
+{
   firstName: string;
   lastName: string;
   pseudo: string;
   email: string;
   phoneNumber: string;
+  birthDate: any;
 
   address: string;
-  zipCode: string;
   city: string;
+  zipCode: string;
   country: string;
 
-  birthdate: Date;
-  creationDate: Date;
+  password: string;
+  confirmedPassword: string;
 }

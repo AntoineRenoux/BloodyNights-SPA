@@ -7,7 +7,7 @@ import { timer } from 'rxjs';
 
 @Component({
   templateUrl: './discipline.component.html',
-  styleUrls: ['./discipline.component.scss']
+  styleUrls: ['../rules.component.scss']
 })
 export class DisciplineComponent implements OnInit {
 

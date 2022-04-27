@@ -11,8 +11,12 @@ const routes: Routes = [
     loadChildren: () => import('./core/components/rules/rules.module').then(m => m.RulesModule)
   },
   {
-    path: '**', redirectTo: 'not-found'
-  }
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    path: 'account',
+    loadChildren: () => import('./core/components/account/account.module').then(m => m.AccountModule)
+  },
+  { path: '**', redirectTo: 'not-found' }
 ];
 
 @NgModule({

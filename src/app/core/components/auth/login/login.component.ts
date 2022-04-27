@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   user = new UserLogin();
   resetUser = new UserResetPassword();
   modalRef?: BsModalRef;
-
+  hide = true;
+  
   constructor(private authService: AuthService,
     private toastr: ToastrService,
     private translate: TranslateService,

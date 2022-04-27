@@ -31,7 +31,7 @@ registerLocaleData(localeFr);
     }),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-bottom-center',
       preventDuplicates: true,
       iconClasses: {
         error: 'custom-toast-error',

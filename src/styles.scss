@@ -10,12 +10,21 @@
 @import '~ngx-toastr/toastr-bs4-alert';
 
 html, body { height: 100%; scroll-behavior: smooth; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: rgb(74,9,63);
+  background: radial-gradient(circle, rgba(74,9,63,1) 0%, rgba(45,15,43,1) 52%, rgba(74,9,63,1) 100%);
+}
+
 
 .fullscreen {
   top: 0;
   height: 100vh;
   position: absolute;
+}
+
+.mat-card {
+  padding: 0 !important;
 }
 
 .custom-toast-success {

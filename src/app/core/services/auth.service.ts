@@ -1,3 +1,4 @@
+import { UserChangePassword } from './../models/userChangePassword';
 import { UserResetPassword } from '@core/models/userResetPassword';
 import { UserLogin } from '@core/models/userLogin';
 import { HttpClient } from '@angular/common/http';
@@ -13,7 +14,7 @@ import { ReplaySubject } from 'rxjs';
 })
 export class AuthService {
 
-  baseUrl = environment.apiUrl + 'auth/';
+  private baseUrl = environment.apiUrl + 'auth/';
 
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
@@ -29,8 +30,9 @@ export class AuthService {
       map((response: User) => {
         const user = response;
         if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSource.next(user);
+          localStorage.setItem('bn_user', JSON.stringify(user['user']));
+          localStorage.setItem('bn_token', JSON.stringify(user['token']));
+          this.currentUserSource.next(user['user']);
         }
       })
     );
@@ -38,6 +40,10 @@ export class AuthService {
 
   resetPassword(model: UserResetPassword){
     return this.http.put(this.baseUrl + 'reset-password', model);
+  }
+
+  changePassword(user: UserChangePassword) {
+    return this.http.put(this.baseUrl + 'change-password', user);
   }
 
   validEmail(email: string, token: string) {
@@ -55,11 +61,13 @@ export class AuthService {
   }
 
   setCurrentUser(user: User) {
+    localStorage.setItem('bn_user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
   logout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('bn_user');
+    localStorage.removeItem('bn_token');
     this.currentUserSource.next(null);
   }
 }

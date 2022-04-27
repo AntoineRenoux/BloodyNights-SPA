@@ -24,8 +24,8 @@
     <div class="col-12">
       <h2 [innerHTML]=" 'GAME_POWERS'| translate"></h2>
     </div>
-    <div class="col text-center" *ngFor="let disci of clan.disciplines">
-      <a [innerHTML]=" disci.name | translate" [routerLink]='["/rules/disciplines/", disci.url]' routerLinkActive='active'></a>
+    <div class="col text-center disciplines" *ngFor="let disci of clan.disciplines">
+      <a class="link-discipline" [innerHTML]=" disci.name | translate" [routerLink]='["/rules/disciplines/", disci.url]' routerLinkActive='active'></a>
     </div>
   </div>
   <div class="row">

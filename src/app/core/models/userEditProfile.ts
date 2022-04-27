@@ -1,15 +1,17 @@
-export class User {
+export class UserEditProfile {
   firstName: string;
   lastName: string;
   pseudo: string;
   email: string;
   phoneNumber: string;
+  birthdate: Date;
 
   address: string;
   zipCode: string;
   city: string;
   country: string;
 
-  birthdate: Date;
-  creationDate: Date;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }

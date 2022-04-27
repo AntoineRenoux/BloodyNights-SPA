@@ -23,7 +23,7 @@ export const defaultLanguage: string = 'fr';
 })
 export class TranslationService {
 
-  baseUrl = environment.apiUrl + 'traduction/';
+  private baseUrl = environment.apiUrl + 'traduction/';
 
   constructor(private http: HttpClient) { }
 

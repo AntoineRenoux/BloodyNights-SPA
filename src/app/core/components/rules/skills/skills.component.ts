@@ -6,7 +6,7 @@ import { Skill } from '@core/models/game/skill';
 
 @Component({
   templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.scss']
+  styleUrls: ['../rules.component.scss']
 })
 export class SkillsComponent implements OnInit {
 

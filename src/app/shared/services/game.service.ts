@@ -12,7 +12,7 @@ import { Skill } from '@core/models/game/skill';
 })
 export class GameService {
 
-  baseUrl = environment.apiUrl;
+  private baseUrl = environment.apiUrl;
   itemsMenuForNavigation$: BehaviorSubject<ItemMenu[]> = new BehaviorSubject<ItemMenu[]>(null);
   private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
   private clans$: BehaviorSubject<Clan[]> = new BehaviorSubject<Clan[]>(null);

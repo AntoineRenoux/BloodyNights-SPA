@@ -4,7 +4,8 @@
       <form [formGroup]="registerForm" (ngSubmit)="register()">
         <mat-card>
           <mat-card-title>
-            <h1 class="text-center">{{"SING_UP" | translate}}</h1>
+            <h1 class="text-center pt-3">{{"SING_UP" | translate}}</h1>
+            <hr>
           </mat-card-title>
           <mat-card-content>
             <mat-form-field appearance="legacy" class="col">
@@ -80,13 +81,12 @@
                 {{'CONFIRMED_PASSWORD_DOESNT_MATCH' | translate}}</mat-error>
             </mat-form-field>
 
+            <mat-card-actions class="text-center">
+              <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">{{'REGISTER' |
+                translate}}</button>
+            </mat-card-actions>
+
           </mat-card-content>
-
-          <mat-card-actions class="text-center">
-            <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">{{'REGISTER' |
-              translate}}</button>
-          </mat-card-actions>
-
         </mat-card>
       </form>
     </div>

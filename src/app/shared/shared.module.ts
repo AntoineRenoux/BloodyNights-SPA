@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -12,13 +13,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { AdDirective } from '@shared/directives/ad.directive';
 
 @NgModule({
   declarations: [
-    AdDirective
   ],
   imports: [
     ModalModule.forRoot()
@@ -38,9 +38,10 @@ import { AdDirective } from '@shared/directives/ad.directive';
     MatNativeDateModule,
     MatDatepickerModule,
     MatPasswordStrengthModule,
+    MatTabsModule,
+    MatIconModule,
 
     NavigationModule,
-    AdDirective
   ]
 })
 export class SharedModule { }

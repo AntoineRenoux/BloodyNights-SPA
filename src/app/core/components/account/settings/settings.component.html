@@ -1,0 +1,126 @@
+<div class="container-fluid d-flex align-items-md-center justify-content-center fullscreen mt-3 mt-md-0">
+  <div class="row mt-5">
+    <mat-card class="m-2">
+      <mat-card-title>
+        <h1 class="text-center pt-3">{{"ACCOUNT_PARAMETERS" | translate}}</h1>
+        <hr>
+      </mat-card-title>
+      <mat-card-content>
+
+        <mat-tab-group mat-align-tabs="center" class="container">
+          <form [formGroup]="editForm" (ngSubmit)="changeSettings()">
+            <mat-tab label="{{'GENERAL_INFORMATIONS' | translate}}">
+              <div class="container">
+                <div class="row mt-3">
+                  <div class="form-group col-md-4 col-12">
+                    <label for="pseudo">{{"ALIAS" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="pseudo" required>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <label for="firstname">{{"FIRSTNAME" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="firstname" required>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <label for="lastName">{{"LASTNAME" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="lastname" required name="lastName">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6 col-12">
+                    <label for="email">{{"EMAIL" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="email" required>
+                  </div>
+
+                  <div class="form-group col-md-6 col-12">
+                    <label for="phoneNumber">{{"PHONE_NUMBER" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="phoneNumber" required>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="form-group col-12">
+                    <label for="address">{{"GENERAL_ADDRESS" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="address" required>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <label for="city">{{"GENERAL_ADDRESS_CITY" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="city" required>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <label for="zipCode">{{"GENERAL_ADDRESS_ZIPCODE" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="zipcode" required>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <label for="country">{{"GENERAL_ADDRESS_COUNTRY" | translate}}</label>
+                    <input type="text" class="form-control" formControlName="country" required>
+                  </div>
+
+                </div>
+                <mat-card-actions class="text-center">
+                  <button [disabled]="!editForm.touched || !editForm.valid" type="submit" mat-flat-button
+                    color="primary">{{"SAVE" | translate}}</button>
+                  <button type="button" mat-flat-button mat-button (click)="returnHome()">{{"CANCEL" |
+                    translate}}</button>
+                </mat-card-actions>
+              </div>
+            </mat-tab>
+          </form>
+          <form [formGroup]="editPassword" (ngSubmit)="changePassword()">
+            <mat-tab label="{{'PASSWORD' | translate}}">
+              <div class="container">
+                <div class="row mt-3">
+                  <div class="form-group col-md-4 col-12">
+                    <mat-form-field>
+                      <mat-label>{{"CURRENT_PASSWORD" | translate}}</mat-label>
+                      <input matInput [type]="hideCurrentPassword ? 'password' : 'text'"
+                        formControlName="currentPassword" class="form-control" required>
+                      <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ?
+                        'visibility_off' : 'visibility'}}</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <mat-form-field>
+                      <mat-label>{{"CHANGE_PASSWORD_PASSWORD" | translate}}</mat-label>
+                      <input matInput [type]="hideNewPassword ? 'password' : 'text'"
+                        formControlName="newPassword" class="form-control" required>
+                      <mat-icon matSuffix (click)="hideNewPassword = !hideNewPassword">{{hideNewPassword ?
+                        'visibility_off' : 'visibility'}}</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="form-group col-md-4 col-12">
+                    <mat-form-field>
+                      <mat-label>{{"CHANGE_PASSWORD_CONFIRM_PASSWORD" | translate}}</mat-label>
+                      <input matInput [type]="hideConfirmPassword ? 'password' : 'text'"
+                        formControlName="confirmPassword" class="form-control" required>
+                      <mat-icon matSuffix (click)="hideConfirmPassword = !hideConfirmPassword">{{hideConfirmPassword ?
+                        'visibility_off' : 'visibility'}}</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <mat-card-actions class="text-center">
+                  <button [disabled]="!editPassword.touched || !editPassword.valid" type="submit" mat-flat-button
+                    color="primary">{{"SAVE" | translate}}</button>
+                  <button type="button" mat-flat-button mat-button (click)="returnHome()">{{"CANCEL" |
+                    translate}}</button>
+                </mat-card-actions>
+              </div>
+            </mat-tab>
+          </form>
+        </mat-tab-group>
+        <hr>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,10 +1,10 @@
 <div class="d-flex flex-column h-100 pt-4">
   <ul>
     <li *ngFor="let item of menus">
-      <a href (click)="false" [routerLink]='item.redirectTo | lowercase' routerLinkActive='active'>{{item.name | translate}}</a>
+      <a class="link" href (click)="false" [routerLink]='item.redirectTo | lowercase' routerLinkActive='active'>{{item.name | translate}}</a>
       <ul *ngIf="item.children != null">
         <li *ngFor="let subitem of item.children">
-          <a href (click)="false" [routerLink]='subitem.redirectTo | lowercase' routerLinkActive='active'>{{subitem.name | translate}}</a>
+          <a class="link" href (click)="false" [routerLink]='subitem.redirectTo | lowercase' routerLinkActive='active'>{{subitem.name | translate}}</a>
         </li>
       </ul>
     </li>
