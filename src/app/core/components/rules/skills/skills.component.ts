@@ -11,7 +11,6 @@ import { Skill } from '@core/models/game/skill';
 export class SkillsComponent implements OnInit {
 
   skills: Skill[];
-  listItems: ItemMenu[];
 
   constructor(private gameService: GameService) { }
 
@@ -25,15 +24,18 @@ export class SkillsComponent implements OnInit {
   }
 
   setListItemsMenu() {
+
+    let listItems = new Array<ItemMenu>();
+
     this.gameService.getSkills().subscribe((s: Skill[]) => {
       if (s != null) {
-        this.listItems = new Array<ItemMenu>();
+        listItems = new Array<ItemMenu>();
 
         s.forEach(skill => {
-          this.listItems.push(this.converteSkillToItemMenu(skill));
+          listItems.push(this.converteSkillToItemMenu(skill));
         });
 
-        this.gameService.itemsMenuForNavigation$.next(this.listItems);
+        this.gameService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }

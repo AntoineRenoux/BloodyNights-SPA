@@ -16,6 +16,10 @@ const routes: Routes = [
     path: 'account',
     loadChildren: () => import('./core/components/account/account.module').then(m => m.AccountModule)
   },
+  {
+    path: '',
+    loadChildren: () => import('./core/components/home/home.module').then(m => m.HomeModule)
+  },
   { path: '**', redirectTo: 'not-found' }
 ];
 

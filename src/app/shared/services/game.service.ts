@@ -20,9 +20,9 @@ export class GameService {
 
   constructor(private http: HttpClient) { }
 
-  getDisciplines(): Observable<any> {
+  getDisciplines(): Observable<Discipline[]> {
     if (this.disciplines$.value == null) {
-      this.http.get(this.baseUrl + 'disciplines').subscribe((disciplines : Discipline[]) => {
+      this.http.get<Discipline[]>(this.baseUrl + 'disciplines').subscribe((disciplines : Discipline[]) => {
         this.disciplines$.next(disciplines);
       })
     }
@@ -66,5 +66,4 @@ export class GameService {
     }
     return this.skills$;
   }
-
 }

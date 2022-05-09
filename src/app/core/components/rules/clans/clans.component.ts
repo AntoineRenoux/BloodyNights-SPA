@@ -14,8 +14,6 @@ export class ClansComponent implements OnInit {
   clan: Clan;
   key: string;
 
-  listItems: ItemMenu[];
-
   constructor(private gameService: GameService,
     private route: ActivatedRoute) { }
 
@@ -23,9 +21,9 @@ export class ClansComponent implements OnInit {
     console.log("ClanComponent loaded");
 
     this.route.paramMap.subscribe(params => {
-      const discipline = params.get('clan');
-      const path = params.get('bloodline');
-      this.key = path != null ? path : discipline;
+      const clan = params.get('clan');
+      const bloodline = params.get('bloodline');
+      this.key = bloodline != null ? bloodline : clan;
       if (this.key != null) {
         this.getClanByKey(this.key);
       }
@@ -41,14 +39,14 @@ export class ClansComponent implements OnInit {
   }
 
   setListItemsMenu() {
-    this.listItems = new Array<ItemMenu>();
+    let listItems = new Array<ItemMenu>();
 
     this.gameService.getClans().subscribe((c: Clan[]) => {
       if (c != null) {
         c.forEach(clan => {
-          this.listItems.push(this.converteClanToItemMenu(clan, null));
+          listItems.push(this.converteClanToItemMenu(clan, null));
         });
-        this.gameService.itemsMenuForNavigation$.next(this.listItems);
+        this.gameService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }
