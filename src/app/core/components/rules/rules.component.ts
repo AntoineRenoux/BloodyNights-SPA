@@ -9,9 +9,15 @@ export class RulesComponent implements OnInit {
 
   navigationMenu = new Array<ItemMenu>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     console.log("RulesComponent loaded");
   }
+
+  scrollToTop($element): void {
+    console.log($element);
+    $element.scrollIntoView({behavior: "smooth"});
+  }
+
 }

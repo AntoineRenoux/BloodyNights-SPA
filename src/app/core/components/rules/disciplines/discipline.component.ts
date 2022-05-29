@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Discipline, Ritual } from '@core/models/game/discipline';
+import { Discipline } from '@core/models/game/discipline';
 import { ItemMenu } from '@core/models/itemMenu';
 import { GameService } from '@shared/services/game.service';
 import { timer } from 'rxjs';
@@ -56,7 +56,7 @@ export class DisciplineComponent implements OnInit {
   private converteDisciplineToItemMenu(discipline: Discipline, previousUrl: string): ItemMenu {
 
     var children = new Array<ItemMenu>();
-    var url = previousUrl == null ? '/rules/disciplines/' : previousUrl;
+    var url = previousUrl == null ? '/rules/disciplines' : previousUrl;
 
     url += '/' + discipline.key;
 
@@ -67,23 +67,23 @@ export class DisciplineComponent implements OnInit {
     }
 
     if (discipline.rituals.length > 0) {
-      children.push(this.converteRiualsToItemMenu(discipline.rituals, discipline.url));
+      let ritualLevel = new Array<ItemMenu>();
+
+      for (let index = 1; index <= discipline.rituals[discipline.rituals.length - 1].level; index++) {
+        let ritualArrayCurrentLevel = new Array<ItemMenu>();
+
+        discipline.rituals.filter(x => x.level == index).forEach(r => {
+          ritualArrayCurrentLevel.push(new ItemMenu(r.key, r.name, url + '/rituals/' + r.key, null ));
+        });
+
+        ritualLevel.push(new ItemMenu(null, 'Level ' + index, null, ritualArrayCurrentLevel));
+      }
+
+      let rituals = new ItemMenu(null, 'RITUALS', url + '/rituals/home', ritualLevel)
+
+      children.push(rituals);
     }
 
     return new ItemMenu(discipline.key, discipline.name, url, children);
-  }
-
-  private converteRiualsToItemMenu(rituals: Ritual[], disciplineUrl: string): ItemMenu {
-
-    var url = disciplineUrl + '/rituals';
-
-    var ritualsItems = new Array<ItemMenu>();
-
-    rituals.forEach(r => {
-      ritualsItems.push(new ItemMenu(r.key, r.name, null, null ));
-    });
-
-    var ret = new ItemMenu(null, 'RITUALS', url, ritualsItems);
-    return ret;
   }
 }

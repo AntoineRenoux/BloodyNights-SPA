@@ -15,13 +15,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 @NgModule({
   declarations: [
   ],
   imports: [
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    AccordionModule.forRoot(),
   ],
   exports: [
     CommonModule,
@@ -30,6 +34,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FormsModule,
     ModalModule,
     ErrorModule,
+
+    AccordionModule,
 
     MatFormFieldModule,
     MatInputModule,
@@ -44,4 +50,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     NavigationModule,
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+
+ }

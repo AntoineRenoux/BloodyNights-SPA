@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component, OnInit } from '@angular/core';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ItemMenu } from '@core/models/itemMenu';
 import { GameService } from '@shared/services/game.service';
 
@@ -9,16 +11,25 @@ import { GameService } from '@shared/services/game.service';
 })
 export class LeftFixedMenuComponent implements OnInit {
 
-  menus: ItemMenu[];
+  dataSource = new MatTreeNestedDataSource<ItemMenu>();
 
-  constructor(private gameService: GameService) { }
+  treeControl = new NestedTreeControl<ItemMenu>(node => node.children);
+
+  constructor(private gameService: GameService) {
+  }
+
+  hasChild = (_: number, node: ItemMenu) => !!node.children && node.children.length > 0;
 
   ngOnInit(): void {
     console.log("LeftFixedMenuComponent loaded");
 
     this.gameService.itemsMenuForNavigation$.subscribe((d) => {
-      this.menus = d;
+      this.dataSource.data = d;
     });
   }
 
+  scrollToTop($element): void {
+    console.log($element);
+    $element.scrollIntoView({behavior: "smooth"});
+  }
 }

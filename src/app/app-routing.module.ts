@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
@@ -23,10 +23,13 @@ const routes: Routes = [
   { path: '**', redirectTo: 'not-found' }
 ];
 
+const routerOptions: ExtraOptions = {
+  useHash: false,
+  anchorScrolling: 'enabled',
+}
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    anchorScrolling: 'enabled',
-  })],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

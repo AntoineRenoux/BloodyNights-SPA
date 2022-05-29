@@ -41,7 +41,7 @@ export class SkillsComponent implements OnInit {
   }
 
   private converteSkillToItemMenu(skill: Skill): ItemMenu {
-    let url = 'skills#' + skill.name.split('_')[0];
+    let url = '#' + skill.name.split('_')[0];
     return new ItemMenu(skill.name, skill.name, url);
   }
 }

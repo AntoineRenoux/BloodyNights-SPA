@@ -9,7 +9,7 @@ export class Discipline {
   childrenDisciplines: Discipline[];
   rituals: Ritual[];
 
-  ritualName: string;
+  ritualsName: string;
   primaryPathDescription: string;
   ritualDescription: string;
   ritualSystemDescription: string;
