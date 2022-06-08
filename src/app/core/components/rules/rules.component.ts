@@ -16,7 +16,6 @@ export class RulesComponent implements OnInit {
   }
 
   scrollToTop($element): void {
-    console.log($element);
     $element.scrollIntoView({behavior: "smooth"});
   }
 

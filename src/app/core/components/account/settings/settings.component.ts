@@ -20,7 +20,7 @@ export class SettingsComponent implements OnInit {
   editForm: FormGroup;
   editPassword: FormGroup;
   user: User;
-  userChangePassword: UserChangePassword;
+  userChangePassword = new UserChangePassword();
 
   hideCurrentPassword = true;
   hideNewPassword = true;
@@ -94,9 +94,9 @@ export class SettingsComponent implements OnInit {
 
   changePassword() {
     if (this.editPassword.valid) {
-      this.userChangePassword.currentPassword = this.editForm.get('currentPassword').value;
-      this.userChangePassword.newPassword = this.editForm.get('newPassword').value;
-      this.userChangePassword.confirmPassword = this.editForm.get('confirmPassword').value;
+      this.userChangePassword.currentPassword = this.editPassword.get('currentPassword').value;
+      this.userChangePassword.newPassword = this.editPassword.get('newPassword').value;
+      this.userChangePassword.confirmPassword = this.editPassword.get('confirmPassword').value;
 
       this.authService.changePassword(this.userChangePassword).subscribe(() => {
         this.trad.get('SAVED').subscribe((trad: string) => {
