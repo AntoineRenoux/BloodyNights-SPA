@@ -1,3 +1,4 @@
+import { HelperComponent } from './components/helper/helper.component';
 import { ErrorModule } from './errors/errors.module';
 import { NavigationModule } from '@core/components/navigation/navigation.module';
 import { NgModule } from '@angular/core';
@@ -21,11 +22,13 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 @NgModule({
   declarations: [
+    HelperComponent,
   ],
   imports: [
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     AccordionModule.forRoot(),
+    TranslateModule,
   ],
   exports: [
     CommonModule,
@@ -48,6 +51,9 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     MatIconModule,
 
     NavigationModule,
+
+
+    HelperComponent,
   ]
 })
 export class SharedModule {

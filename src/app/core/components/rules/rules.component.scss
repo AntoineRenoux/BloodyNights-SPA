@@ -1,15 +1,10 @@
 @import '/src/custom-theme.scss';
 
 .drawer-container {
-  padding-top: 50px;
   color: white;
   text-align: justify;
   background: $backgroud-default;
 }
-
-.sidebar-rules {
-  padding-top: 50px;
- }
 
  .return-top {
   position: fixed;

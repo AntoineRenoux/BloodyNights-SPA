@@ -7,13 +7,16 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { CreateChroniclesComponent } from './create-chronicles/create-chronicles.component';
 
+import { MatStepperModule } from '@angular/material/stepper';
+
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
     RouterModule,
     SharedModule,
-    ChronicleRoutingModule
+    ChronicleRoutingModule,
+    MatStepperModule
   ],
   declarations: [
     CreateChroniclesComponent
