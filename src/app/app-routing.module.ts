@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'auth', loadChildren: () => import('./core/components/auth/auth.module').then(m => m.AuthModule) },
+  { path: 'auth', loadChildren: () => import('./core/modules/auth/auth.module').then(m => m.AuthModule) },
   {
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],

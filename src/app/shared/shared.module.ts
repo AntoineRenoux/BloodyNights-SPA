@@ -15,14 +15,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { FilterClans } from './pipes/filterClansByImportance.pipe';
 
 @NgModule({
   declarations: [
     HelperComponent,
+    FilterClans
   ],
   imports: [
     ModalModule.forRoot(),
@@ -49,11 +54,16 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     MatPasswordStrengthModule,
     MatTabsModule,
     MatIconModule,
+    MatSelectModule,
+    MatListModule,
+    MatTableModule,
 
     NavigationModule,
 
 
     HelperComponent,
+
+    FilterClans
   ]
 })
 export class SharedModule {

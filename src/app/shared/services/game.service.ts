@@ -1,3 +1,4 @@
+import { Allegiance } from './../../core/models/game/allegiance';
 import { ItemMenu } from '@core/models/itemMenu';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@environments/environment';
@@ -12,10 +13,12 @@ import { Skill } from '@core/models/game/skill';
 })
 export class GameService {
 
-  private baseUrl = environment.apiUrl;
+  private baseUrl = environment.apiUrl + 'game/';
   itemsMenuForNavigation$: BehaviorSubject<ItemMenu[]> = new BehaviorSubject<ItemMenu[]>(null);
-  private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
+
+  private allegiances$: BehaviorSubject<Allegiance[]> = new BehaviorSubject<Allegiance[]>(null);
   private clans$: BehaviorSubject<Clan[]> = new BehaviorSubject<Clan[]>(null);
+  private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
   private skills$: BehaviorSubject<Skill[]> = new BehaviorSubject<Skill[]>(null);
 
   constructor(private http: HttpClient) { }
@@ -56,6 +59,19 @@ export class GameService {
       }
     }
     return this.http.get<Clan>(this.baseUrl + 'clans/' + key);
+  }
+
+  getSects(): Observable<Allegiance[]> {
+    if (this.allegiances$.value == null) {
+      this.http.get<Allegiance[]>(this.baseUrl + 'allegiances').subscribe((allegiances: Allegiance[]) => {
+        this.allegiances$.next(allegiances);
+      });
+    }
+    return this.allegiances$;
+  }
+
+  getSectByKey(allegianceKey: string): Observable<Allegiance> {
+    return this.http.get<Allegiance>(this.baseUrl + 'allegiances/' + allegianceKey);
   }
 
   getSkills(): Observable<Skill[]> {
