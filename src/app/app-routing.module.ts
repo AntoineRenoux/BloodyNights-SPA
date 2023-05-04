@@ -20,7 +20,13 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     path: 'chronicle',
-    loadChildren: () => import('./core/components/chronicles/chronicles.module').then(m => m.ChronicleModule)
+    loadChildren: () => import('./core/modules/chronicles/chronicles.module').then(m => m.ChronicleModule)
+  },
+  {
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    path: 'character',
+    loadChildren: () => import('./core/modules/characters/character.module').then(m => m.CharacterModule)
   },
   {
     path: '',

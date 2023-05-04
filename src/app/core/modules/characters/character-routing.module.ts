@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateChroniclesComponent } from './create-chronicles/create-chronicles.component';
+import { CreateCharacterComponent } from './create-character/create-character.component';
 
 const routes: Routes = [
-  { path: 'create', component: CreateChroniclesComponent },
+  { path: 'create', component: CreateCharacterComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ChronicleRoutingModule { }
+export class CharacterRoutingModule { }

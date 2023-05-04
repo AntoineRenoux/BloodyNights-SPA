@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { CreateChroniclesComponent } from './create-chronicles/create-chronicles.component';
 
 import { MatStepperModule } from '@angular/material/stepper';
+import { ChroniclesListComponent } from './chronicles-list/chronicles-list.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatStepperModule
   ],
   declarations: [
-    CreateChroniclesComponent
+    CreateChroniclesComponent,
+    ChroniclesListComponent
   ],
   exports: [
   ]

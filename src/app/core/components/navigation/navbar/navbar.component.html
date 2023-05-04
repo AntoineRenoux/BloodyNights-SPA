@@ -12,6 +12,7 @@
         <a class="nav-link  dropdown-toggle" href="#" dropdownToggle (click)="false">{{'GAME_CHRONICLE' | translate}}</a>
         <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
           <li role="menuitem"><a class="dropdown-item" [routerLink]='["/chronicle/create"]' routerLinkActive='active'>{{'GAME_CREATE_CHRONICLE' | translate}}</a></li>
+          <li role="menuitem"><a class="dropdown-item" [routerLink]='["/chronicle/"]'>{{'CHRONICLES_LIST' | translate}}</a></li>
           <!-- <li role="menuitem"><a class="dropdown-item" [routerLink]='["/rules/skills"]' routerLinkActive='active' >{{'GAME_MY_CHRONICLE' | translate}}</a></li> -->
         </ul>
       </li>

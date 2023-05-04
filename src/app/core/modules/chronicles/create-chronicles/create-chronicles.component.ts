@@ -1,11 +1,13 @@
-import { Allegiance } from '@core/models/game/allegiance';
 import { GameService } from '@shared/services/game.service';
-import { ChronicleParameter } from '@core/models/game/chronicleParameters';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Chronicle } from '@core/models/chronicle';
 import { HelperService } from '@shared/services/helper.service';
-import { Clan } from '@core/models/game/clan';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import { Allegiance } from '@core/models/game/allegiance';
+import { ChronicleService } from '@core/services/chronicle.service';
 
 @Component({
   selector: 'app-create-chronicles',
@@ -14,56 +16,62 @@ import { Clan } from '@core/models/game/clan';
 })
 export class CreateChroniclesComponent implements OnInit {
 
-  parameters: ChronicleParameter;
-  allClans: Clan[];
+  sects: Allegiance[];
+  selectedSect: Allegiance;
 
   newChronicle = new Chronicle();
-  stepOneFormGroup: FormGroup;
+  newChronicleFormGroup: FormGroup;
+  newChronicleLastTouchesFormGroup: FormGroup;
 
   displayedColumns: string[] = ['clan', 'setting'];
 
   constructor(private gameService: GameService,
     private helpService: HelperService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private chronicleService: ChronicleService,
+    private route: Router,
+    private trad: TranslateService,
+    private toastr: ToastrService) {
+      this.gameService.getSects().subscribe((sects: Allegiance[]) => {
+        this.sects = sects;
+      })
+    }
 
   ngOnInit() {
-    this.parameters = new ChronicleParameter(this.gameService);
     this.initForms();
     this.helpService.setHeaderTitle('CREATE_CRHONICLE_HELPER_HEADER');
     this.helpService.setTextHelp('CREATE_CRHONICLE_HELPER_TEXT');
-    this.gameService.getClans().subscribe((clans: Clan[]) => {
-      this.allClans = clans;
-    });
   }
 
   initForms() {
-    this.stepOneFormGroup = this.fb.group({
+    this.newChronicleFormGroup = this.fb.group({
       name: ['', Validators.required],
-      allegiance: ['', Validators.required],
       localization: [{ value: '', disabled: false }],
+      allegianceId: ['', Validators.required],
       theme: [{ value: '', disabled: false }],
-      ton: [{ value: '', disabled: false }],
-      hook: [{ value: '', disabled: false }, Validators.required],
+      mood: [{ value: '', disabled: false }],
+      description: [{ value: '', disabled: false }, Validators.required],
     }, { updateOn: "change" });
+
+    this.newChronicleLastTouchesFormGroup = this.fb.group({
+      initialPx: [30, [Validators.required, Validators.min(0), Validators.max(500)]],
+      monthlyPx: [3, [Validators.required, Validators.min(0), Validators.max(500)]],
+    }, { updateOn: "change" })
   }
 
-  validFirstStep() {
-    if (this.stepOneFormGroup.valid) {
+  createChronicle() {
+    if (this.newChronicleFormGroup.valid && this.newChronicleLastTouchesFormGroup.valid) {
+      const chronicle: Chronicle = this.newChronicleFormGroup.getRawValue();
+      chronicle.initialPx = this.newChronicleLastTouchesFormGroup.get('initialPx').value;
+      chronicle.monthlyPx = this.newChronicleLastTouchesFormGroup.get('monthlyPx').value;
 
-      this.newChronicle.name = this.stepOneFormGroup.get('name').value;
-      this.newChronicle.allegianceKey = this.stepOneFormGroup.get('allegiance').value;
-      this.newChronicle.theme = this.stepOneFormGroup.get('theme').value;
-      this.newChronicle.localization = this.stepOneFormGroup.get('localization').value;
-      this.newChronicle.ton = this.stepOneFormGroup.get('ton').value;
-      this.newChronicle.hook = this.stepOneFormGroup.get('hook').value;
 
-      this.helpService.setHeaderTitle('CREATE_CRHONICLE_HELPER_HEADER');
-      this.helpService.setTextHelp('CREATE_CRHONICLE_HELPER_HEADER_STEP_2');
+      this.chronicleService.create(chronicle).subscribe(() => {
+        this.trad.get('CREATE_CHRONOCLE_SUCCEED').subscribe(trad => {
+          this.toastr.success(trad);
+        })
+      });
 
-      this.gameService.getSectByKey(this.newChronicle.allegianceKey).subscribe((allegiance: Allegiance) => {
-        this.newChronicle.clans = allegiance.clans;
-        console.log(this.newChronicle.clans);
-      })
     }
   }
 
@@ -77,7 +85,7 @@ export class CreateChroniclesComponent implements OnInit {
         this.helpService.setHeaderTitle('CREATE_CRHONICLE_HELPER_HEADER_THEME');
         this.helpService.setTextHelp('CREATE_CRHONICLE_THEME_DESCRIPTION_EXEMPLES');
         break;
-      case "ton":
+      case "mood":
         this.helpService.setHeaderTitle('CREATE_CRHONICLE_HELPER_HEADER_TON');
         this.helpService.setTextHelp('CREATE_CRHONICLE_TON_DESCRIPTION_EXEMPLE');
         break;
@@ -94,5 +102,10 @@ export class CreateChroniclesComponent implements OnInit {
         this.helpService.setTextHelp('CREATE_CRHONICLE_HOOK_DESCRIPTION');
         break;
     }
+  }
+
+  setNextStepper() {
+    const selectedAllegianceId = this.newChronicleFormGroup.get('allegianceId').value;
+    this.selectedSect = this.sects.find(x => x.key == selectedAllegianceId);
   }
 }

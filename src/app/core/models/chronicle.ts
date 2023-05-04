@@ -1,12 +1,11 @@
-import { Allegiance } from './game/allegiance';
-import { Clan } from './game/clan';
 export class Chronicle {
+  chronicleId: string;
   name: string;
   theme: string;
-  ton: string;
+  mood: string;
   hook: string;
-  allegianceKey: string;
   localization: string;
-
-  clans: Clan[];
+  allegianceId: string;
+  initialPx: number;
+  monthlyPx: number;
 }
