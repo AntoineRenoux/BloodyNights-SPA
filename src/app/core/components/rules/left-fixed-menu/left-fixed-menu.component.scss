@@ -1,0 +1,40 @@
+@import '/src/custom-theme.scss';
+
+.node {
+  & > a {
+    text-decoration: none;
+  }
+
+  // &:hover {
+  //   color: white;
+
+  //   & > a {
+  //     color: white;
+  //   }
+  // }
+}
+
+.left-tree-invisible {
+  display: none;
+}
+
+.left-tree ul,
+.left-tree li {
+  list-style-type: none;
+}
+
+/*
+ * This padding sets alignment of the nested nodes.
+ */
+.left-tree .mat-nested-tree-node div[role=group] {
+  padding-left: 1em;
+}
+
+/*
+ * Padding for leaf nodes.
+ * Leaf nodes need to have padding so as to align with other non-leaf nodes
+ * under the same parent.
+ */
+.left-tree div[role=group] > .mat-tree-node {
+  padding-left: 1em;
+}

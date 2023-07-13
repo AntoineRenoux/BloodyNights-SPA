@@ -1,0 +1,27 @@
+<div class="row mt-5" *ngIf="!ritual">
+  <div class="col-12">
+    <h1>{{discipline?.ritualsName | translate}}</h1>
+    <hr>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="discipline?.ritualDescription | translate"></p>
+  </div>
+  <div class="col-12">
+    <h3 [innerHTML]=" 'COMPONENTS_TARGETING' | translate"></h3>
+    <p [innerHTML]="discipline?.composantsTargeting | translate"></p>
+  </div>
+</div>
+
+<div class="row mt-5" *ngIf="ritual">
+  <div class="col-12">
+    <h1>{{ritual?.name | translate}}</h1>
+    <hr>
+  </div>
+  <div class="col-12">
+    <p [innerHTML]="ritual?.description | translate"></p>
+  </div>
+  <div class="col-12">
+    <h3 [innerHTML]=" 'GAME_SYSTEM' | translate"></h3>
+    <p [innerHTML]='ritual?.system | translate'></p>
+  </div>
+</div>

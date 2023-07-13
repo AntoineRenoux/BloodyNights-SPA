@@ -1,3 +1,4 @@
+import { Allegiance } from './../../core/models/game/allegiance';
 import { ItemMenu } from '@core/models/itemMenu';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '@environments/environment';
@@ -6,23 +7,27 @@ import { Injectable } from '@angular/core';
 import { Clan } from '@core/models/game/clan';
 import { Discipline } from '@core/models/game/discipline';
 import { Skill } from '@core/models/game/skill';
+import { Archetype } from '@core/models/game/archetype';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  baseUrl = environment.apiUrl;
+  private baseUrl = environment.apiUrl + 'game/';
   itemsMenuForNavigation$: BehaviorSubject<ItemMenu[]> = new BehaviorSubject<ItemMenu[]>(null);
-  private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
+
+  private allegiances$: BehaviorSubject<Allegiance[]> = new BehaviorSubject<Allegiance[]>(null);
   private clans$: BehaviorSubject<Clan[]> = new BehaviorSubject<Clan[]>(null);
+  private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
   private skills$: BehaviorSubject<Skill[]> = new BehaviorSubject<Skill[]>(null);
+  private archetypes$: BehaviorSubject<Archetype[]> = new BehaviorSubject<Archetype[]>(null);
 
   constructor(private http: HttpClient) { }
 
-  getDisciplines(): Observable<any> {
+  getDisciplines(): Observable<Discipline[]> {
     if (this.disciplines$.value == null) {
-      this.http.get(this.baseUrl + 'disciplines').subscribe((disciplines : Discipline[]) => {
+      this.http.get<Discipline[]>(this.baseUrl + 'disciplines').subscribe((disciplines : Discipline[]) => {
         this.disciplines$.next(disciplines);
       })
     }
@@ -58,6 +63,19 @@ export class GameService {
     return this.http.get<Clan>(this.baseUrl + 'clans/' + key);
   }
 
+  getSects(): Observable<Allegiance[]> {
+    if (this.allegiances$.value == null) {
+      this.http.get<Allegiance[]>(this.baseUrl + 'allegiances').subscribe((allegiances: Allegiance[]) => {
+        this.allegiances$.next(allegiances);
+      });
+    }
+    return this.allegiances$;
+  }
+
+  getSectByKey(allegianceKey: string): Observable<Allegiance> {
+    return this.http.get<Allegiance>(this.baseUrl + 'allegiances/' + allegianceKey);
+  }
+
   getSkills(): Observable<Skill[]> {
     if (this.skills$.value == null) {
       this.http.get<Skill[]>(this.baseUrl + 'skills').subscribe((skills: Skill[]) => {
@@ -67,4 +85,12 @@ export class GameService {
     return this.skills$;
   }
 
+  getArchetypes(): Observable<Archetype[]>{
+    if (this.archetypes$.value == null) {
+      this.http.get<Archetype[]>(this.baseUrl + 'get-archetypes').subscribe((archetypes: Archetype[]) => {
+        this.archetypes$.next(archetypes);
+      })
+    }
+    return this.archetypes$;
+  }
 }

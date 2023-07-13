@@ -9,13 +9,30 @@
 @import '~ngx-toastr/toastr';
 @import '~ngx-toastr/toastr-bs4-alert';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import '/src/custom-theme.scss';
 
-.fullscreen {
-  top: 0;
-  height: 100vh;
-  position: absolute;
+@font-face {
+	font-family: 'Alexandria';
+	src: url('./assets/font/Alexandria.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Furura';
+	src: url('./assets/font/Futura/Futura\ Round.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  scroll-behavior: smooth;
+  font-family: "Futura", "Helvetica Neue", sans-serif;
+}
+
+.futura {
+  font-family: 'Furura' !important;
+}
+
+.alexandria {
+  font-family: 'Alexandria' !important;
 }
 
 .custom-toast-success {
@@ -32,4 +49,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .custom-toast-warning {
   background-color: darkorange;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

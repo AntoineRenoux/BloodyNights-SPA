@@ -8,6 +8,7 @@ export class Clan {
   surname: string;
   weakness: string;
   importance: string;
+  rarity: number;
 
   disciplines: Discipline[];
   bloodlines: Clan[];

@@ -1,0 +1,18 @@
+@import '/src/custom-theme.scss';
+
+.drawer-container {
+  text-align: justify;
+}
+
+ .return-top {
+  position: fixed;
+  display: flex;
+  bottom: 2em;
+  right: 4em;
+  z-index: 10;
+  padding: 20px;
+  border-radius: 100%;
+  background-color: rgba(211, 211, 211, 0.5);
+  color: white;
+  border: 1px solid rgba(211, 211, 211, 0.0);
+ }

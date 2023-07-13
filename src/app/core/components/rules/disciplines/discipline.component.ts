@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Discipline } from '@core/models/game/discipline';
 import { ItemMenu } from '@core/models/itemMenu';
@@ -7,22 +7,17 @@ import { timer } from 'rxjs';
 
 @Component({
   templateUrl: './discipline.component.html',
-  styleUrls: ['./discipline.component.scss']
+  styleUrls: ['../rules.component.scss']
 })
 export class DisciplineComponent implements OnInit {
 
   discipline: Discipline;
   key: string;
 
-  listItems: ItemMenu[];
-
   constructor(private gameService: GameService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    console.log("DisciplineComponent loaded");
-
     this.route.paramMap.subscribe(params => {
       const discipline = params.get('discipline');
       const path = params.get('path');
@@ -43,14 +38,14 @@ export class DisciplineComponent implements OnInit {
 
   setListItemsMenu() {
 
-    this.listItems = new Array<ItemMenu>();
+    let listItems = new Array<ItemMenu>();
 
     this.gameService.getDisciplines().subscribe((d: Discipline[]) => {
       if (d != null) {
         d.forEach(disci => {
-          this.listItems.push(this.converteDisciplineToItemMenu(disci, null));
+          listItems.push(this.converteDisciplineToItemMenu(disci, null));
         });
-        this.gameService.itemsMenuForNavigation$.next(this.listItems);
+        this.gameService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }
@@ -58,7 +53,7 @@ export class DisciplineComponent implements OnInit {
   private converteDisciplineToItemMenu(discipline: Discipline, previousUrl: string): ItemMenu {
 
     var children = new Array<ItemMenu>();
-    var url = previousUrl == null ? '/rules/disciplines/' : previousUrl;
+    var url = previousUrl == null ? '/rules/disciplines' : previousUrl;
 
     url += '/' + discipline.key;
 
@@ -66,6 +61,24 @@ export class DisciplineComponent implements OnInit {
       discipline.childrenDisciplines.forEach(cd => {
         children.push(this.converteDisciplineToItemMenu(cd, url));
       });
+    }
+
+    if (discipline.rituals.length > 0) {
+      let ritualLevel = new Array<ItemMenu>();
+
+      for (let index = 1; index <= discipline.rituals[discipline.rituals.length - 1].level; index++) {
+        let ritualArrayCurrentLevel = new Array<ItemMenu>();
+
+        discipline.rituals.filter(x => x.level == index).forEach(r => {
+          ritualArrayCurrentLevel.push(new ItemMenu(r.key, r.name, url + '/rituals/' + r.key, null ));
+        });
+
+        ritualLevel.push(new ItemMenu(null, 'Level ' + index, null, ritualArrayCurrentLevel));
+      }
+
+      let rituals = new ItemMenu(null, 'RITUALS', url + '/rituals/home', ritualLevel)
+
+      children.push(rituals);
     }
 
     return new ItemMenu(discipline.key, discipline.name, url, children);

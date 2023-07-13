@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
 
   <a class="navbar-brand" [routerLink]='["/"]' routerLinkActive='active'>{{'APPLICATION_NAME' | translate}}</a>
 
@@ -9,22 +9,25 @@
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav ml-auto" *ngIf="(authService.currentUser$ | async)">
       <li class="nav-item dropdown" dropdown>
+        <a class="nav-link  dropdown-toggle" href="#" dropdownToggle (click)="false">{{'GAME_CHRONICLE' | translate}}</a>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+          <li role="menuitem"><a class="dropdown-item" [routerLink]='["/chronicle/create"]' routerLinkActive='active'>{{'GAME_CREATE_CHRONICLE' | translate}}</a></li>
+          <li role="menuitem"><a class="dropdown-item" [routerLink]='["/chronicle/"]'>{{'CHRONICLES_LIST' | translate}}</a></li>
+          <!-- <li role="menuitem"><a class="dropdown-item" [routerLink]='["/rules/skills"]' routerLinkActive='active' >{{'GAME_MY_CHRONICLE' | translate}}</a></li> -->
+        </ul>
+      </li>
+      <li class="nav-item dropdown" dropdown>
         <a class="nav-link  dropdown-toggle" href="#" dropdownToggle (click)="false">{{'GAME_RULES' | translate}}</a>
         <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
           <li role="menuitem"><a class="dropdown-item" [routerLink]='["/rules/clans"]' routerLinkActive='active'>{{'GAME_CLANS' | translate}}</a></li>
           <li role="menuitem"><a class="dropdown-item" [routerLink]='["/rules/skills"]' routerLinkActive='active' >{{'GAME_SKILL' | translate}}</a></li>
           <li role="menuitem"><a class="dropdown-item" [routerLink]='["/rules/disciplines"]' routerLinkActive='active'>{{'GAME_DISCIPLINES' | translate}}</a></li>
-          <li role="menuitem"><a class="dropdown-item">{{'GAME_RITUAL' | translate}}</a></li>
-          <li role="menuitem"><a class="dropdown-item">{{'GAME_TECHNICS' | translate}}</a></li>
-          <li role="menuitem"><a class="dropdown-item">{{'GAME_PATHS' | translate}}</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown" dropdown>
         <a href dropdownToggle class="nav-link dropdown-toggle" (click)="false">{{'USER_MY_ACCOUNT' | translate}}</a>
         <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-          <li role="menuitem"><a class="dropdown-item">Action</a></li>
-          <li role="menuitem"><a class="dropdown-item">Another action</a></li>
-          <li role="menuitem"><a class="dropdown-item">Something else here</a></li>
+          <li role="menuitem" [routerLink]='["/account/settings"]' routerLinkActive='active'><a class="dropdown-item">{{'ACCOUNT_PARAMETERS' | translate}}</a></li>
           <li class="divider dropdown-divider"></li>
           <li role="menuitem"><a class="dropdown-item" (click)="logout()">{{'DISCONNECT' | translate}}</a>
           </li>

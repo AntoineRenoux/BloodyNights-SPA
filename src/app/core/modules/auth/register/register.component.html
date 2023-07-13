@@ -1,0 +1,87 @@
+<div class="container-custom">
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <h1 class="text-center-custom">{{"SING_UP" | translate}}</h1>
+      <hr>
+
+        <div class="row-custom">
+          <mat-form-field>
+            <mat-label>{{"FIRSTNAME" | translate}}</mat-label>
+            <input autocomplete="off" matInput formControlName="firstname" type="text" placeholder="Ex. François"
+              required>
+            <mat-error *ngIf="registerForm.get('firstname').touched && !registerForm.get('firstname').errors?.pattern">
+              {{'MANDATORY_FIELD' | translate}}</mat-error>
+            <mat-error *ngIf="registerForm.get('firstname').touched && registerForm.get('firstname').errors?.pattern">
+              {{'ERR_FIELD_INCORRECT' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>{{"LASTNAME" | translate}}</mat-label>
+            <input autocomplete="off" matInput formControlName="lastname" type="text" placeholder="Ex. Villon" required>
+            <mat-error *ngIf="registerForm.get('lastname').touched && !registerForm.get('lastname').errors?.pattern">
+              {{'MANDATORY_FIELD' | translate}}</mat-error>
+            <mat-error *ngIf="registerForm.get('lastname').touched && registerForm.get('lastname').errors?.pattern">
+              {{'ERR_FIELD_INCORRECT' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>{{"ALIAS" | translate}}</mat-label>
+            <input autocomplete="off" matInput formControlName="alias" type="text" placeholder="Ex. xxxFrançoisDu75xxx"
+              required>
+            <mat-error *ngIf="registerForm.get('alias').touched && registerForm.get('alias').hasError('required')">
+              {{'MANDATORY_FIELD' | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+
+
+        <mat-form-field>
+          <mat-label>{{"EMAIL" | translate}}</mat-label>
+          <input autocomplete="off" matInput formControlName="email" type="email"
+            placeholder="Ex. francois.villon@mascarade.fr" required>
+          <mat-error *ngIf="registerForm.get('email').touched && registerForm.get('email').hasError('required')">
+            {{'MANDATORY_FIELD' | translate}}</mat-error>
+          <mat-error *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.pattern">
+            {{'ERR_FIELD_INCORRECT' | translate}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>{{"BIRTHDATE" | translate}}</mat-label>
+          <input autocomplete="off" matInput formControlName="birthdate" [matDatepicker]="picker"
+            (focus)="picker.open()" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+          <mat-error
+            *ngIf="registerForm.get('birthdate').touched && registerForm.get('birthdate').hasError('required')">
+            {{'MANDATORY_FIELD' | translate}}</mat-error>
+          <mat-error
+            *ngIf="registerForm.get('birthdate').dirty && registerForm.get('birthdate').hasError('isUnderAge')">
+            {{'UNDERAGE' | translate}}</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>{{"PASSWORD" | translate}}</mat-label>
+          <input #password matInput formControlName="password" type="password" required placeholder="********" />
+          <span *ngIf="registerForm.get('password').touched && registerForm.get('password').hasError('required')">
+            {{'MANDATORY_FIELD' | translate}}</span>
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <mat-label>{{"CONFIRMED_PASSWORD" | translate}}</mat-label>
+          <input #confirmedPassword matInput formControlName="confirmedPassword" type="password" required
+            placeholder="********" />
+          <mat-error
+            *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('required')">
+            {{'MANDATORY_FIELD' | translate}}</mat-error>
+          <mat-error
+            *ngIf="registerForm.get('confirmedPassword').touched && registerForm.get('confirmedPassword').hasError('isMatching') && !registerForm.get('confirmedPassword').hasError('required')">
+            {{'CONFIRMED_PASSWORD_DOESNT_MATCH' | translate}}</mat-error>
+        </mat-form-field>
+
+      <button [disabled]="!registerForm.valid" type="submit" mat-flat-button color="primary">{{'REGISTER' |
+        translate}}</button>
+
+    </form>
+
+</div>

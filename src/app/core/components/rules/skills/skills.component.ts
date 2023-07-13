@@ -6,17 +6,15 @@ import { Skill } from '@core/models/game/skill';
 
 @Component({
   templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.scss']
+  styleUrls: ['../rules.component.scss']
 })
 export class SkillsComponent implements OnInit {
 
   skills: Skill[];
-  listItems: ItemMenu[];
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    console.log("SkillsComponent loaded");
     this.gameService.getSkills().subscribe((skills: Skill[]) => {
       this.skills = skills
     });
@@ -25,23 +23,24 @@ export class SkillsComponent implements OnInit {
   }
 
   setListItemsMenu() {
-    this.listItems = new Array<ItemMenu>();
+
+    let listItems = new Array<ItemMenu>();
 
     this.gameService.getSkills().subscribe((s: Skill[]) => {
       if (s != null) {
+        listItems = new Array<ItemMenu>();
+
         s.forEach(skill => {
-          this.listItems.push(this.converteSkillToItemMenu(skill));
+          listItems.push(this.converteSkillToItemMenu(skill));
         });
-        this.gameService.itemsMenuForNavigation$.next(this.listItems);
+
+        this.gameService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }
 
   private converteSkillToItemMenu(skill: Skill): ItemMenu {
-
-    let url = 'skills' + skill.name;
-
+    let url = '#' + skill.name.split('_')[0];
     return new ItemMenu(skill.name, skill.name, url);
   }
-
 }
