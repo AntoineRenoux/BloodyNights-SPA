@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Allegiance } from '@core/models/game/allegiance';
 import { ChronicleService } from '@core/services/chronicle.service';
+import { Clan } from '@core/models/game/clan';
 
 @Component({
   selector: 'app-create-chronicles',
@@ -24,6 +25,7 @@ export class CreateChroniclesComponent implements OnInit {
   newChronicleLastTouchesFormGroup: FormGroup;
 
   displayedColumns: string[] = ['clan', 'setting'];
+  rarities: string[] = ['COMMUN', 'UNCOMMUN', 'RARE', 'RESTRICTED', 'FORBIDDEN'];
 
   constructor(private gameService: GameService,
     private helpService: HelperService,
@@ -64,12 +66,13 @@ export class CreateChroniclesComponent implements OnInit {
       const chronicle: Chronicle = this.newChronicleFormGroup.getRawValue();
       chronicle.initialPx = this.newChronicleLastTouchesFormGroup.get('initialPx').value;
       chronicle.monthlyPx = this.newChronicleLastTouchesFormGroup.get('monthlyPx').value;
-
+      chronicle.clans = this.selectedSect.clans;
 
       this.chronicleService.create(chronicle).subscribe(() => {
         this.trad.get('CREATE_CHRONOCLE_SUCCEED').subscribe(trad => {
           this.toastr.success(trad);
-        })
+        });
+        this.route.navigate(['/chronicle']);
       });
 
     }
@@ -107,5 +110,9 @@ export class CreateChroniclesComponent implements OnInit {
   setNextStepper() {
     const selectedAllegianceId = this.newChronicleFormGroup.get('allegianceId').value;
     this.selectedSect = this.sects.find(x => x.key == selectedAllegianceId);
+  }
+
+  getAllBloodLines(): Array<Clan> {
+      return this.selectedSect?.clans.map(clan => clan.bloodlines).filter(bloodlines => bloodlines && bloodlines.length > 0).reduce((acc, val) => acc.concat(val), []);
   }
 }

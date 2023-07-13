@@ -3,55 +3,56 @@
     <mat-table class="col" #table [dataSource]="chronicles">
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{'NAME' | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"DESCRIPTION" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="faction">
-        <mat-header-cell *matHeaderCellDef> Faction </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"ALLEGIANCE" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.allegianceId | translate}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="theme">
-        <mat-header-cell *matHeaderCellDef> Theme </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"THEME" | translate }} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.theme}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="mood">
-        <mat-header-cell *matHeaderCellDef> Ton </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"TON" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.mood}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="localization">
-        <mat-header-cell *matHeaderCellDef> Localisation </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"LOCATE" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.localization}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="startDate">
-        <mat-header-cell *matHeaderCellDef> Date de début </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"START_DATE" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.startDate != undefined ? element.startDate : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="endDate">
-        <mat-header-cell *matHeaderCellDef> Date de fin </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"END_DATE" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.endDate != undefined ? element.endDate : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="nextDate">
-        <mat-header-cell *matHeaderCellDef> Date de prochaine partie </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"NEXT_GAME_PARTY" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.nextDate != undefined ? element.nextDate : '-'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{"ACTION" | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <mat-icon aria-hidden="false" [matTooltipPosition]="'above'" (click)="redirectToCharacterCreation(element.id)">person_add </mat-icon>
-      </mat-cell>
+          <mat-icon aria-hidden="false" [matTooltipPosition]="'above'"
+            (click)="redirectToCharacterCreation(element.id)">person_add </mat-icon>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -59,5 +60,3 @@
     </mat-table>
   </div>
 </div>
-
-

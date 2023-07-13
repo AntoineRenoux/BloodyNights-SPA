@@ -15,7 +15,6 @@ export class SkillsComponent implements OnInit {
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    console.log("SkillsComponent loaded");
     this.gameService.getSkills().subscribe((skills: Skill[]) => {
       this.skills = skills
     });

@@ -115,12 +115,12 @@
                 <p>{{ "CREATE_CHRONICLE_HELPER_PARAMETER_CLAN_RARITY" | translate}}</p>
               </div>
               <div class="row">
-                <div class="col">
+                <div class="col-sm-3 col">
                   <p class="text-center">
                     {{ "CREATE_CHRONICLE_MAJOR_CLANS" | translate }}
                   </p>
 
-                  <table class="col-12" mat-table [dataSource]="selectedSect?.clans | filterClans : 'MAJOR' : 'true'">
+                  <table mat-table [dataSource]="selectedSect?.clans | filterClans : 'MAJOR' : 'true'">
                     <ng-container matColumnDef="clan">
                       <th mat-header-cell *matHeaderCellDef>Clan</th>
                       <td mat-cell *matCellDef="let clan">
@@ -131,7 +131,13 @@
                     <ng-container matColumnDef="setting">
                       <th mat-header-cell *matHeaderCellDef>Rareté</th>
                       <td mat-cell *matCellDef="let clan">
-                        {{ clan.rarity?.key | translate }}
+                        <mat-form-field appearance="standard">
+                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
+                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
+                              {{ rarity | translate }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </td>
                     </ng-container>
 
@@ -139,7 +145,7 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                   </table>
                 </div>
-                <div class="col">
+                <div class="col-sm-3 col">
                   <p class="text-center">
                     {{ "CREATE_CHRONICLE_MINORS_CLANS" | translate }}
                   </p>
@@ -154,7 +160,13 @@
                     <ng-container matColumnDef="setting">
                       <th mat-header-cell *matHeaderCellDef>Rareté</th>
                       <td mat-cell *matCellDef="let clan">
-                        {{ clan.rarity?.key | translate }}
+                        <mat-form-field appearance="standard">
+                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
+                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
+                              {{ rarity | translate }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </td>
                     </ng-container>
 
@@ -162,9 +174,9 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                   </table>
                 </div>
-                <div class="col">
+                <div class="col-sm-3 col">
                   <p class="text-center">{{ "CREATE_CHRONICLE_RARES_CLANS" | translate }}</p>
-                  <table class="col" mat-table [dataSource]="selectedSect?.clans | filterClans : 'RARE' : 'true'">
+                  <table mat-table [dataSource]="selectedSect?.clans | filterClans : 'RARE' : 'true'">
                     <ng-container matColumnDef="clan">
                       <th mat-header-cell *matHeaderCellDef>Clan</th>
                       <td mat-cell *matCellDef="let clan">
@@ -175,12 +187,47 @@
                     <ng-container matColumnDef="setting">
                       <th mat-header-cell *matHeaderCellDef>Rareté</th>
                       <td mat-cell *matCellDef="let clan">
-                        {{ clan.rarity?.key | translate }}
+                        <mat-form-field appearance="standard">
+                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
+                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
+                              {{ rarity | translate }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  </table>
+                </div>
+                <div class="col-sm-3 col">
+                  <p class="text-center">{{ "CREATE_CHRONICLE_BLOODLINES" | translate }}</p>
+                  <table class="col" mat-table [dataSource]="getAllBloodLines()">
+
+                    <ng-container matColumnDef="clan">
+                      <th mat-header-cell *matHeaderCellDef>Bloodline</th>
+                      <td mat-cell *matCellDef="let clan">
+                        {{ clan.name | translate }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="setting">
+                      <th mat-header-cell *matHeaderCellDef>Rareté</th>
+                      <td mat-cell *matCellDef="let clan">
+                        <mat-form-field appearance="standard">
+                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
+                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
+                              {{ rarity | translate }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns">
+                    </tr>
                   </table>
                 </div>
               </div>

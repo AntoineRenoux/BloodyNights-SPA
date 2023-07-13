@@ -21,15 +21,12 @@ export class LeftFixedMenuComponent implements OnInit {
   hasChild = (_: number, node: ItemMenu) => !!node.children && node.children.length > 0;
 
   ngOnInit(): void {
-    console.log("LeftFixedMenuComponent loaded");
-
     this.gameService.itemsMenuForNavigation$.subscribe((d) => {
       this.dataSource.data = d;
     });
   }
 
   scrollToTop($element): void {
-    console.log($element);
     $element.scrollIntoView({behavior: "smooth"});
   }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chronicle } from '@core/models/chronicle';
-import { CharacterService } from '@core/services/character.service';
 import { ChronicleService } from '@core/services/chronicle.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class ChroniclesListComponent implements OnInit {
   displayedColumns = ['name', 'description', 'faction', 'theme', 'mood', 'localization', 'startDate', 'endDate', 'nextDate', 'action'];
 
   constructor(private chronicleService: ChronicleService,
-    private route: Router,
-    private characterService: CharacterService) {
+    private route: Router) {
     this.chronicleService.getAll().subscribe((ch: Chronicle[]) => {
       this.chronicles = ch;
     })
@@ -26,8 +24,7 @@ export class ChroniclesListComponent implements OnInit {
   }
 
   redirectToCharacterCreation(chronicId: string){
-    this.characterService.setChronicleSelectedForCreation(chronicId);
-    this.route.navigate(['character/create'])
+    this.route.navigate(['character/create', chronicId])
   }
 
 }

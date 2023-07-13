@@ -33,8 +33,6 @@ export class RitualsComponent implements OnInit {
         }
       })
     });
-
-    console.log("RitualsComponent loaded");
   }
 
   setListItemsMenu() {

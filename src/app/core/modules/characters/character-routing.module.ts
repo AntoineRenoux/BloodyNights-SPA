@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateCharacterComponent } from './create-character/create-character.component';
 
 const routes: Routes = [
-  { path: 'create', component: CreateCharacterComponent },
+  { path: 'create/:chronicleId', component: CreateCharacterComponent },
 ];
 
 @NgModule({

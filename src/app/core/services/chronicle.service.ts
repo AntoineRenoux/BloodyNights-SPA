@@ -13,11 +13,16 @@ export class ChronicleService {
 
   constructor(private http: HttpClient) { }
 
+  getById(chronicleId: string) {
+    return this.http.get<Chronicle>(this.baseUrl + chronicleId)
+  }
+
   getAll(): Observable<Chronicle[]>{
     return this.http.get<Chronicle[]>(this.baseUrl);
   }
 
   create(model: Chronicle) {
+    debugger;
     return this.http.post(this.baseUrl, model);
   }
 }

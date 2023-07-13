@@ -18,9 +18,6 @@ export class DisciplineComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    console.log("DisciplineComponent loaded");
-
     this.route.paramMap.subscribe(params => {
       const discipline = params.get('discipline');
       const path = params.get('path');

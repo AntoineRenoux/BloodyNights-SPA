@@ -3,17 +3,15 @@
 .node {
   & > a {
     text-decoration: none;
-    color: $base-color;
   }
 
-  &:hover {
-    background-color: $base-color;
-    color: white;
+  // &:hover {
+  //   color: white;
 
-    & > a {
-      color: white;
-    }
-  }
+  //   & > a {
+  //     color: white;
+  //   }
+  // }
 }
 
 .left-tree-invisible {

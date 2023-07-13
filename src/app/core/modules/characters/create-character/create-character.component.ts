@@ -1,5 +1,8 @@
-import { CharacterService } from './../../../services/character.service';
+import { ChronicleService } from '@core/services/chronicle.service';
+import { CharacterService } from '@core/services/character.service';
 import { Component, OnInit } from '@angular/core';
+import { Chronicle } from '@core/models/chronicle';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-character',
@@ -8,8 +11,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateCharacterComponent implements OnInit {
 
-  constructor(private characterService: CharacterService) {
-    console.log(this.characterService.getChronicleSelectedForCreation());
+  currentChronicle: Chronicle;
+
+  constructor(private characterService: CharacterService,
+    private chronicleService: ChronicleService,
+    private route: ActivatedRoute) {
+
+    this.route.params.subscribe(params => {
+      this.chronicleService.getById(params['chronicleId']).subscribe((c: Chronicle) => {
+        this.currentChronicle = c;
+        console.log(this.currentChronicle);
+      });
+    });
+
+
   }
 
   ngOnInit() {

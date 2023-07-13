@@ -18,7 +18,6 @@ export class ClansComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log("ClanComponent loaded");
 
     this.route.paramMap.subscribe(params => {
       const clan = params.get('clan');

@@ -12,7 +12,6 @@ export class RulesComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log("RulesComponent loaded");
   }
 
   scrollToTop($element): void {
