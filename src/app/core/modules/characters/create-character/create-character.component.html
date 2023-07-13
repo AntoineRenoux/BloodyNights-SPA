@@ -3,12 +3,68 @@
     <h1>{{"CREATE_CHARACTER" | translate}}</h1>
   </div>
 
-  <mat-card>
-    <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
-    <mat-card-content>
-      Simple card
-    </mat-card-content>
-  </mat-card>
+
+
+
+
+  <mat-stepper>
+    <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate">
+      <mat-card class="row">
+        <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
+        <mat-card-content class="col mt-3">
+          <form [formGroup]="createCharacterStepOneForm">
+
+            <h2>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}}</h2>
+
+            <p>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT' | translate}}</p>
+            <p>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_2' | translate}}</p>
+            <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_3' | translate"></p>
+
+            <mat-form-field class="w-100">
+              <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT' | translate}}</mat-label>
+              <input matInput formControlName="concept" required>
+            </mat-form-field>
+
+            <h2>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}}</h2>
+            <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT' | translate"></p>
+            <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT_2' | translate"></p>
+            <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT_3' | translate"></p>
+
+            <mat-form-field class="w-100">
+              <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE' | translate}}</mat-label>
+              <select matInput matNativeControl formControlName="archetype" required>
+                <option [value]="archetype.name" *ngFor="let archetype of archetypes">{{archetype.name | translate}}</option>
+              </select>
+            </mat-form-field>
+         
+            <ul>
+              <li *ngFor="let archetype of archetypes"><strong>{{archetype.name | translate}} : </strong>{{archetype.description | translate}}</li>
+            </ul>
+
+            <div class="row">
+              <button class="col" mat-button matStepperNext>{{'NEXT' | translate}}</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>    
+    </mat-step>
+
+    <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
+      
+    </mat-step>
+
+  </mat-stepper>
+
+
+
+
+
+
+
+
+
+
+
 
 
 </div>

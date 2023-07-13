@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Clan } from '@core/models/game/clan';
 import { Discipline } from '@core/models/game/discipline';
 import { Skill } from '@core/models/game/skill';
+import { Archetype } from '@core/models/game/archetype';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class GameService {
   private clans$: BehaviorSubject<Clan[]> = new BehaviorSubject<Clan[]>(null);
   private disciplines$: BehaviorSubject<Discipline[]> = new BehaviorSubject<Discipline[]>(null);
   private skills$: BehaviorSubject<Skill[]> = new BehaviorSubject<Skill[]>(null);
+  private archetypes$: BehaviorSubject<Archetype[]> = new BehaviorSubject<Archetype[]>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -81,5 +83,14 @@ export class GameService {
       })
     }
     return this.skills$;
+  }
+
+  getArchetypes(): Observable<Archetype[]>{
+    if (this.archetypes$.value == null) {
+      this.http.get<Archetype[]>(this.baseUrl + 'get-archetypes').subscribe((archetypes: Archetype[]) => {
+        this.archetypes$.next(archetypes);
+      })
+    }
+    return this.archetypes$;
   }
 }

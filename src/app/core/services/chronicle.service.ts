@@ -22,7 +22,6 @@ export class ChronicleService {
   }
 
   create(model: Chronicle) {
-    debugger;
     return this.http.post(this.baseUrl, model);
   }
 }
