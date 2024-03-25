@@ -1,9 +1,10 @@
 import { Discipline, Ritual } from '@core/models/game/discipline';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameService } from '@shared/services/game.service';
 import { ItemMenu } from '@core/models/itemMenu';
 import { timer } from 'rxjs';
+import { DisciplineService } from '@shared/services/discipline.service';
+import { NavigationService } from '@shared/services/navigation.service';
 
 @Component({
   templateUrl: './rituals.component.html',
@@ -15,18 +16,19 @@ export class RitualsComponent implements OnInit {
   discipline: Discipline;
 
   constructor(private route: ActivatedRoute,
-              private gameService: GameService) {
+    private disciplineService: DisciplineService,
+    private navigationService: NavigationService) {
      }
 
   ngOnInit(): void {
-    if (this.gameService.itemsMenuForNavigation$.value === null) {
+    if (this.navigationService.itemsMenuForNavigation$.value === null) {
       timer().subscribe(() => this.setListItemsMenu());
     }
 
     this.route.paramMap.subscribe(params => {
       const discipline = params.get('discipline');
       const ritual = params.get('ritual').toUpperCase();
-      this.gameService.getDisciplineByKey(discipline).subscribe((d: Discipline) => {
+      this.disciplineService.getDisciplineByKey(discipline).subscribe((d: Discipline) => {
         this.discipline = d;
         if (ritual !== 'home') {
           this.ritual = d.rituals.find(x => x.key === ritual);
@@ -39,12 +41,12 @@ export class RitualsComponent implements OnInit {
 
     let listItems = new Array<ItemMenu>();
 
-    this.gameService.getDisciplines().subscribe((d: Discipline[]) => {
+    this.disciplineService.getDisciplines().subscribe((d: Discipline[]) => {
       if (d != null) {
         d.forEach(disci => {
           listItems.push(this.converteDisciplineToItemMenu(disci, null));
         });
-        this.gameService.itemsMenuForNavigation$.next(listItems);
+        this.navigationService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }

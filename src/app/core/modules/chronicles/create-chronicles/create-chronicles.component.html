@@ -1,7 +1,7 @@
 <div class="container-fluid mt-4">
   <div class="row pt-5">
-    <bn-helper class="col-2 d-none d-sm-flex"></bn-helper>
-    <div class="col col-sm-8">
+    <bn-helper class="col-2 d-none d-sm-flex position-fixed"></bn-helper>
+    <div class="offset-2 col col-sm-8">
       <mat-card class="row">
         <mat-card-title>
           <div class="col-12 pt-3">
@@ -9,301 +9,162 @@
           </div>
         </mat-card-title>
         <mat-card-content>
-          <mat-stepper [linear]="true" #stepper>
-            <mat-step [stepControl]="newChronicleFormGroup">
-              <form [formGroup]="newChronicleFormGroup">
-                <ng-template matStepLabel>{{
-                  "CREATE_CRHONICLE_STEP_1_TITLE" | translate
-                }}</ng-template>
+          <mat-stepper [linear]="true">
+            <mat-step [stepControl]="newChronicleInformationsFormGroup" (interacted)="changeStepper(1)">
+              <ng-template matStepContent>
+                <form [formGroup]="newChronicleInformationsFormGroup">
+                  <ng-template matStepLabel>{{
+                    "CREATE_CRHONICLE_STEP_1_TITLE" | translate
+                    }}</ng-template>
 
-                <div class="col-12 mt-1">
-                  <p>{{ "CREATE_CRHONICLE_STEP_1_TEXT" | translate }}</p>
-                </div>
+                  <div class="col-12 mt-1">
+                    <p>{{ "CREATE_CRHONICLE_STEP_1_TEXT" | translate }}</p>
+                  </div>
 
-                <mat-form-field appearance="standard" class="col-6">
-                  <mat-label>{{
-                    "CREATE_CRHONICLE_NAME" | translate
-                  }}</mat-label>
-                  <input
-                    matInput
-                    placeholder="Exemple: Detroit By Night"
-                    formControlName="name"
-                    required
-                    (focus)="displayHelper('name')"
-                    autocomplete="off"
-                  />
-                </mat-form-field>
-                <mat-form-field appearance="standard" class="col-6">
-                  <mat-label>{{
-                    "CREATE_CRHONICLE_SECT" | translate
-                  }}</mat-label>
-                  <mat-select
-                    formControlName="allegianceId"
-                    (focus)="displayHelper('allegiance')"
-                  >
-                    <mat-option *ngFor="let sect of sects" [value]="sect.key">
-                      {{ sect.name | translate }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="standard" class="col">
-                  <mat-label>{{
-                    "CREATE_CRHONICLE_LOCALIZATION" | translate
-                  }}</mat-label>
-                  <input
-                    matInput
-                    formControlName="localization"
-                    placeholder="Exemple: Paris, Lyon, Détroit etc .."
-                    autocomplete="off"
-                    (focus)="displayHelper('localization')"
-                  />
-                </mat-form-field>
-                <mat-form-field appearance="standard" class="col-6">
-                  <mat-label>{{
-                    "CREATE_CRHONICLE_THEME" | translate
-                  }}</mat-label>
-                  <input
-                    matInput
-                    formControlName="theme"
-                    placeholder="Exemple: Chaos"
-                    autocomplete="off"
-                    (focus)="displayHelper('theme')"
-                  />
-                </mat-form-field>
-                <mat-form-field appearance="standard" class="col-6">
-                  <mat-label>{{
-                    "CREATE_CRHONICLE_TON" | translate
-                  }}</mat-label>
-                  <input
-                    matInput
-                    formControlName="mood"
-                    placeholder="Exemple: Sombre"
-                    autocomplete="off"
-                    (focus)="displayHelper('mood')"
-                  />
-                </mat-form-field>
-
-                <div class="col-12">
-                  <mat-form-field class="w-100" appearance="standard">
+                  <mat-form-field appearance="standard" class="col-6">
+                    <mat-label>{{"CREATE_CRHONICLE_NAME" | translate}}</mat-label>
+                    <input matInput placeholder="Exemple: Detroit By Night" formControlName="name" required
+                      [(ngModel)]="newChronicle.name" (focus)="displayHelper('name')" autocomplete="off" />
+                  </mat-form-field>
+                  <mat-form-field appearance="standard" class="col-6">
                     <mat-label>{{
-                      "CREATE_CRHONICLE_HOOK" | translate
-                    }}</mat-label>
-                    <textarea
-                      (focus)="displayHelper('hook')"
-                      matInput
-                      formControlName="description"
-                    ></textarea>
+                      "CREATE_CRHONICLE_SECT" | translate
+                      }}</mat-label>
+                    <mat-select formControlName="allegianceId" (focus)="displayHelper('allegiance')"
+                      [(ngModel)]="newChronicle.allegianceId">
+                      <mat-option *ngFor="let sect of sects" [value]="sect.key">
+                        {{ sect.name | translate }}
+                      </mat-option>
+                    </mat-select>
                   </mat-form-field>
-                </div>
+                  <mat-form-field appearance="standard" class="col">
+                    <mat-label>{{
+                      "CREATE_CRHONICLE_LOCALIZATION" | translate
+                      }}</mat-label>
+                    <input matInput formControlName="localization" placeholder="Exemple: Paris, Lyon, Détroit etc .."
+                      [(ngModel)]="newChronicle.localization" autocomplete="off"
+                      (focus)="displayHelper('localization')" />
+                  </mat-form-field>
+                  <mat-form-field appearance="standard" class="col-6">
+                    <mat-label>{{
+                      "CREATE_CRHONICLE_THEME" | translate
+                      }}</mat-label>
+                    <input matInput formControlName="theme" placeholder="Exemple: Chaos" autocomplete="off"
+                      [(ngModel)]="newChronicle.theme" (focus)="displayHelper('theme')" />
+                  </mat-form-field>
+                  <mat-form-field appearance="standard" class="col-6">
+                    <mat-label>{{
+                      "CREATE_CRHONICLE_TON" | translate
+                      }}</mat-label>
+                    <input matInput formControlName="mood" placeholder="Exemple: Sombre" autocomplete="off"
+                      [(ngModel)]="newChronicle.mood" (focus)="displayHelper('mood')" />
+                  </mat-form-field>
 
-                <div class="w-100 text-right">
-                  <button
-                    type="button"
-                    mat-button
-                    matStepperNext
-                    (click)="setNextStepper()"
-                  >
-                    {{ "NEXT" | translate }}
-                  </button>
-                </div>
-              </form>
+                  <div class="col-12">
+                    <mat-form-field class="w-100" appearance="standard">
+                      <mat-label>{{
+                        "CREATE_CRHONICLE_HOOK" | translate
+                        }}</mat-label>
+                      <textarea (focus)="displayHelper('hook')" matInput formControlName="hook"
+                        [(ngModel)]="newChronicle.hook"></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-12 text-center">
+                    <button type="submit" mat-button matStepperNext class="stepper-button">
+                      {{ "NEXT" | translate }}
+                    </button>
+                  </div>
+                </form>
+              </ng-template>
             </mat-step>
 
-            <mat-step label="{{ 'CREATE_CRHONICLE_STEP_2_TITLE' | translate }}">
-              <ng-container  *ngIf="selectedSect != undefined">
-              <div class="row">
-                <p>{{ "CREATE_CHRONICLE_HELPER_PARAMETER_CLAN_RARITY" | translate}}</p>
-              </div>
-              <div class="row">
-                <div class="col-sm-3 col">
-                  <p class="text-center">
-                    {{ "CREATE_CHRONICLE_MAJOR_CLANS" | translate }}
-                  </p>
+            <mat-step label="{{ 'CREATE_CRHONICLE_STEP_2_TITLE' | translate }}" (interacted)="changeStepper(2)">
+              <ng-template matStepContent>
+                <ng-container *ngIf="newChronicle.allegianceId != undefined">
 
-                  <table mat-table [dataSource]="selectedSect?.clans | filterClans : 'MAJOR' : 'true'">
-                    <ng-container matColumnDef="clan">
-                      <th mat-header-cell *matHeaderCellDef>Clan</th>
-                      <td mat-cell *matCellDef="let clan">
-                        {{ clan.name | translate }}
-                      </td>
-                    </ng-container>
+                  <div class="row mt-1">
+                    <p>{{ "CREATE_CHRONICLE_HELPER_PARAMETER_CLAN_RARITY" | translate}}</p>
+                  </div>
 
-                    <ng-container matColumnDef="setting">
-                      <th mat-header-cell *matHeaderCellDef>Rareté</th>
-                      <td mat-cell *matCellDef="let clan">
-                        <mat-form-field appearance="standard">
-                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
-                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
-                              {{ rarity | translate }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </td>
-                    </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                  </table>
-                </div>
-                <div class="col-sm-3 col">
-                  <p class="text-center">
-                    {{ "CREATE_CHRONICLE_MINORS_CLANS" | translate }}
-                  </p>
-                  <table class="col-12" mat-table [dataSource]="selectedSect?.clans | filterClans : 'MINOR' : 'true'" >
-                    <ng-container matColumnDef="clan">
-                      <th mat-header-cell *matHeaderCellDef>Clan</th>
-                      <td mat-cell *matCellDef="let clan">
-                        {{ clan.name | translate }}
-                      </td>
-                    </ng-container>
+                  <div class="row mt-2 mb-2" *ngFor="let importance of clanService.clanImportances">
+                    <h1 class="col-12 text-center">{{importance | translate | uppercase}}</h1>
 
-                    <ng-container matColumnDef="setting">
-                      <th mat-header-cell *matHeaderCellDef>Rareté</th>
-                      <td mat-cell *matCellDef="let clan">
-                        <mat-form-field appearance="standard">
-                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
-                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
-                              {{ rarity | translate }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </td>
-                    </ng-container>
+                    <div class="col col-sm-4 mb-2" *ngFor="let clan of newChronicle.clans | filterClans : importance">
+                      <div class="card clan-card">
+                        <div class="card-body">
+                          <h4 class="card-title text-center">
+                            {{clan.name | translate}}
+                            <span *ngIf="clan.parentId !== null" class="parent_bloodline">( {{clan.parentId | translate | lowercase}} )</span>
+                          </h4>
+                          <h5 class="card-subtitle mb-2 text-muted text-center">{{'DEFINE_RARITY' | translate}}</h5>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                  </table>
-                </div>
-                <div class="col-sm-3 col">
-                  <p class="text-center">{{ "CREATE_CHRONICLE_RARES_CLANS" | translate }}</p>
-                  <table mat-table [dataSource]="selectedSect?.clans | filterClans : 'RARE' : 'true'">
-                    <ng-container matColumnDef="clan">
-                      <th mat-header-cell *matHeaderCellDef>Clan</th>
-                      <td mat-cell *matCellDef="let clan">
-                        {{ clan.name | translate }}
-                      </td>
-                    </ng-container>
+                          <div class="text-center">
+                            <mat-radio-group [(ngModel)]="clan.rarity.key">
+                              <mat-radio-button class="mr-2" *ngFor="let rarity of rarities" [value]="rarity">
+                                {{rarity | translate}}
+                              </mat-radio-button>
+                            </mat-radio-group>
+                          </div>
 
-                    <ng-container matColumnDef="setting">
-                      <th mat-header-cell *matHeaderCellDef>Rareté</th>
-                      <td mat-cell *matCellDef="let clan">
-                        <mat-form-field appearance="standard">
-                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
-                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
-                              {{ rarity | translate }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </td>
-                    </ng-container>
+                        </div>
+                      </div>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                  </table>
-                </div>
-                <div class="col-sm-3 col">
-                  <p class="text-center">{{ "CREATE_CHRONICLE_BLOODLINES" | translate }}</p>
-                  <table class="col" mat-table [dataSource]="getAllBloodLines()">
+                    </div>
+                  </div>
 
-                    <ng-container matColumnDef="clan">
-                      <th mat-header-cell *matHeaderCellDef>Bloodline</th>
-                      <td mat-cell *matCellDef="let clan">
-                        {{ clan.name | translate }}
-                      </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="setting">
-                      <th mat-header-cell *matHeaderCellDef>Rareté</th>
-                      <td mat-cell *matCellDef="let clan">
-                        <mat-form-field appearance="standard">
-                          <mat-select [(ngModel)]="clan.rarity.key" name="rarity">
-                            <mat-option *ngFor="let rarity of rarities" [value]="rarity">
-                              {{ rarity | translate }}
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns">
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-              <div>
-                <div class="text-right">
-                  <button mat-button type="button" matStepperPrevious>
-                    {{ "BACK" | translate }}
-                  </button>
-                  <button mat-button type="button" matStepperNext>
-                    {{ "NEXT" | translate }}
-                  </button>
-                </div>
-              </div>
-              </ng-container>
+                  <div class="row">
+                    <div class="col text-center">
+                      <button class="stepper-button" mat-button type="button" matStepperPrevious>
+                        {{ "BACK" | translate }}
+                      </button>
+                    </div>
+                    <div class="col text-center">
+                      <button class="stepper-button" mat-button type="button" matStepperNext>
+                        {{ "NEXT" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-template>
             </mat-step>
+
             <mat-step [stepControl]="newChronicleLastTouchesFormGroup">
-              <form
-                [formGroup]="newChronicleLastTouchesFormGroup"
-                (ngSubmit)="createChronicle()"
-              >
-                <ng-template matStepLabel>{{
-                  "CREATE_CRHONICLE_STEP_3_TITLE" | translate
-                }}</ng-template>
-                <p>{{ "CREATE_CHRONOCLE_FINAL_TEXT" | translate }}</p>
+              <ng-template matStepContent>
+                <form [formGroup]="newChronicleLastTouchesFormGroup" (ngSubmit)="createChronicle()">
+                  <ng-template matStepLabel>{{
+                    "CREATE_CRHONICLE_STEP_3_TITLE" | translate
+                    }}</ng-template>
+                  <p>{{ "CREATE_CHRONOCLE_FINAL_TEXT" | translate }}</p>
 
-                <div class="row">
-                  <mat-form-field appearance="standard" class="col">
-                    <mat-label>{{ "INITAL_PX" | translate }}</mat-label>
-                    <input
-                      type="number"
-                      class="no-spinners"
-                      [value]="30"
-                      matInput
-                      placeholder="Exemple: 30"
-                      formControlName="initialPx"
-                      required
-                      autocomplete="off"
-                      [max]="500"
-                      [min]="0"
-                    />
-                  </mat-form-field>
+                  <div class="row">
+                    <mat-form-field appearance="standard" class="col">
+                      <mat-label>{{ "INITAL_PX" | translate }}</mat-label>
+                      <input type="number" class="no-spinners" matInput placeholder="Exemple: 30"
+                        formControlName="initialXp" required autocomplete="off" [max]="500" [min]="0" />
+                    </mat-form-field>
 
-                  <mat-form-field appearance="standard" class="col">
-                    <mat-label>{{ "MONTHLY_PX" | translate }}</mat-label>
-                    <input
-                      type="number"
-                      class="no-spinners"
-                      [value]="3"
-                      matInput
-                      placeholder="Exemple: 3"
-                      formControlName="monthlyPx"
-                      required
-                      autocomplete="off"
-                      [max]="500"
-                      [min]="0"
-                    />
-                  </mat-form-field>
-                </div>
+                    <mat-form-field appearance="standard" class="col">
+                      <mat-label>{{ "MONTHLY_PX" | translate }}</mat-label>
+                      <input type="number" class="no-spinners" [value]="3" matInput placeholder="Exemple: 3"
+                        formControlName="monthlyXp" required autocomplete="off" [max]="500" [min]="0" />
+                    </mat-form-field>
+                  </div>
 
-                <div class="text-right">
-                  <button mat-button matStepperPrevious>
-                    {{ "BACK" | translate }}
-                  </button>
-                  <button
-                    mat-button
-                    [disabled]="
-                      !newChronicleFormGroup.valid ||
+                  <div class="text-right">
+                    <button mat-button matStepperPrevious>
+                      {{ "BACK" | translate }}
+                    </button>
+                    <button mat-button [disabled]="
+                      !newChronicleInformationsFormGroup.valid ||
                       !newChronicleLastTouchesFormGroup.valid
-                    "
-                    type="submit"
-                  >
-                    {{ "CREATE_CHRONOCLE_SUBMIT" | translate }}
-                  </button>
-                </div>
-              </form>
+                    " type="submit">
+                      {{ "CREATE_CHRONOCLE_SUBMIT" | translate }}
+                    </button>
+                  </div>
+                </form>
+              </ng-template>
             </mat-step>
           </mat-stepper>
         </mat-card-content>

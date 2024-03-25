@@ -1,8 +1,9 @@
 import { timer } from 'rxjs';
-import { GameService } from '@shared/services/game.service';
 import { Component, OnInit } from '@angular/core';
 import { ItemMenu } from '@core/models/itemMenu';
 import { Skill } from '@core/models/game/skill';
+import { SkillsService } from '@shared/services/skills.service';
+import { NavigationService } from '@shared/services/navigation.service';
 
 @Component({
   templateUrl: './skills.component.html',
@@ -12,10 +13,11 @@ export class SkillsComponent implements OnInit {
 
   skills: Skill[];
 
-  constructor(private gameService: GameService) { }
+  constructor(private skillService: SkillsService,
+    private navigationService: NavigationService) { }
 
   ngOnInit() {
-    this.gameService.getSkills().subscribe((skills: Skill[]) => {
+    this.skillService.getSkills().subscribe((skills: Skill[]) => {
       this.skills = skills
     });
 
@@ -26,7 +28,7 @@ export class SkillsComponent implements OnInit {
 
     let listItems = new Array<ItemMenu>();
 
-    this.gameService.getSkills().subscribe((s: Skill[]) => {
+    this.skillService.getSkills().subscribe((s: Skill[]) => {
       if (s != null) {
         listItems = new Array<ItemMenu>();
 
@@ -34,7 +36,7 @@ export class SkillsComponent implements OnInit {
           listItems.push(this.converteSkillToItemMenu(skill));
         });
 
-        this.gameService.itemsMenuForNavigation$.next(listItems);
+        this.navigationService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }

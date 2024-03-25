@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Discipline } from '@core/models/game/discipline';
 import { ItemMenu } from '@core/models/itemMenu';
-import { GameService } from '@shared/services/game.service';
+import { DisciplineService } from '@shared/services/discipline.service';
+import { NavigationService } from '@shared/services/navigation.service';
 import { timer } from 'rxjs';
 
 @Component({
@@ -14,8 +15,9 @@ export class DisciplineComponent implements OnInit {
   discipline: Discipline;
   key: string;
 
-  constructor(private gameService: GameService,
-    private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+    private disciplinesService: DisciplineService,
+    private navigationService: NavigationService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -31,7 +33,7 @@ export class DisciplineComponent implements OnInit {
   }
 
   getDisciplineByKey(key: string) {
-    this.gameService.getDisciplineByKey(key).subscribe((d: Discipline) => {
+    this.disciplinesService.getDisciplineByKey(key).subscribe((d: Discipline) => {
       this.discipline = d;
     })
   }
@@ -40,12 +42,12 @@ export class DisciplineComponent implements OnInit {
 
     let listItems = new Array<ItemMenu>();
 
-    this.gameService.getDisciplines().subscribe((d: Discipline[]) => {
+    this.disciplinesService.getDisciplines().subscribe((d: Discipline[]) => {
       if (d != null) {
         d.forEach(disci => {
           listItems.push(this.converteDisciplineToItemMenu(disci, null));
         });
-        this.gameService.itemsMenuForNavigation$.next(listItems);
+        this.navigationService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }

@@ -1,0 +1,31 @@
+<div class="bn-stepper" *ngIf="stepperType === 'characterCreation'">
+    <div class="col mb-2">
+        <div class="card" [ngClass]="{
+            'done': currentCharacter?.concept !== undefined && currentCharacter?.archetype !== undefined,
+            'current-step' : currentCharacter?.concept === undefined || currentCharacter?.archetype === undefined
+        }">
+            <div class="card-body">
+                <h5 class="card-title">{{'FIRST_CHARACTER_CREATION_STEP' | translate}}</h5>
+                <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}} <span *ngIf="currentCharacter?.concept !== undefined">:</span></p>
+                <p class="character-property" *ngIf="currentCharacter?.concept !== undefined">{{currentCharacter?.concept}}</p>
+                <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}} <span *ngIf="currentCharacter?.archetype !== undefined">:
+                    <span class="character-property" *ngIf="currentCharacter?.archetype !== undefined">{{currentCharacter?.archetype | translate}}</span>
+                </span></p>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-2">
+        <div class="card" [ngClass]="{
+            'done': currentCharacter?.clan !== undefined,
+            'current-step' : (currentCharacter?.concept !== undefined && currentCharacter?.archetype !== undefined) && currentCharacter?.clan === undefined }">
+            <div class="card-body">
+                <h5 class="card-title">{{'SECOND_CHARACTER_CREATION_STEP' | translate}}</h5>
+                <p class="card-text">{{'YOUR_CLAN' | translate}} <span *ngIf="currentCharacter?.clan !== undefined">:
+                    <span class="character-property" *ngIf="currentCharacter?.clan !== undefined">{{currentCharacter?.clan?.name | translate}}</span>
+                </span></p>
+            </div>
+        </div>
+    </div>
+</div>

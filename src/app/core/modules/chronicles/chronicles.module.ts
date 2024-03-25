@@ -9,6 +9,7 @@ import { CreateChroniclesComponent } from './create-chronicles/create-chronicles
 
 import { MatStepperModule } from '@angular/material/stepper';
 import { ChroniclesListComponent } from './chronicles-list/chronicles-list.component';
+import { StepperModule } from '@shared/components/stepper/stepper.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { ChroniclesListComponent } from './chronicles-list/chronicles-list.compo
     RouterModule,
     SharedModule,
     ChronicleRoutingModule,
-    MatStepperModule
+    MatStepperModule,
+    StepperModule
   ],
   declarations: [
     CreateChroniclesComponent,

@@ -9,16 +9,16 @@
 @import '~ngx-toastr/toastr';
 @import '~ngx-toastr/toastr-bs4-alert';
 
-@import '/src/custom-theme.scss';
+@import './custom-theme.scss';
 
 @font-face {
 	font-family: 'Alexandria';
-	src: url('./assets/font/Alexandria.ttf') format('truetype');
+	src: url('../assets/font/Alexandria.ttf') format('truetype');
 }
 
 @font-face {
 	font-family: 'Furura';
-	src: url('./assets/font/Futura/Futura\ Round.ttf') format('truetype');
+	src: url('../assets/font/Futura/Futura\ Round.ttf') format('truetype');
 }
 
 body {
@@ -55,4 +55,16 @@ body {
 .no-spinners::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.stepper-button {
+  background-color: #7D221D; 
+  color: white;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+
+  &:disabled {
+    background-color: grey;
+  }
 }

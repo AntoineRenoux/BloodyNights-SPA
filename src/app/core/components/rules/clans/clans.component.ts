@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Clan } from '@core/models/game/clan';
 import { ItemMenu } from '@core/models/itemMenu';
-import { GameService } from '@shared/services/game.service';
+import { ClanService } from '@shared/services/clan.service';
+import { NavigationService } from '@shared/services/navigation.service';
 import { timer } from 'rxjs';
 
 @Component({
@@ -14,8 +15,9 @@ export class ClansComponent implements OnInit {
   clan: Clan;
   key: string;
 
-  constructor(private gameService: GameService,
-    private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,
+    private navigationService: NavigationService,
+    private clanService: ClanService) { }
 
   ngOnInit() {
 
@@ -32,7 +34,7 @@ export class ClansComponent implements OnInit {
   }
 
   getClanByKey(key: string) {
-    this.gameService.getClanByKey(key).subscribe((clan: Clan) => {
+    this.clanService.getClanByKey(key).subscribe((clan: Clan) => {
       this.clan = clan;
     })
   }
@@ -40,12 +42,12 @@ export class ClansComponent implements OnInit {
   setListItemsMenu() {
     let listItems = new Array<ItemMenu>();
 
-    this.gameService.getClans().subscribe((c: Clan[]) => {
+    this.clanService.getClans().subscribe((c: Clan[]) => {
       if (c != null) {
         c.forEach(clan => {
           listItems.push(this.converteClanToItemMenu(clan, null));
         });
-        this.gameService.itemsMenuForNavigation$.next(listItems);
+        this.navigationService.itemsMenuForNavigation$.next(listItems);
       }
     });
   }

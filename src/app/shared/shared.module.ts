@@ -18,16 +18,18 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FilterClans } from './pipes/filterClansByImportance.pipe';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
     HelperComponent,
-    FilterClans
+    FilterClans,
   ],
   imports: [
     ModalModule.forRoot(),
@@ -57,6 +59,8 @@ import { FilterClans } from './pipes/filterClansByImportance.pipe';
     MatSelectModule,
     MatListModule,
     MatTableModule,
+    MatRadioModule,
+    MatExpansionModule,
 
     NavigationModule,
 
@@ -68,4 +72,4 @@ import { FilterClans } from './pipes/filterClansByImportance.pipe';
 })
 export class SharedModule {
 
- }
+}

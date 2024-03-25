@@ -14,7 +14,7 @@ export class FilterClans implements PipeTransform {
         ret = ret.filter(c => c.importance == importance);
       }
       if (rarity) {
-        ret = ret.sort(c => c.rarity);
+        ret = ret.sort(c => c.rarity.cost);
       }
     }
 

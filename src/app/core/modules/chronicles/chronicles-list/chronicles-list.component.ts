@@ -11,7 +11,7 @@ import { ChronicleService } from '@core/services/chronicle.service';
 export class ChroniclesListComponent implements OnInit {
 
   chronicles: Chronicle[];
-  displayedColumns = ['name', 'description', 'faction', 'theme', 'mood', 'localization', 'startDate', 'endDate', 'nextDate', 'action'];
+  displayedColumns = ['name', 'faction', 'theme', 'mood', 'localization', 'startDate', 'endDate', 'nextDate', 'action'];
 
   constructor(private chronicleService: ChronicleService,
     private route: Router) {

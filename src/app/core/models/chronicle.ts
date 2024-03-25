@@ -8,7 +8,13 @@ export class Chronicle {
   hook: string;
   localization: string;
   allegianceId: string;
-  initialPx: number;
-  monthlyPx: number;
+  initialXp: number;
+  monthlyXp: number;
   clans: Clan[];
+
+  constructor() {
+    this.name = 'Test name'; 
+    this.allegianceId = 'CAMARILLA';
+    this.hook ='Test hook';
+  }
 }

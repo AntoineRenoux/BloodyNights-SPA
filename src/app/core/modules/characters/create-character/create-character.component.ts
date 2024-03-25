@@ -1,12 +1,17 @@
 import { ChronicleService } from '@core/services/chronicle.service';
-import { CharacterService } from '@core/services/character.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Chronicle } from '@core/models/chronicle';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Character } from '@core/models/game/character';
 import { Archetype } from '@core/models/game/archetype';
-import { GameService } from '@shared/services/game.service';
+import { Clan } from '@core/models/game/clan';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ArchetypeService } from '@shared/services/archetype.service';
+import { CharacterService } from '@core/services/character.service';
+import { ClanService } from '@shared/services/clan.service';
+import { Focus } from '@core/models/game/focus';
+import { FocusService } from '@shared/services/focus.service';
 
 @Component({
   selector: 'app-create-character',
@@ -18,44 +23,89 @@ export class CreateCharacterComponent implements OnInit {
   currentChronicle: Chronicle;
 
   archetypes: Archetype[];
+  focus: Focus[];
 
   createCharacterStepOneForm: FormGroup;
   createCharacterStepTwoForm: FormGroup;
-  newCharacter = new Character();
+  createCharacterStepThreeForm: FormGroup;
 
-  constructor(private characterService: CharacterService,
-    private gameService: GameService,
+  selectedClan: Clan;
+
+  modalRef?: BsModalRef;
+
+  constructor(private modalService: BsModalService,
+    private archetypeService: ArchetypeService,
     private chronicleService: ChronicleService,
+    private focusService: FocusService,
+    public characterService: CharacterService,
+    public clanService: ClanService,
     private route: ActivatedRoute,
     private fb: FormBuilder) {
 
     this.route.params.subscribe(params => {
       this.chronicleService.getById(params['chronicleId']).subscribe((c: Chronicle) => {
         this.currentChronicle = c;
+        this.characterService.setCurrentExperience(c.initialXp);
+        console.log(c);
       });
     });
 
-    this.gameService.getArchetypes().subscribe((archetypes: Archetype[]) => {
+    this.archetypeService.getArchetypes().subscribe((archetypes: Archetype[]) => {
       this.archetypes = archetypes;
-    })
+    });
 
+    this.focusService.getFocus().subscribe({
+      next: (focus: Focus[]) => {
+        this.focus = focus;
+        console.log(this.focus);
+      }
+    })
   }
 
   ngOnInit() {
-    this.initCreateCharacterFormsOne();
+    this.initCreateCharacterForms();
   }
 
-  initCreateCharacterFormsOne() {
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  initCreateCharacterForms() {
     this.createCharacterStepOneForm = this.fb.group({
-      concept: [this.newCharacter.concept, Validators.required],
-      archetype: [this.newCharacter.archetype, Validators.required],
+      concept: ['PENIS', Validators.required],
+      archetype: ['BRUTE_NAME', Validators.required],
     });
-  }
 
-  initCreateCharacterFormTwo() {
     this.createCharacterStepTwoForm = this.fb.group({
+      clan: ['AHRIMANE', Validators.required]
+    });
 
+    this.createCharacterStepThreeForm = this.fb.group({
+      physical: [null, Validators.required],
+      mental: [null, Validators.required],
+      social: [null, Validators.required]
     });
   }
 
+  selectClan(modal: any) {
+    this.createCharacterStepTwoForm.get('clan').setValue(this.selectedClan);
+    modal.hide();
+  }
+
+  backToMainClan(clanId: string) {
+    this.selectedClan = this.currentChronicle.clans.find(c => c.key == clanId);
+  }
+
+  validationStepOne() {
+    if (this.createCharacterStepOneForm.valid) {
+      var newCharacter = this.createCharacterStepOneForm.getRawValue() as Character;
+      this.characterService.setCharacter(newCharacter);
+    }
+  }
+
+  validationStepTwo() {
+    if (this.createCharacterStepTwoForm.valid) {
+      this.characterService.setClan(this.selectedClan);
+    }
+  }
 }

@@ -1,15 +1,15 @@
-<div class="container mt-5">
+<div class="container-fluid mt-5">
   <div class="row pt-5">
-    <mat-table class="col" #table [dataSource]="chronicles">
+    <mat-table class="col-8 offset-2" #table [dataSource]="chronicles">
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> {{'NAME' | translate}} </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef> {{"DESCRIPTION" | translate}} </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+      <ng-container matColumnDef="hook">
+        <mat-header-cell *matHeaderCellDef> {{"HOOK" | translate}} </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.hook}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="faction">
@@ -58,5 +58,11 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <div class="col-2 offset-10 position-fixed">
+      <button mat-flat-button color="primary" [routerLink]="'create'">
+        <mat-icon>add</mat-icon>
+        {{'GAME_CREATE_CHRONICLE' | translate}}
+      </button>
+    </div>
   </div>
 </div>

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CharacterRoutingModule } from './character-routing.module';
 import { CreateCharacterComponent } from './create-character/create-character.component';
+import { StepperModule } from '@shared/components/stepper/stepper.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CreateCharacterComponent } from './create-character/create-character.co
     RouterModule,
     SharedModule,
     MatStepperModule,
-    CharacterRoutingModule
+    CharacterRoutingModule,
+    StepperModule
   ],
   declarations: [
     CreateCharacterComponent

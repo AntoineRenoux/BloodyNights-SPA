@@ -1,4 +1,7 @@
+import { AtoutFlaws } from './atoutFlaws';
 import { Discipline } from './discipline';
+import { Rarity } from './rarity';
+
 export class Clan {
   key: string;
   name: string;
@@ -8,8 +11,10 @@ export class Clan {
   surname: string;
   weakness: string;
   importance: string;
-  rarity: number;
+  rarity: Rarity;
+  parentId: string;
 
   disciplines: Discipline[];
   bloodlines: Clan[];
+  atoutsFlaws: AtoutFlaws[];
 }

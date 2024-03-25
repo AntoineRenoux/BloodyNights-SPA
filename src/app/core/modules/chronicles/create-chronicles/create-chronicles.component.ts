@@ -1,4 +1,3 @@
-import { GameService } from '@shared/services/game.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Chronicle } from '@core/models/chronicle';
@@ -8,7 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Allegiance } from '@core/models/game/allegiance';
 import { ChronicleService } from '@core/services/chronicle.service';
-import { Clan } from '@core/models/game/clan';
+import { AllegianceService } from '@shared/services/allegiance.service';
+import { ClanService } from '@shared/services/clan.service';
 
 @Component({
   selector: 'app-create-chronicles',
@@ -18,26 +18,26 @@ import { Clan } from '@core/models/game/clan';
 export class CreateChroniclesComponent implements OnInit {
 
   sects: Allegiance[];
-  selectedSect: Allegiance;
 
   newChronicle = new Chronicle();
-  newChronicleFormGroup: FormGroup;
+  newChronicleInformationsFormGroup: FormGroup;
+  newChronicleClansFormGroup: FormGroup;
   newChronicleLastTouchesFormGroup: FormGroup;
 
-  displayedColumns: string[] = ['clan', 'setting'];
   rarities: string[] = ['COMMUN', 'UNCOMMUN', 'RARE', 'RESTRICTED', 'FORBIDDEN'];
 
-  constructor(private gameService: GameService,
-    private helpService: HelperService,
-    private fb: FormBuilder,
-    private chronicleService: ChronicleService,
+  constructor(private fb: FormBuilder,
     private route: Router,
     private trad: TranslateService,
-    private toastr: ToastrService) {
-      this.gameService.getSects().subscribe((sects: Allegiance[]) => {
-        this.sects = sects;
-      })
-    }
+    private toastr: ToastrService,
+    private helpService: HelperService,
+    private chronicleService: ChronicleService,
+    private allegianceService: AllegianceService,
+    public clanService: ClanService) {
+    this.allegianceService.getSects().subscribe((sects: Allegiance[]) => {
+      this.sects = sects;
+    });
+  }
 
   ngOnInit() {
     this.initForms();
@@ -46,35 +46,40 @@ export class CreateChroniclesComponent implements OnInit {
   }
 
   initForms() {
-    this.newChronicleFormGroup = this.fb.group({
-      name: ['', Validators.required],
-      localization: [{ value: '', disabled: false }],
-      allegianceId: ['', Validators.required],
-      theme: [{ value: '', disabled: false }],
-      mood: [{ value: '', disabled: false }],
-      description: [{ value: '', disabled: false }, Validators.required],
+    this.newChronicleInformationsFormGroup = this.fb.group({
+      name: [this.newChronicle.name, Validators.required],
+      localization: [{ value: this.newChronicle.localization, disabled: false }],
+      allegianceId: [this.newChronicle.allegianceId, Validators.required],
+      theme: [{ value: this.newChronicle.theme, disabled: false }],
+      mood: [{ value: this.newChronicle.mood, disabled: false }],
+      hook: [{ value: this.newChronicle.hook, disabled: false }, Validators.required],
     }, { updateOn: "change" });
 
+    this.newChronicleClansFormGroup = this.fb.group({
+      clans: [this.newChronicle.clans, Validators.required]
+    });
+
     this.newChronicleLastTouchesFormGroup = this.fb.group({
-      initialPx: [30, [Validators.required, Validators.min(0), Validators.max(500)]],
-      monthlyPx: [3, [Validators.required, Validators.min(0), Validators.max(500)]],
+      initialXp: [30, [Validators.required, Validators.min(0), Validators.max(500)]],
+      monthlyXp: [3, [Validators.required, Validators.min(0), Validators.max(500)]],
     }, { updateOn: "change" })
   }
 
   createChronicle() {
-    if (this.newChronicleFormGroup.valid && this.newChronicleLastTouchesFormGroup.valid) {
-      const chronicle: Chronicle = this.newChronicleFormGroup.getRawValue();
-      chronicle.initialPx = this.newChronicleLastTouchesFormGroup.get('initialPx').value;
-      chronicle.monthlyPx = this.newChronicleLastTouchesFormGroup.get('monthlyPx').value;
-      chronicle.clans = this.selectedSect.clans;
+    if (this.newChronicleInformationsFormGroup.valid && this.newChronicleLastTouchesFormGroup.valid) {
 
-      this.chronicleService.create(chronicle).subscribe(() => {
-        this.trad.get('CREATE_CHRONOCLE_SUCCEED').subscribe(trad => {
-          this.toastr.success(trad);
-        });
-        this.route.navigate(['/chronicle']);
+      this.newChronicle.initialXp = this.newChronicleLastTouchesFormGroup.get('initialXp').value;
+      this.newChronicle.monthlyXp = this.newChronicleLastTouchesFormGroup.get('monthlyXp').value;
+
+      this.chronicleService.create(this.newChronicle).subscribe({
+        next: () => {
+          this.toastr.success(this.trad.instant('CREATE_CHRONOCLE_SUCCEED'));
+          this.route.navigate(['/chronicle']);
+        },
+        error: () => {
+          this.toastr.error(this.trad.instant('GENERIC_ERROR'));
+        }
       });
-
     }
   }
 
@@ -107,12 +112,14 @@ export class CreateChroniclesComponent implements OnInit {
     }
   }
 
-  setNextStepper() {
-    const selectedAllegianceId = this.newChronicleFormGroup.get('allegianceId').value;
-    this.selectedSect = this.sects.find(x => x.key == selectedAllegianceId);
-  }
-
-  getAllBloodLines(): Array<Clan> {
-      return this.selectedSect?.clans.map(clan => clan.bloodlines).filter(bloodlines => bloodlines && bloodlines.length > 0).reduce((acc, val) => acc.concat(val), []);
+  changeStepper(index: number) {
+    switch (index) {
+      case 1:
+        this.newChronicle.clans = this.sects.find(s => s.key == this.newChronicle.allegianceId).clans;
+        break;
+      case 2:
+        console.log(this.newChronicle);
+        break;
+    }
   }
 }

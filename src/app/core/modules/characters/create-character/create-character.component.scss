@@ -1,0 +1,16 @@
+.clan-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  .clan-importance {
+    grid-column: 1 / 6;
+  }
+
+  .clan-card {
+    margin: 1em;
+  }
+}
+
+.modal-text {
+  text-align: justify;
+}

@@ -1,0 +1,25 @@
+.bn-stepper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.done {
+    background-color: #c2f8be;
+    border-color: lightgreen;
+}
+
+.current-step {
+    opacity: 1 !important;
+}
+
+.card {
+    opacity: 0.5;
+}
+
+.character-property {
+    text-overflow: ellipsis; 
+    white-space: nowrap;  
+    overflow: hidden;
+    font-style: italic;
+}
