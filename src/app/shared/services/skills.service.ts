@@ -17,7 +17,7 @@ export class SkillsService {
   
   getSkills(): Observable<Skill[]> {
     if (this.skills$.value == null) {
-      this.http.get<Skill[]>(this.baseUrl + 'skills').subscribe((skills: Skill[]) => {
+      this.http.get<Skill[]>(this.baseUrl).subscribe((skills: Skill[]) => {
         this.skills$.next(skills);
       })
     }

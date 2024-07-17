@@ -1,12 +1,20 @@
 .container-custom {
   display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 
-  background-color: coral;
+  background-image: url("https://res.cloudinary.com/dbf5hrvz3/image/upload/v1712158256/kxn5ohyfzchzv0u5ryj3.png");
+  background-position: center 100%;
+  background-size: 100%;
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    
+    h1 {
+      text-align: center;
+    }
+  }
 }
 
-.form-container {
-  grid-area: form;
-  background-color: cornflowerblue;
-
-
-}

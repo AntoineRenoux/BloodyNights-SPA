@@ -16,6 +16,7 @@ export class Discipline {
   composantsTargeting: string;
 
   url: string;
+  level: number;
 }
 
 export class Power {

@@ -1,4 +1,8 @@
 import { Clan } from "./clan";
+import { Discipline } from "./discipline";
+import { Focus } from "./focus";
+import { Historic } from "./historic";
+import { Skill } from "./skill";
 
 export class Character {
     concept: string;
@@ -8,4 +12,8 @@ export class Character {
     physical: number;
     mental: number;
     social: number;
+    focus: Focus[];
+    skills: Skill[];
+    historics: Historic[];
+    disciplines: Discipline[];
 }

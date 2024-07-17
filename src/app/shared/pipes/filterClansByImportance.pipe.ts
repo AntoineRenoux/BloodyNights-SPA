@@ -4,7 +4,7 @@ import { Clan } from '@core/models/game/clan';
 @Pipe({
   name: 'filterClans'
 })
-export class FilterClans implements PipeTransform {
+export class FilterClansPipe implements PipeTransform {
 
   transform(values: Clan[], importance: string, rarity: boolean = false): Clan[] {
     var ret = values;

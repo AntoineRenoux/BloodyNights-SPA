@@ -1,35 +1,23 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { TranslateLoader } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { TranslateLoader } from '@ngx-translate/core';
+import { Injectable } from '@angular/core';
 
-export class TranslationLoader implements TranslateLoader {
-  constructor(private langService: TranslationService) { }
-
-  getTranslation(lang: string): Observable<any> {
-      return this.langService.getTranslation(lang);
-  }
+export function CustomTranslationLoaderFactory(http: HttpClient) {
+  return new CustomTranslationLoader(http);
 }
-
-export function HttpLoaderFactory(translationService: TranslationService) {
-  return new TranslationLoader(translationService);
-}
-
-export const defaultLanguage: string = 'fr';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class TranslationService {
+export class CustomTranslationLoader implements TranslateLoader {
 
-  private baseUrl = environment.apiUrl + 'traduction/';
+  baseUrl = environment.apiUrl + 'traduction/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getTranslation(lang: string | number): Observable<any> {
-    if (lang === 'fr')
-      lang = 1036;
-    return this.http.get(this.baseUrl + 'get-traductions/' + lang);
+  getTranslation(lang: string): Observable<any> {
+    return this.http.get(this.baseUrl + 'fr');
   }
 }

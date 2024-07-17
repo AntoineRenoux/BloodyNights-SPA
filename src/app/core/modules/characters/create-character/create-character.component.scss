@@ -1,16 +1,78 @@
-.clan-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
 
-  .clan-importance {
-    grid-column: 1 / 6;
-  }
-
-  .clan-card {
-    margin: 1em;
+@media (min-width: 992px) {
+  .create-character-container {
+    padding-top: 5em;
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    height: 100vh;
   }
 }
 
-.modal-text {
-  text-align: justify;
+@media(max-width: 991px) {
+  .helper {
+    display: none;
+  }
+
+  .create-character-container {
+    padding-top: 5em;
+    display: flex;
+  }
+}
+
+.helper{
+  height: 100%;
+  overflow-y: auto;
+}
+
+
+.container-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.selected {
+  background-color: rgb(81, 165, 81);
+  span {
+    color: white;
+  }
+}
+
+.main-attribut-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  .attribut-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.skill-level-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.atout-flaws-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  .header-atout {
+    display: flex;
+    flex-direction: row;
+    justify-items: baseline;
+    gap:1em;
+  }
 }

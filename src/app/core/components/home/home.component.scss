@@ -1,3 +1,15 @@
-.home-message {
-  font-size: 10em !important;
+.home-title {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("https://res.cloudinary.com/dbf5hrvz3/image/upload/v1712158256/kxn5ohyfzchzv0u5ryj3.png");
+  background-position: center 100%;
+  background-size: 100%;
+  
+  h2 {
+    font-size: 10em;
+    color: white;
+  }
 }

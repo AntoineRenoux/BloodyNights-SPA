@@ -23,13 +23,17 @@ import { MatRadioModule } from '@angular/material/radio';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { FilterClans } from './pipes/filterClansByImportance.pipe';
+import { FilterClansPipe } from './pipes/filterClansByImportance.pipe';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { FocusfilterPipe } from '@core/pipes/focusfilter.pipe';
+import { FilterAuthorizedClansPipe } from './pipes/filterAuthorizedClans.pipe';
 
 @NgModule({
   declarations: [
     HelperComponent,
-    FilterClans,
+    FilterClansPipe,
+    FocusfilterPipe,
+    FilterAuthorizedClansPipe
   ],
   imports: [
     ModalModule.forRoot(),
@@ -67,7 +71,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
     HelperComponent,
 
-    FilterClans
+    FilterClansPipe,
+    FocusfilterPipe,
+    FilterAuthorizedClansPipe
   ]
 })
 export class SharedModule {
