@@ -5,15 +5,16 @@
             'current-step' : false}">
             <div class="card-body">
                 <h5 class="card-title">{{'FIRST_CHARACTER_CREATION_STEP' | translate}}</h5>
-                <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}} <span
-                        *ngIf="currentCharacter?.concept !== undefined">: {{currentCharacter?.concept}}</span></p>
-                <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}} <span
-                        *ngIf="currentCharacter?.archetype !== undefined">:
-                        <span class="character-property"
-                            *ngIf="currentCharacter?.archetype !== undefined">{{currentCharacter?.archetype |
-                            translate}}</span>
-                    </span></p>
-
+                <div *ngIf="currentCharacter?.concept !== undefined">
+                    <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}} <span
+                            *ngIf="currentCharacter?.concept !== undefined">: {{currentCharacter?.concept}}</span></p>
+                    <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}} <span
+                            *ngIf="currentCharacter?.archetype !== undefined">:
+                            <span class="character-property"
+                                *ngIf="currentCharacter?.archetype !== undefined">{{currentCharacter?.archetype |
+                                translate}}</span>
+                        </span></p>
+                </div>
             </div>
         </div>
     </div>

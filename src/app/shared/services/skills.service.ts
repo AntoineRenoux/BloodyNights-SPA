@@ -14,13 +14,8 @@ export class SkillsService {
   private skills$: BehaviorSubject<Skill[]> = new BehaviorSubject<Skill[]>(null);
 
   constructor(private http: HttpClient) { }
-  
+
   getSkills(): Observable<Skill[]> {
-    if (this.skills$.value == null) {
-      this.http.get<Skill[]>(this.baseUrl).subscribe((skills: Skill[]) => {
-        this.skills$.next(skills);
-      })
-    }
-    return this.skills$;
+    return this.http.get<Skill[]>(this.baseUrl);
   }
 }

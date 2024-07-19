@@ -16,6 +16,7 @@
   .create-character-container {
     padding-top: 5em;
     display: flex;
+    height: 100vh;
   }
 }
 
@@ -75,4 +76,51 @@
     justify-items: baseline;
     gap:1em;
   }
+}
+
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.skill-item {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+
+.rating {
+  direction: rtl; /* Inverser l'ordre des étoiles */
+  unicode-bidi: bidi-override;
+  display: inline-flex;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  font-size: 2em;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.rating label:before {
+  content: 'o';
+}
+
+.rating input:checked ~ label {
+  color: rgb(218, 87, 87);
+}
+
+.rating.no-rating label {
+  color: #ddd !important;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:focus ~ label {
+  color: rgb(218, 87, 87) !important;
 }

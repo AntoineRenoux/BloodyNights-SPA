@@ -20,7 +20,6 @@ import { Discipline } from '@core/models/game/discipline';
 import { AtoutFlaws } from '@core/models/game/atoutFlaws';
 import { AtoutsFlawsService } from '@shared/services/atoutFlaws.service';
 
-
 function validAttributes(control: AbstractControl): ValidationErrors | null {
   const values = [3, 5, 7]; // Valid values
 
@@ -62,12 +61,12 @@ export class CreateCharacterComponent implements OnInit {
 
   archetypes: Archetype[];
   focus: Focus[];
-  skills: Skill[];
+  skills: Skill[] = [];
   historics: Historic[];
 
   allAtoutsFlaws: AtoutFlaws[];
   genericsAtouts: AtoutFlaws[];
-  clansAtouts : AtoutFlaws[];
+  clansAtouts: AtoutFlaws[];
   allegianceAtouts: AtoutFlaws[];
 
   createCharacterStepOneForm: FormGroup;
@@ -95,10 +94,32 @@ export class CreateCharacterComponent implements OnInit {
     private fb: FormBuilder) {
 
     this.route.params.subscribe(params => {
-      this.chronicleService.getById(params['chronicleId']).subscribe((c: Chronicle) => {
-        this.currentChronicle = c;
-        this.characterService.setCurrentExperience(c.initialXp);
+      this.chronicleService.getById(params['chronicleId']).subscribe({
+        next: (c: Chronicle) => {
+          this.currentChronicle = c;
+          this.characterService.setCurrentExperience(c.initialXp);
+        }
       });
+    });
+
+    this.atoutFlawService.get().subscribe({
+      next: (af: AtoutFlaws[]) => {
+        this.allAtoutsFlaws = af;
+        this.genericsAtouts = af.filter(x => x.clanKey === null && x.allegianceKey === null && x.cost > 0);
+        this.allegianceAtouts = af.filter(x => x.allegianceKey === this.currentChronicle.allegianceId && x.cost > 0);
+      }
+    });
+
+    this.skillService.getSkills().subscribe({
+      next: (s: Skill[]) => {
+        this.skills = s;
+
+        this.createCharacterStepFourForm = this.fb.group({
+          skills: [this.fb.array([], Validators.required)]
+        });
+
+        this.initStepFour();
+      }
     });
 
     this.archetypeService.getArchetypes().subscribe((archetypes: Archetype[]) => {
@@ -111,28 +132,9 @@ export class CreateCharacterComponent implements OnInit {
       }
     });
 
-    this.skillService.getSkills().subscribe({
-      next: (skills: Skill[]) => {
-        this.skills = skills;
-      }
-    })
-
     this.historicService.getHistorics().subscribe({
       next: (histo: Historic[]) => {
         this.historics = histo;
-      }
-    })
-
-    this.atoutFlawService.get().subscribe({
-      next: (af: AtoutFlaws[]) => {
-        this.allAtoutsFlaws = af;
-        this.genericsAtouts = af.filter(x => x.clanKey === null && x.allegianceKey === null && x.cost > 0);
-        this.allegianceAtouts = af.filter(x => x.allegianceKey === this.currentChronicle.allegianceId && x.cost > 0);
-      }
-    })
-
-    this.characterService.getCharacter().subscribe({
-      next: (c: Character) => {
       }
     })
   }
@@ -149,68 +151,21 @@ export class CreateCharacterComponent implements OnInit {
     return this.createCharacterStepSevenForm.get('alligenceAtouts') as FormArray;
   }
 
+  get skillsArray(): FormArray {
+    return this.createCharacterStepFourForm.get('skills') as FormArray;
+  }
+
   ngOnInit() {
-    this.initCreateCharacterForms();
+    this.initStepOne();
+    this.initStepTwo();
+    this.initStepThree();
+    this.initStepFive();
+    this.initStepSix();
+    this.initStepSeven();
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-  }
-
-  initCreateCharacterForms() {
-    this.createCharacterStepOneForm = this.fb.group({
-      concept: [null, Validators.required],
-      archetype: [null, Validators.required],
-    });
-
-    this.createCharacterStepTwoForm = this.fb.group({
-      clan: [null, Validators.required]
-    });
-
-    this.createCharacterStepThreeForm = this.fb.group({
-      physical: [null, Validators.required],
-      physicalFocus: [null, Validators.required],
-      mental: [null, Validators.required],
-      mentalFocus: [null, Validators.required],
-      social: [null, Validators.required],
-      socialFocus: [null, Validators.required],
-    }, { validator: validAttributes });
-
-    this.createCharacterStepFourForm = this.fb.group({
-      fourPointsSkill: [null, Validators.required],
-
-      threePointsSkillsOne: [null, Validators.required],
-      threePointsSkillsTwo: [null, Validators.required],
-
-      twoPointsSkillsOne: [null, Validators.required],
-      twoPointsSkillsTwo: [null, Validators.required],
-      twoPointsSkillsThree: [null, Validators.required],
-
-      onePointSkillsOne: [null, Validators.required],
-      onePointSkillsTwo: [null, Validators.required],
-      onePointSkillsThree: [null, Validators.required],
-      onePointSkillsFour: [null, Validators.required],
-    }, { validator: uniqueValuesValidator });
-
-    this.createChracterStepFiveForm = this.fb.group({
-      historicAtThree: [null, Validators.required],
-      historicAtTwo: [null, Validators.required],
-      historicAtOne: [null, Validators.required]
-    }, { validator: uniqueValuesValidator });
-
-    this.createCharacterStepSixForm = this.fb.group({
-      disciplineAtTwo: [null, Validators.required],
-      disciplineAtOneA: [null, Validators.required],
-      disciplineAtOneB: [null, Validators.required],
-    }, { validator: uniqueValuesValidator });
-
-    this.createCharacterStepSevenForm = this.fb.group({
-      genericAtouts: this.fb.array([]),
-      clanAtouts: this.fb.array([]),
-      alligenceAtouts: this.fb.array([]),
-      flaws: this.fb.array([])
-    });
-
   }
 
   selectClan(modal: any) {
@@ -233,13 +188,13 @@ export class CreateCharacterComponent implements OnInit {
     if (this.createCharacterStepTwoForm.valid) {
       this.characterService.setClan(this.selectedClan);
 
-      if (this.selectedClan.rarity.cost) {
-        const rarityClanAtout = this.clansAtouts.find(x => x.name.includes(this.selectedClan.key));
+      if (this.selectedClan.rarity?.cost) {
+        const rarityClanAtout = this.clansAtouts?.find(x => x.clanKey.includes(this.selectedClan.key));
 
         const atout = this.fb.group({
           atouts: [rarityClanAtout],
         });
-    
+
         this.cAtouts.push(atout);
       }
 
@@ -253,7 +208,7 @@ export class CreateCharacterComponent implements OnInit {
           const atout = this.fb.group({
             atouts: [rarityClanAtout],
           });
-      
+
           this.cAtouts.push(atout);
         }
       }
@@ -280,49 +235,10 @@ export class CreateCharacterComponent implements OnInit {
   }
 
   validationStepFour() {
-    if (this.createCharacterStepFourForm.valid) {
-      let skills = new Array<Skill>();
-
-      let skillAtFour = this.createCharacterStepFourForm.get('fourPointsSkill').value as Skill;
-      skillAtFour.level = 4;
-      skills.push(skillAtFour);
-
-      let skillsAtThreeOne = this.createCharacterStepFourForm.get('threePointsSkillsOne').value as Skill;
-      skillsAtThreeOne.level = 3;
-      skills.push(skillsAtThreeOne);
-
-      let threePointsSkillsTwo = this.createCharacterStepFourForm.get('threePointsSkillsTwo').value as Skill;
-      threePointsSkillsTwo.level = 3;
-      skills.push(threePointsSkillsTwo);
-
-      let twoPointsSkillsOne = this.createCharacterStepFourForm.get('twoPointsSkillsOne').value as Skill;
-      twoPointsSkillsOne.level = 2;
-      skills.push(twoPointsSkillsOne);
-
-      let twoPointsSkillsTwo = this.createCharacterStepFourForm.get('twoPointsSkillsTwo').value as Skill;
-      twoPointsSkillsTwo.level = 2;
-      skills.push(twoPointsSkillsTwo);
-
-      let twoPointsSkillsThree = this.createCharacterStepFourForm.get('twoPointsSkillsThree').value as Skill;
-      twoPointsSkillsThree.level = 2;
-      skills.push(twoPointsSkillsThree);
-
-      let onePointSkillsOne = this.createCharacterStepFourForm.get('onePointSkillsOne').value as Skill;
-      onePointSkillsOne.level = 1;
-      skills.push(onePointSkillsOne);
-
-      let onePointSkillsTwo = this.createCharacterStepFourForm.get('onePointSkillsTwo').value as Skill;
-      onePointSkillsTwo.level = 1;
-      skills.push(onePointSkillsTwo);
-
-      let onePointSkillsThree = this.createCharacterStepFourForm.get('onePointSkillsThree').value as Skill;
-      onePointSkillsThree.level = 1;
-      skills.push(onePointSkillsThree);
-
-      let onePointSkillsFour = this.createCharacterStepFourForm.get('onePointSkillsFour').value as Skill;
-      onePointSkillsFour.level = 1;
-      skills.push(onePointSkillsFour);
-
+    if (this.verifSkills()) {
+      let skills = this.skills.filter(x => x.level > 0).sort((a, b) => {
+        return b.level - a.level
+      });
       this.characterService.setSkills(skills);
     }
   }
@@ -369,8 +285,13 @@ export class CreateCharacterComponent implements OnInit {
     }
   }
 
-  validationStepSeven() {
-    
+  rating(stuff: Skill | Historic, rating: number) {
+    if (stuff.level === 1 && rating === 1) {
+      stuff.level = 0;
+    }
+    else {
+      stuff.level = rating;
+    }
   }
 
   addGenericAtout() {
@@ -380,8 +301,8 @@ export class CreateCharacterComponent implements OnInit {
 
     this.gAtouts.push(atout);
   }
-  
-  addClanAtout(){
+
+  addClanAtout() {
     const atout = this.fb.group({
       atouts: [null],
     });
@@ -389,7 +310,7 @@ export class CreateCharacterComponent implements OnInit {
     this.cAtouts.push(atout);
   }
 
-  addAlligianceAtout(){
+  addAlligianceAtout() {
     const atout = this.fb.group({
       atouts: [null],
     });
@@ -407,5 +328,81 @@ export class CreateCharacterComponent implements OnInit {
 
   removeAlliganceAtout(index: number) {
     this.aAtouts.removeAt(index);
+  }
+
+  verifSkills(): boolean {
+    const currentSkills = this.skills.filter(s => s.level > 0);
+
+    if (currentSkills.filter(x => x.level === 5).length != 0)
+      return false;
+
+    if (currentSkills.filter(x => x.level === 4).length != 1)
+      return false;
+
+    if (currentSkills.filter(x => x.level === 3).length != 2)
+      return false;
+
+    if (currentSkills.filter(x => x.level === 2).length != 3)
+      return false;
+
+    if (currentSkills.filter(x => x.level === 1).length != 4)
+      return false;
+
+    return true;
+  }
+
+  private initStepOne() {
+    this.createCharacterStepOneForm = this.fb.group({
+      concept: [null, Validators.required],
+      archetype: [null, Validators.required],
+    });
+  }
+
+  private initStepTwo() {
+    this.createCharacterStepTwoForm = this.fb.group({
+      clan: [null, Validators.required]
+    });
+  }
+
+  private initStepThree() {
+    this.createCharacterStepThreeForm = this.fb.group({
+      physical: [null, Validators.required],
+      physicalFocus: [null, Validators.required],
+      mental: [null, Validators.required],
+      mentalFocus: [null, Validators.required],
+      social: [null, Validators.required],
+      socialFocus: [null, Validators.required],
+    }, { validator: validAttributes });
+  }
+
+  private initStepFour() {
+    this.createCharacterStepFourForm = this.fb.group({
+      skills: [this.fb.array([]), Validators.required]
+    });
+  }
+
+  private initStepFive() {
+    this.createChracterStepFiveForm = this.fb.group({
+      historicAtThree: [null, Validators.required],
+      historicAtTwo: [null, Validators.required],
+      historicAtOne: [null, Validators.required]
+    }, { validator: uniqueValuesValidator });
+  }
+
+  private initStepSix() {
+    this.createCharacterStepSixForm = this.fb.group({
+      disciplineAtTwo: [null, Validators.required],
+      disciplineAtOneA: [null, Validators.required],
+      disciplineAtOneB: [null, Validators.required],
+    }, { validator: uniqueValuesValidator });
+  }
+
+  private initStepSeven() {
+    this.createCharacterStepSevenForm = this.fb.group({
+      genericAtouts: this.fb.array([]),
+      clanAtouts: this.fb.array([]),
+      alligenceAtouts: this.fb.array([]),
+      flaws: this.fb.array([])
+    });
   }
 }
