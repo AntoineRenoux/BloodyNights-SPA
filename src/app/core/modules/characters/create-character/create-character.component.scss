@@ -43,13 +43,13 @@
   }
 }
 
-.main-attribut-container {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
+.stuff-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  text-align: center;
 
-  .attribut-container {
-    width: 100%;
+  .attribute {
     display: flex;
     flex-direction: column;
   }

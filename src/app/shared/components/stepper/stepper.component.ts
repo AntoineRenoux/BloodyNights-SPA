@@ -11,14 +11,15 @@ import { TranslateService } from '@ngx-translate/core';
 export class StepperComponent implements OnInit {
 
   @Input() stepperType: string;
-  
+  @Input() currentCreationStep: number;
+
   currentCharacter: Character;
 
   constructor(
     private characterService: CharacterService,
     public trad: TranslateService
   ) {
-      this.characterService.getCharacter().subscribe((c: Character) => {
+      this.characterService.character$.subscribe((c: Character) => {
         this.currentCharacter = c;
         console.log('Dans le stepper');
         console.log(c);

@@ -2,10 +2,10 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.concept !== undefined && currentCharacter?.archetype !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 0}">
             <div class="card-body">
                 <h5 class="card-title">{{'FIRST_CHARACTER_CREATION_STEP' | translate}}</h5>
-                <div *ngIf="currentCharacter?.concept !== undefined">
+                <div *ngIf="currentCharacter?.concept !== undefined" style="line-height: 0.3em;">
                     <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}} <span
                             *ngIf="currentCharacter?.concept !== undefined">: {{currentCharacter?.concept}}</span></p>
                     <p class="card-text">{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}} <span
@@ -22,7 +22,7 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.clan !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 1}">
             <div class="card-body">
                 <h5 class="card-title">{{'SECOND_CHARACTER_CREATION_STEP' | translate}}</h5>
                 <span *ngIf="currentCharacter?.clan !== undefined" class="card-text">{{'YOUR_CLAN' | translate}} <span>:
@@ -37,20 +37,15 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.physical !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 2}">
             <div class="card-body">
                 <h5 class="card-title">{{'STEP_3_CHOOSE_INITIAL_ATTRIBUTS' | translate}}</h5>
                 <div style="line-height: 0.3em;" *ngIf="currentCharacter?.physical !== undefined">
-                    <p>{{'STEP_3_PHYSICAL_ATTRIBUTE_HEADER' | translate}} 
-                        <span style="font-weight: bold;">
-                            <span *ngFor="let item of +currentCharacter?.physical">ø</span>
-                             {{currentCharacter?.focus[0].name | translate }}</span></p>
-                    <p>{{'STEP_3_SOCIAL_ATTRIBUTE_HEADER' | translate}} <span
-                            style="font-weight: bold;">{{currentCharacter?.social}} {{currentCharacter?.focus[1].name |
-                            translate}}</span></p>
-                    <p>{{'STEP_3_MENTAL_ATTRIBUTE_HEADER' | translate}} <span
-                            style="font-weight: bold;">{{currentCharacter?.mental}} {{currentCharacter?.focus[2].name |
-                            translate}}</span></p>
+                    <p>{{'PHYSICAL' | translate}} 
+                        <span>{{currentCharacter?.physical}} {{currentCharacter?.focus[0].name | translate}}</span></p>
+                    <p>{{'SOCIAL' | translate}} 
+                        <span>{{currentCharacter?.social}} {{currentCharacter?.focus[1].name | translate}}</span></p>
+                    <p>{{'MENTAL' | translate}} <span >{{currentCharacter?.mental}} {{currentCharacter?.focus[2].name | translate}}</span></p>
                 </div>
             </div>
         </div>
@@ -59,7 +54,7 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.skills !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 3}">
             <div class="card-body">
                 <h5 class="card-title">{{'STEP_4_CHOOSE_INITIAL_SKILLS' | translate}}</h5>
                 <div style="line-height: 0.5em;" *ngIf="currentCharacter?.skills !== undefined">
@@ -72,7 +67,7 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.historics !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 4}">
             <div class="card-body">
                 <h5 class="card-title">{{'STEP_5_CHOOSE_INITIAL_HISTORICS' | translate}}</h5>
                 <div style="line-height: 0.5em;" *ngIf="currentCharacter?.historics !== undefined">
@@ -86,11 +81,25 @@
     <div class="col mb-2">
         <div class="card" [ngClass]="{
             'done': currentCharacter?.disciplines !== undefined,
-            'current-step' : false}">
+            'current-step' : currentCreationStep === 5}">
             <div class="card-body">
                 <h5 class="card-title">{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE' | translate}}</h5>
                 <div style="line-height: 0.5em;" *ngIf="currentCharacter?.disciplines !== undefined">
                     <p *ngFor="let disci of currentCharacter?.disciplines">{{disci.name | translate}} : {{disci.level}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-2">
+        <div class="card" [ngClass]="{
+            'done': currentCharacter?.atouts !== undefined,
+            'current-step' : currentCreationStep === 6}">
+            <div class="card-body">
+                <h5 class="card-title">{{'STEP_7_CHOOSE_ATOUTS_FLAWS' | translate}}</h5>
+                <div style="line-height: 0.5em;" *ngIf="currentCharacter?.atouts !== undefined">
+                    <p *ngFor="let atout of currentCharacter?.atouts">{{atout.name | translate}} : {{atout.level}}
                     </p>
                 </div>
             </div>

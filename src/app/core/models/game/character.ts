@@ -1,3 +1,4 @@
+import { AtoutFlaws } from "./atoutFlaws";
 import { Clan } from "./clan";
 import { Discipline } from "./discipline";
 import { Focus } from "./focus";
@@ -16,4 +17,5 @@ export class Character {
     skills: Skill[];
     historics: Historic[];
     disciplines: Discipline[];
+    atouts: AtoutFlaws[];
 }

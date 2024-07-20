@@ -124,9 +124,8 @@
 
   <bn-helper class="helper"></bn-helper>
 
-  <mat-stepper [linear]="false">
-    <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate"
-      [completed]="true">
+  <mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate">
       <ng-template matStepContent>
         <mat-card class="row">
           <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
@@ -251,17 +250,56 @@
               <p [innerHTML]="'ATTRIBUT_FOCUS' | translate"></p>
               <p [innerHTML]="'ATTRIBUT_FOCUS_TEXT' | translate"></p>
 
-              <div class="main-attribut-container">
 
-                <div class="attribut-container">
-                  <mat-form-field>
-                    <mat-label>{{'STEP_3_PHYSICAL_ATTRIBUTE_HEADER' | translate}}</mat-label>
-                    <mat-select formControlName="physical">
-                      <mat-option *ngFor="let value of attributsInitialValues" [value]="value">
-                        {{value}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+              <div class="stuff-container">
+                <div class="attribute">
+                  <div class="skill-item">
+                    <p>{{'PHYSICAL' | translate}}</p>
+                    <div class="rating" [attr.data-skill-id]="'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'">
+                      <input type="radio" [id]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 10)" />
+                      <label [for]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 9)" />
+                      <label [for]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 8)" />
+                      <label [for]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 7)" />
+                      <label [for]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (click)="ratingAttributes('physical', 6)" />
+                      <label [for]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+
+
+                      <input type="radio" [id]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 5)" />
+                      <label [for]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 4)" />
+                      <label [for]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 3)" />
+                      <label [for]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('physical', 2)" />
+                      <label [for]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                        (click)="ratingAttributes('physical', 1)" />
+                      <label [for]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                    </div>
+                  </div>
 
                   <mat-form-field>
                     <mat-label>{{'GAME_PHYSICAL_FOCUS' | translate}}</mat-label>
@@ -273,15 +311,53 @@
                   </mat-form-field>
                 </div>
 
-                <div class="attribut-container">
-                  <mat-form-field>
-                    <mat-label>{{'STEP_3_SOCIAL_ATTRIBUTE_HEADER' | translate}}</mat-label>
-                    <mat-select formControlName="social">
-                      <mat-option *ngFor="let value of attributsInitialValues" [value]="value">
-                        {{value}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <div class="attribute">
+                  <div class="skill-item">
+                    <p>{{'SOCIAL' | translate}}</p>
+                    <div class="rating" [attr.data-skill-id]="'STEP_3_SOCIAL_ATTRIBUTE_HEADER'">
+
+                      <input type="radio" [id]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 10)" />
+                      <label [for]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 9)" />
+                      <label [for]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 8)" />
+                      <label [for]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 7)" />
+                      <label [for]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('social', 6)" />
+                      <label [for]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+
+
+                      <input type="radio" [id]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 5)" />
+                      <label [for]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 4)" />
+                      <label [for]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 3)" />
+                      <label [for]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('social', 2)" />
+                      <label [for]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('social', 1)" />
+                      <label [for]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                    </div>
+                  </div>
 
                   <mat-form-field>
                     <mat-label>{{'GAME_SOCIAL_FOCUS' | translate}}</mat-label>
@@ -293,15 +369,52 @@
                   </mat-form-field>
                 </div>
 
-                <div class="attribut-container">
-                  <mat-form-field>
-                    <mat-label>{{'STEP_3_MENTAL_ATTRIBUTE_HEADER' | translate}}</mat-label>
-                    <mat-select formControlName="mental">
-                      <mat-option *ngFor="let value of attributsInitialValues" [value]="value">
-                        {{value}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <div class="attribute">
+                  <div class="skill-item">
+                    <p>{{'MENTAL' | translate}}</p>
+                    <div class="rating" [attr.data-skill-id]="'STEP_3_MENTAL_ATTRIBUTE_HEADER'">
+                      <input type="radio" [id]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 10)" />
+                      <label [for]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 9)" />
+                      <label [for]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 8)" />
+                      <label [for]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 7)" />
+                      <label [for]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('mental', 6)" />
+                      <label [for]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+
+
+                      <input type="radio" [id]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 5)" />
+                      <label [for]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 4)" />
+                      <label [for]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 3)" />
+                      <label [for]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        (change)="ratingAttributes('mental', 2)" />
+                      <label [for]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      <input type="radio" [id]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('mental', 1)" />
+                      <label [for]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                    </div>
+                  </div>
 
                   <mat-form-field>
                     <mat-label>{{'GAME_MENTAL_FOCUS' | translate}}</mat-label>
@@ -312,7 +425,6 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-
               </div>
 
             </mat-card-content>
@@ -328,7 +440,8 @@
 
     <mat-step [stepControl]="createCharacterStepFourForm" [label]="'STEP_4_CHOOSE_INITIAL_SKILLS' | translate">
       <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepFourForm" (ngSubmit)="validationStepFour()" *ngIf="createCharacterStepFourForm !== undefined">
+        <form [formGroup]="createCharacterStepFourForm" (ngSubmit)="validationStepFour()"
+          *ngIf="createCharacterStepFourForm !== undefined">
           <mat-card>
             <mat-card-title>{{"STEP_4_CHOOSE_INITIAL_SKILLS" | translate}}</mat-card-title>
 
@@ -340,27 +453,32 @@
                 <div class="skill-item" *ngFor="let skill of skills">
                   <p>{{skill.name | translate}}</p>
                   <div class="rating" [attr.data-skill-id]="skill.name" [ngClass]="{'no-rating' : skill.level === 0}">
-                    <input type="radio" [id]="'star5-' + skill.name" [name]="'rating-' + skill.name" (change)="rating(skill, 5)" />
-                    <label [for]="'star5-' + skill.name" title="5 stars"></label>
-                    <input type="radio" [id]="'star4-' + skill.name" [name]="'rating-' + skill.name" (change)="rating(skill, 4)" />
-                    <label [for]="'star4-' + skill.name" title="4 stars"></label>
-                    <input type="radio" [id]="'star3-' + skill.name" [name]="'rating-' + skill.name" (change)="rating(skill, 3)" />
-                    <label [for]="'star3-' + skill.name" title="3 stars"></label>
-                    <input type="radio" [id]="'star2-' + skill.name" [name]="'rating-' + skill.name" (change)="rating(skill, 2)" />
-                    <label [for]="'star2-' + skill.name" title="2 stars"></label>
-                    <input type="radio" [id]="'star1-' + skill.name" [name]="'rating-' + skill.name" (click)="rating(skill, 1)" />
-                    <label [for]="'star1-' + skill.name" title="1 star"></label>
+                    <input type="radio" [id]="'star5-' + skill.name" [name]="'rating-' + skill.name"
+                      (change)="rating(skill, 5)" />
+                    <label [for]="'star5-' + skill.name"></label>
+                    <input type="radio" [id]="'star4-' + skill.name" [name]="'rating-' + skill.name"
+                      (change)="rating(skill, 4)" />
+                    <label [for]="'star4-' + skill.name"></label>
+                    <input type="radio" [id]="'star3-' + skill.name" [name]="'rating-' + skill.name"
+                      (change)="rating(skill, 3)" />
+                    <label [for]="'star3-' + skill.name"></label>
+                    <input type="radio" [id]="'star2-' + skill.name" [name]="'rating-' + skill.name"
+                      (change)="rating(skill, 2)" />
+                    <label [for]="'star2-' + skill.name"></label>
+                    <input type="radio" [id]="'star1-' + skill.name" [name]="'rating-' + skill.name"
+                      (click)="rating(skill, 1)" />
+                    <label [for]="'star1-' + skill.name"></label>
                   </div>
                 </div>
               </div>
             </mat-card-content>
 
-            <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!verifSkills()">
+            <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifSkills()">
               {{ "NEXT" | translate }}
             </button>
           </mat-card>
         </form>
+
       </ng-template>
     </mat-step>
 
@@ -375,40 +493,35 @@
               <h4>{{'STEP_5_CHOOSE_INITIAL_HISTORICS_TITLE_2' | translate}}</h4>
               <p [innerHTML]="'STEP_5_CHOOSE_INITIAL_HISTORICS_TEXT' | translate"></p>
 
-              <div class="skill-level-container">
-                <mat-form-field>
-                  <mat-label>{{'STEP_5_CHOOSE_INITIAL_HISTORIC_AT_3' | translate}}</mat-label>
-                  <mat-select formControlName="historicAtThree" required>
-                    <mat-option *ngFor="let histo of historics" [value]="histo">
-                      {{histo.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>{{'STEP_5_CHOOSE_INITIAL_HISTORIC_AT_2' | translate}}</mat-label>
-                  <mat-select formControlName="historicAtTwo" required>
-                    <mat-option *ngFor="let histo of historics" [value]="histo">
-                      {{histo.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>{{'STEP_5_CHOOSE_INITIAL_HISTORIC_AT_1' | translate}}</mat-label>
-                  <mat-select formControlName="historicAtOne" required>
-                    <mat-option *ngFor="let histo of historics" [value]="histo">
-                      {{histo.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+              <div class="skills-container">
+                <div class="skill-item" *ngFor="let historic of historics">
+                  <p>{{historic.name | translate}}</p>
+                  <div class="rating" [attr.data-historic-id]="historic.name"
+                    [ngClass]="{'no-rating' : historic.level === 0}">
+                    <input type="radio" [id]="'star5-' + historic.name" [name]="'rating-' + historic.name"
+                      (change)="rating(historic, 5)" />
+                    <label [for]="'star5-' + historic.name" title="5 stars"></label>
+                    <input type="radio" [id]="'star4-' + historic.name" [name]="'rating-' + historic.name"
+                      (change)="rating(historic, 4)" />
+                    <label [for]="'star4-' + historic.name" title="4 stars"></label>
+                    <input type="radio" [id]="'star3-' + historic.name" [name]="'rating-' + historic.name"
+                      (change)="rating(historic, 3)" />
+                    <label [for]="'star3-' + historic.name" title="3 stars"></label>
+                    <input type="radio" [id]="'star2-' + historic.name" [name]="'rating-' + historic.name"
+                      (change)="rating(historic, 2)" />
+                    <label [for]="'star2-' + historic.name" title="2 stars"></label>
+                    <input type="radio" [id]="'star1-' + historic.name" [name]="'rating-' + historic.name"
+                      (click)="rating(historic, 1)" />
+                    <label [for]="'star1-' + historic.name" title="1 star"></label>
+                  </div>
+                </div>
               </div>
 
             </mat-card-content>
-            <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!createChracterStepFiveForm.valid">
+            <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifHistorics()">
               {{ "NEXT" | translate }}
             </button>
+
           </mat-card>
         </form>
       </ng-template>
@@ -424,38 +537,32 @@
               <h4>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TITLE' | translate}}</h4>
               <p [innerHTML]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TEXT' | translate"></p>
 
-              <div class="skill-level-container">
-                <mat-form-field>
-                  <mat-label>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_AT_2' | translate}}</mat-label>
-                  <mat-select formControlName="disciplineAtTwo" required>
-                    <mat-option *ngFor="let disci of selectedClan.disciplines" [value]="disci">
-                      {{disci.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_AT_1' | translate}}</mat-label>
-                  <mat-select formControlName="disciplineAtOneA" required>
-                    <mat-option *ngFor="let disci of selectedClan.disciplines" [value]="disci">
-                      {{disci.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_AT_1' | translate}}</mat-label>
-                  <mat-select formControlName="disciplineAtOneB" required>
-                    <mat-option *ngFor="let disci of selectedClan.disciplines" [value]="disci">
-                      {{disci.name | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+              <div class="stuff-container">
+                <div class="skill-item" *ngFor="let disc of selectedClan.disciplines">
+                  <p>{{disc.name | translate}}</p>
+                  <div class="rating" [attr.data-skill-id]="disc.name" [ngClass]="{'no-rating' : disc.level === 0}">
+                    <input type="radio" [id]="'star5-' + disc.name" [name]="'rating-' + disc.name"
+                      (change)="rating(disc, 5)" />
+                    <label [for]="'star5-' + disc.name"></label>
+                    <input type="radio" [id]="'star4-' + disc.name" [name]="'rating-' + disc.name"
+                      (change)="rating(disc, 4)" />
+                    <label [for]="'star4-' + disc.name"></label>
+                    <input type="radio" [id]="'star3-' + disc.name" [name]="'rating-' + disc.name"
+                      (change)="rating(disc, 3)" />
+                    <label [for]="'star3-' + disc.name"></label>
+                    <input type="radio" [id]="'star2-' + disc.name" [name]="'rating-' + disc.name"
+                      (change)="rating(disc, 2)" />
+                    <label [for]="'star2-' + disc.name"></label>
+                    <input type="radio" [id]="'star1-' + disc.name" [name]="'rating-' + disc.name"
+                      (click)="rating(disc, 1)" />
+                    <label [for]="'star1-' + disc.name"></label>
+                  </div>
+                </div>
               </div>
 
             </mat-card-content>
             <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!createCharacterStepSixForm.valid">
+              [disabled]="!verifDisciplines()">
               {{ "NEXT" | translate }}
             </button>
           </mat-card>
@@ -577,5 +684,5 @@
 
   </mat-stepper>
 
-  <bn-stepper class="helper" [stepperType]="'characterCreation'"></bn-stepper>
+  <bn-stepper class="helper" [stepperType]="'characterCreation'" [currentCreationStep]="currentCreationStep"></bn-stepper>
 </div>

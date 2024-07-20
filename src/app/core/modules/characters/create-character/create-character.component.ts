@@ -1,5 +1,5 @@
 import { ChronicleService } from '@core/services/chronicle.service';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Chronicle } from '@core/models/chronicle';
 import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { Historic } from '@core/models/game/historic';
 import { Discipline } from '@core/models/game/discipline';
 import { AtoutFlaws } from '@core/models/game/atoutFlaws';
 import { AtoutsFlawsService } from '@shared/services/atoutFlaws.service';
+import { MatStepper } from '@angular/material/stepper';
 
 function validAttributes(control: AbstractControl): ValidationErrors | null {
   const values = [3, 5, 7]; // Valid values
@@ -39,15 +40,6 @@ function validAttributes(control: AbstractControl): ValidationErrors | null {
   }
 }
 
-const uniqueValuesValidator: ValidatorFn = (control: AbstractControl): { [key: string]: any } | null => {
-  const formGroup = control as FormGroup;
-  const values = Object.values(formGroup.value);
-
-  const duplicateValues = values.filter((value, index) => values.indexOf(value) !== index);
-
-  return duplicateValues.length > 0 ? { 'nonUniqueValues': true } : null;
-};
-
 @Component({
   selector: 'app-create-character',
   templateUrl: './create-character.component.html',
@@ -55,7 +47,9 @@ const uniqueValuesValidator: ValidatorFn = (control: AbstractControl): { [key: s
 })
 export class CreateCharacterComponent implements OnInit {
 
-  attributsInitialValues = [7, 5, 3]
+  @ViewChild('stepper') private stepper: MatStepper;
+
+  currentCreationStep: number = 0;
 
   currentChronicle: Chronicle;
 
@@ -181,6 +175,7 @@ export class CreateCharacterComponent implements OnInit {
     if (this.createCharacterStepOneForm.valid) {
       const newCharacter = this.createCharacterStepOneForm.getRawValue() as Character;
       this.characterService.setCharacter(newCharacter);
+      this.currentCreationStep += 1;
     }
   }
 
@@ -215,6 +210,10 @@ export class CreateCharacterComponent implements OnInit {
       else {
         this.clansAtouts = this.allAtoutsFlaws.filter(x => x.clanKey === this.selectedClan.key && x.cost > 0);
       }
+
+      this.characterService.setDiscplines(undefined);
+      this.createCharacterStepSixForm.reset();
+      this.currentCreationStep += 1;
     }
   }
 
@@ -231,6 +230,7 @@ export class CreateCharacterComponent implements OnInit {
       focus.push(this.createCharacterStepThreeForm.get('socialFocus').value);
 
       this.characterService.setFocus(focus);
+      this.currentCreationStep += 1;
     }
   }
 
@@ -239,58 +239,67 @@ export class CreateCharacterComponent implements OnInit {
       let skills = this.skills.filter(x => x.level > 0).sort((a, b) => {
         return b.level - a.level
       });
+
+      this.createCharacterStepFourForm.get('skills').setValue(skills);
+
       this.characterService.setSkills(skills);
+      this.currentCreationStep += 1;
+
+      this.stepper.next();
     }
   }
 
   validationStepFive() {
-    if (this.createChracterStepFiveForm.valid) {
-      let histo = new Array<Historic>();
+    if (this.verifHistorics()) {
+      let histo = this.historics.filter(h => h.level).sort((a, b) => {
+        return b.level - a.level;
+      });
 
-      let histoAt3Points = this.createChracterStepFiveForm.get('historicAtThree').value;
-      histoAt3Points.level = 3;
-
-      let histoAt2Points = this.createChracterStepFiveForm.get('historicAtTwo').value;
-      histoAt2Points.level = 2;
-
-      let histoAt1Point = this.createChracterStepFiveForm.get('historicAtOne').value;
-      histoAt1Point.level = 1;
-
-      histo.push(histoAt3Points);
-      histo.push(histoAt2Points);
-      histo.push(histoAt1Point);
+      this.createChracterStepFiveForm.get('historicAtThree').setValue(histo.find(h => h.level === 3));
+      this.createChracterStepFiveForm.get('historicAtTwo').setValue(histo.find(h => h.level === 2));
+      this.createChracterStepFiveForm.get('historicAtOne').setValue(histo.find(h => h.level === 1));
 
       this.characterService.setHistorics(histo);
+      this.currentCreationStep += 1;
+
+      this.stepper.next();
     }
   }
 
   validationStepSix() {
-    if (this.createCharacterStepSixForm.valid) {
-      let disciplines = new Array<Discipline>();
+    if (this.verifDisciplines()) {
+      let disciplines = this.selectedClan?.disciplines.filter(d => d.level > 0).sort((a, b) => {
+        return b.level - a.level;
+      });
 
-      let mainDiscipline = this.createCharacterStepSixForm.get('disciplineAtTwo').value;
-      mainDiscipline.level = 2;
-
-      disciplines.push(mainDiscipline);
-
-      let lvlOneDisciplineA = this.createCharacterStepSixForm.get('disciplineAtOneA').value;
-      lvlOneDisciplineA.level = 1;
-      disciplines.push(lvlOneDisciplineA);
-
-      let lvlOneDisciplineB = this.createCharacterStepSixForm.get('disciplineAtOneB').value;
-      lvlOneDisciplineB.level = 1;
-      disciplines.push(lvlOneDisciplineB);
+      this.createCharacterStepSixForm.get('disciplines').setValue(disciplines);
 
       this.characterService.setDiscplines(disciplines);
+      this.currentCreationStep += 1;
+      this.stepper.next();
     }
   }
 
-  rating(stuff: Skill | Historic, rating: number) {
+  rating(stuff: Skill | Historic | Discipline, rating: number) {
     if (stuff.level === 1 && rating === 1) {
       stuff.level = 0;
     }
     else {
       stuff.level = rating;
+    }
+  }
+
+  ratingAttributes(attribute: string, level: number) {
+    switch(attribute) {
+      case 'physical':
+        this.createCharacterStepThreeForm.get('physical').setValue(level);
+        break;
+      case 'social':
+        this.createCharacterStepThreeForm.get('social').setValue(level);
+        break;
+      case 'mental':
+        this.createCharacterStepThreeForm.get('mental').setValue(level);
+        break;
     }
   }
 
@@ -351,6 +360,32 @@ export class CreateCharacterComponent implements OnInit {
     return true;
   }
 
+  verifHistorics(): boolean {
+    const currentHistorics = this.historics.filter(s => s.level > 0);
+
+    if (currentHistorics.filter(x => x.level === 5).length != 0)
+      return false;
+
+    if (currentHistorics.filter(x => x.level === 4).length != 0)
+      return false;
+
+    if (currentHistorics.filter(x => x.level === 3).length != 1)
+      return false;
+
+    if (currentHistorics.filter(x => x.level === 2).length != 1)
+      return false;
+
+    if (currentHistorics.filter(x => x.level === 1).length != 1)
+      return false;
+
+    return true;
+  }
+
+  verifDisciplines() : boolean {
+    return this.selectedClan?.disciplines.filter(x => x.level === 2).length === 1 && 
+      this.selectedClan?.disciplines.filter(x => x.level === 1).length === 2;
+  }
+
   private initStepOne() {
     this.createCharacterStepOneForm = this.fb.group({
       concept: [null, Validators.required],
@@ -386,15 +421,13 @@ export class CreateCharacterComponent implements OnInit {
       historicAtThree: [null, Validators.required],
       historicAtTwo: [null, Validators.required],
       historicAtOne: [null, Validators.required]
-    }, { validator: uniqueValuesValidator });
+    });
   }
 
   private initStepSix() {
     this.createCharacterStepSixForm = this.fb.group({
-      disciplineAtTwo: [null, Validators.required],
-      disciplineAtOneA: [null, Validators.required],
-      disciplineAtOneB: [null, Validators.required],
-    }, { validator: uniqueValuesValidator });
+      disciplines: [this.fb.array([]), Validators.required],
+    });
   }
 
   private initStepSeven() {
