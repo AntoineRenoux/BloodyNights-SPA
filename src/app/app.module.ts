@@ -14,6 +14,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { SharedModule } from '@shared/shared.module';
 import { JwtInterceptor } from '@core/interceptors/jwt.interceptor';
 import { CustomTranslationLoaderFactory } from '@shared/services/translation.service';
+import { NgxEditorModule } from 'ngx-editor';
 
 registerLocaleData(localeFr);
 
@@ -44,6 +45,14 @@ registerLocaleData(localeFr);
       }
     }),
     NgxSpinnerModule,
+    NgxEditorModule.forRoot({
+      locals: {
+        bold: 'Bold',
+        italic: 'Italic',
+        code: 'Code',
+        underline: 'Underline',
+      },
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

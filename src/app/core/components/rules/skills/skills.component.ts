@@ -20,8 +20,6 @@ export class SkillsComponent implements OnInit {
     this.skillService.getSkills().subscribe((skills: Skill[]) => {
       this.skills = skills
     });
-
-    timer().subscribe(() => this.setListItemsMenu());
   }
 
   setListItemsMenu() {

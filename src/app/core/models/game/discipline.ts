@@ -22,7 +22,7 @@ export class Discipline {
 export class Power {
   key: string;
   name: string;
-  level: string;
+  level: number;
   description: string;
   system: string;
   exceptionnalSuccess: string;

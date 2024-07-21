@@ -21,10 +21,6 @@ export class RitualsComponent implements OnInit {
      }
 
   ngOnInit(): void {
-    if (this.navigationService.itemsMenuForNavigation$.value === null) {
-      timer().subscribe(() => this.setListItemsMenu());
-    }
-
     this.route.paramMap.subscribe(params => {
       const discipline = params.get('discipline');
       const ritual = params.get('ritual').toUpperCase();

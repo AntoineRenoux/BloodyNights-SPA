@@ -28,8 +28,6 @@ export class DisciplineComponent implements OnInit {
         this.getDisciplineByKey(this.key);
       }
     });
-
-    timer().subscribe(() => this.setListItemsMenu());
   }
 
   getDisciplineByKey(key: string) {

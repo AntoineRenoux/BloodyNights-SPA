@@ -18,4 +18,6 @@ export class Character {
     historics: Historic[];
     disciplines: Discipline[];
     atouts: AtoutFlaws[];
+    backgroundLiving: string;
+    backgroundDead: string;
 }

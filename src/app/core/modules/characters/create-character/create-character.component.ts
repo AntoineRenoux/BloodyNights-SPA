@@ -1,8 +1,8 @@
 import { ChronicleService } from '@core/services/chronicle.service';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Chronicle } from '@core/models/chronicle';
 import { ActivatedRoute } from '@angular/router';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Character } from '@core/models/game/character';
 import { Archetype } from '@core/models/game/archetype';
 import { Clan } from '@core/models/game/clan';
@@ -20,6 +20,9 @@ import { Discipline } from '@core/models/game/discipline';
 import { AtoutFlaws } from '@core/models/game/atoutFlaws';
 import { AtoutsFlawsService } from '@shared/services/atoutFlaws.service';
 import { MatStepper } from '@angular/material/stepper';
+import { Editor, toHTML } from 'ngx-editor';
+import { HelperService } from '@shared/services/helper.service';
+import { TranslateService } from '@ngx-translate/core';
 
 function validAttributes(control: AbstractControl): ValidationErrors | null {
   const values = [3, 5, 7]; // Valid values
@@ -45,12 +48,14 @@ function validAttributes(control: AbstractControl): ValidationErrors | null {
   templateUrl: './create-character.component.html',
   styleUrls: ['./create-character.component.scss']
 })
-export class CreateCharacterComponent implements OnInit {
+export class CreateCharacterComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper') private stepper: MatStepper;
 
-  currentCreationStep: number = 0;
+  backLiving: Editor;
+  backDead: Editor;
 
+  currentCreationStep: number = 0;
   currentChronicle: Chronicle;
 
   archetypes: Archetype[];
@@ -85,7 +90,9 @@ export class CreateCharacterComponent implements OnInit {
     public characterService: CharacterService,
     public clanService: ClanService,
     private route: ActivatedRoute,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private helperService: HelperService,
+    private trad: TranslateService) {
 
     this.route.params.subscribe(params => {
       this.chronicleService.getById(params['chronicleId']).subscribe({
@@ -156,6 +163,14 @@ export class CreateCharacterComponent implements OnInit {
     this.initStepFive();
     this.initStepSix();
     this.initStepSeven();
+
+    this.backLiving = new Editor();
+    this.backDead = new Editor();
+  }
+
+  ngOnDestroy(): void {
+    this.backLiving.destroy();
+    this.backDead.destroy();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -174,14 +189,25 @@ export class CreateCharacterComponent implements OnInit {
   validationStepOne() {
     if (this.createCharacterStepOneForm.valid) {
       const newCharacter = this.createCharacterStepOneForm.getRawValue() as Character;
+      if (this.createCharacterStepOneForm.get('backgroundLiving').value !== null) {
+        newCharacter.backgroundLiving = toHTML(this.createCharacterStepOneForm.get('backgroundLiving').value);
+      }
+      if (this.createCharacterStepOneForm.get('backgroundDead').value !== null) {
+        newCharacter.backgroundDead = toHTML(this.createCharacterStepOneForm.get('backgroundDead').value);
+      }
       this.characterService.setCharacter(newCharacter);
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 1;
+
+      this.helperService.setHeaderTitle('HELP');
+      this.helperService.setTextHelp('HELP_TEXT');
     }
   }
 
   validationStepTwo() {
     if (this.createCharacterStepTwoForm.valid) {
       this.characterService.setClan(this.selectedClan);
+
+      debugger;
 
       if (this.selectedClan.rarity?.cost) {
         const rarityClanAtout = this.clansAtouts?.find(x => x.clanKey.includes(this.selectedClan.key));
@@ -213,7 +239,7 @@ export class CreateCharacterComponent implements OnInit {
 
       this.characterService.setDiscplines(undefined);
       this.createCharacterStepSixForm.reset();
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 2;
     }
   }
 
@@ -230,7 +256,10 @@ export class CreateCharacterComponent implements OnInit {
       focus.push(this.createCharacterStepThreeForm.get('socialFocus').value);
 
       this.characterService.setFocus(focus);
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 3;
+
+      this.helperService.setHeaderTitle('HELP');
+      this.helperService.setTextHelp('HELP_TEXT');
     }
   }
 
@@ -243,9 +272,11 @@ export class CreateCharacterComponent implements OnInit {
       this.createCharacterStepFourForm.get('skills').setValue(skills);
 
       this.characterService.setSkills(skills);
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 4;
 
       this.stepper.next();
+      this.helperService.setHeaderTitle('HELP');
+      this.helperService.setTextHelp('HELP_TEXT');
     }
   }
 
@@ -260,9 +291,11 @@ export class CreateCharacterComponent implements OnInit {
       this.createChracterStepFiveForm.get('historicAtOne').setValue(histo.find(h => h.level === 1));
 
       this.characterService.setHistorics(histo);
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 5;
 
       this.stepper.next();
+      this.helperService.setHeaderTitle('HELP');
+      this.helperService.setTextHelp('HELP_TEXT');
     }
   }
 
@@ -275,8 +308,10 @@ export class CreateCharacterComponent implements OnInit {
       this.createCharacterStepSixForm.get('disciplines').setValue(disciplines);
 
       this.characterService.setDiscplines(disciplines);
-      this.currentCreationStep += 1;
+      this.currentCreationStep = 6;
       this.stepper.next();
+      this.helperService.setHeaderTitle('HELP');
+      this.helperService.setTextHelp('HELP_TEXT');
     }
   }
 
@@ -290,7 +325,7 @@ export class CreateCharacterComponent implements OnInit {
   }
 
   ratingAttributes(attribute: string, level: number) {
-    switch(attribute) {
+    switch (attribute) {
       case 'physical':
         this.createCharacterStepThreeForm.get('physical').setValue(level);
         break;
@@ -381,15 +416,143 @@ export class CreateCharacterComponent implements OnInit {
     return true;
   }
 
-  verifDisciplines() : boolean {
-    return this.selectedClan?.disciplines.filter(x => x.level === 2).length === 1 && 
+  verifDisciplines(): boolean {
+    return this.selectedClan?.disciplines.filter(x => x.level === 2).length === 1 &&
       this.selectedClan?.disciplines.filter(x => x.level === 1).length === 2;
+  }
+
+  setConceptHelper() {
+    this.helperService.setHeaderTitle('FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER');
+
+    let tradu: string = '';
+
+    tradu += `${this.trad.instant('FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_2')} </br>
+      ${this.trad.instant('FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_3')}`;
+
+    this.helperService.setTextHelp(tradu);
+  }
+
+  setArchetypeHelper() {
+    this.helperService.setHeaderTitle('FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER');
+
+    let explainsArch: string = '';
+
+    this.archetypes.forEach(a => {
+      explainsArch += `<p><strong>${this.trad.instant(a.name)}</strong>: ${this.trad.instant(a.description)}</p>`
+    });
+
+    this.helperService.setTextHelp(explainsArch);
+  }
+
+  setAttributeHelper(attribute: string) {
+    switch (attribute) {
+      case 'physical':
+        this.helperService.setHeaderTitle('PHYSICAL_NAME');
+        this.helperService.setTextHelp('PHYSICAL_DESCRIPTION');
+        break;
+      case 'social':
+        this.helperService.setHeaderTitle('SOCIAL_NAME');
+        this.helperService.setTextHelp('SOCIAL_DESCRIPTION');
+        break;
+      case 'mental':
+        this.helperService.setHeaderTitle('MENTAL_NAME');
+        this.helperService.setTextHelp('MENTAL_DESCRIPTION');
+        break;
+      case 'PHYSICAL_STRENGTH_NAME':
+        this.helperService.setHeaderTitle('PHYSICAL_STRENGTH_NAME');
+        this.helperService.setTextHelp('PHYSICAL_STRENGTH_DESCRIPTION');
+        break;
+      case 'PHYSICAL_DEXTERITY_NAME':
+        this.helperService.setHeaderTitle('PHYSICAL_DEXTERITY_NAME');
+        this.helperService.setTextHelp('PHYSICAL_DEXTERITY_DESCRIPTION');
+        break;
+      case 'PHYSICAL_STAMINA_NAME':
+        this.helperService.setHeaderTitle('PHYSICAL_STAMINA_NAME');
+        this.helperService.setTextHelp('PHYSICAL_STAMINA_DESCRIPTION');
+        break;
+      case 'SOCIAL_CHARISMA_NAME':
+        this.helperService.setHeaderTitle('SOCIAL_CHARISMA_NAME');
+        this.helperService.setTextHelp('SOCIAL_CHARISMA_DESCRIPTION');
+        break;
+      case 'SOCIAL_MANIPULATION_NAME':
+        this.helperService.setHeaderTitle('SOCIAL_MANIPULATION_NAME');
+        this.helperService.setTextHelp('SOCIAL_MANIPULATION_DESCRIPTION');
+        break;
+      case 'SOCIAL_APPEARANCE_NAME':
+        this.helperService.setHeaderTitle('SOCIAL_APPEARANCE_NAME');
+        this.helperService.setTextHelp('SOCIAL_APPEARANCE_DESCRIPTION');
+        break;
+      case 'MENTAL_PERCEPTION_NAME':
+        this.helperService.setHeaderTitle('MENTAL_PERCEPTION_NAME');
+        this.helperService.setTextHelp('MENTAL_PERCEPTION_DESCRIPTION');
+        break;
+      case 'MENTAL_INTELLIGENCE_NAME':
+        this.helperService.setHeaderTitle('MENTAL_INTELLIGENCE_NAME');
+        this.helperService.setTextHelp('MENTAL_INTELLIGENCE_DESCRIPTION');
+        break;
+      case 'MENTAL_WITZ_NAME':
+        this.helperService.setHeaderTitle('MENTAL_WITZ_NAME');
+        this.helperService.setTextHelp('MENTAL_WITZ_DESCRIPTION');
+        break;
+    }
+  }
+
+  setSkillHelper(skill: Skill) {
+    this.helperService.setHeaderTitle(skill.name);
+
+    let description: string = '';
+    description += `<p><strong>${this.trad.instant(skill.name)}</strong>: ${this.trad.instant(skill.description)}</p>
+    <strong>Systeme:</strong> ${this.trad.instant(skill.system)}`
+
+    this.helperService.setTextHelp(description);
+  }
+
+  setHistoHelper(histo: Historic) {
+    this.helperService.setHeaderTitle(histo.name);
+
+    let description: string = '';
+    description += `<p><strong>${this.trad.instant(histo.name)}</strong>: ${this.trad.instant(histo.description)}</p>
+    <strong>Systeme:</strong> ${this.trad.instant(histo.system)}`;
+
+    this.helperService.setTextHelp(description);
+  }
+
+  setDisciplineHelper(disc: Discipline) {
+    this.helperService.setHeaderTitle(disc.name);
+
+    let description: string = '';
+    description += `<p><strong>${this.trad.instant(disc.name)}</strong>: ${this.trad.instant(disc.description)}</p>`;
+
+    let powers: string = '';
+
+    disc.powers?.sort((a, b) => {
+      return a.level - b.level;
+    }).forEach(p => {
+
+      powers += `<p>`;
+
+      for (let index = 0; index < p.level; index++) {
+        powers += `o`;
+      }
+      powers += ` <strong>${this.trad.instant(p.name)}</strong> : <span>${this.trad.instant(p.description)}</span>`;
+      
+      if (p.focusDescription !== null) {
+        powers += `<p><strong>Focus (${this.trad.instant(p.focus.name)})</strong> : ${this.trad.instant(p.focusDescription)}</p>`
+      }
+      powers += `</p>`;
+    });
+
+    description += powers;
+
+    this.helperService.setTextHelp(description);
   }
 
   private initStepOne() {
     this.createCharacterStepOneForm = this.fb.group({
       concept: [null, Validators.required],
       archetype: [null, Validators.required],
+      backgroundLiving: [null],
+      backgroundDead: [null]
     });
   }
 

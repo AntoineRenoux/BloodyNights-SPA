@@ -29,8 +29,6 @@ export class ClansComponent implements OnInit {
         this.getClanByKey(this.key);
       }
     });
-
-    timer().subscribe(() => this.setListItemsMenu());
   }
 
   getClanByKey(key: string) {

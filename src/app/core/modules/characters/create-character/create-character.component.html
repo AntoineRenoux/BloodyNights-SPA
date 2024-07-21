@@ -124,565 +124,569 @@
 
   <bn-helper class="helper"></bn-helper>
 
-  <mat-stepper [linear]="true" #stepper>
-    <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate">
-      <ng-template matStepContent>
-        <mat-card class="row">
-          <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
-          <mat-card-content class="col mt-3">
-            <form [formGroup]="createCharacterStepOneForm" (ngSubmit)="validationStepOne()">
+  <div class="scrollable">
+    <mat-stepper [linear]="false" #stepper>
+      <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate">
+        <ng-template matStepContent>
+          <mat-card class="row">
+            <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
+            <mat-card-content class="col mt-3">
+              <form [formGroup]="createCharacterStepOneForm" (ngSubmit)="validationStepOne()">
 
-              <h2>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}}</h2>
-              <p>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT' | translate}}</p>
-              <mat-accordion>
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      {{'CLICK_HERE_FOR_INFORMATIONS' | translate}}
-                    </mat-panel-title>
-                    <mat-panel-description>
+                <h2>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_HEADER' | translate}}</h2>
 
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
-                  <p>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_2' | translate}}</p>
-                  <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_CONCEPT_TEXT_3' | translate"></p>
-                </mat-expansion-panel>
-              </mat-accordion>
+                <mat-form-field class="w-100 mt-2">
+                  <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT' | translate}}</mat-label>
+                  <input matInput formControlName="concept" required (focus)="setConceptHelper()">
+                </mat-form-field>
 
-              <mat-form-field class="w-100 mt-2">
-                <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_CONCEPT' | translate}}</mat-label>
-                <input matInput formControlName="concept" required>
-              </mat-form-field>
+                <h2>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}}</h2>
 
-              <h2>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_HEADER' | translate}}</h2>
-              <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT' | translate"></p>
+                <mat-form-field class="w-100 mt-2">
+                  <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE' | translate}}</mat-label>
+                  <select matInput matNativeControl formControlName="archetype" required (focus)="setArchetypeHelper()">
+                    <option [value]="archetype.name" *ngFor="let archetype of archetypes">{{archetype.name |
+                      translate}}
+                    </option>
+                  </select>
+                </mat-form-field>
 
-              <mat-accordion>
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      {{'CLICK_HERE_FOR_INFORMATIONS' | translate}}
-                    </mat-panel-title>
-                    <mat-panel-description>
+                <div class="NgxEditor__Wrapper mb-2">
+                  <ngx-editor-menu [editor]="backLiving"> </ngx-editor-menu>
+                  <ngx-editor [editor]="backLiving" formControlName="backgroundLiving" [disabled]="false"
+                    [placeholder]="'Quelques mots sur votre personnage avant son étreinte...'"></ngx-editor>
+                </div>
 
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
-                  <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT_2' | translate"></p>
-                  <p [innerHTML]="'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE_TEXT_3' | translate"></p>
-                  <ul>
-                    <li *ngFor="let archetype of archetypes"><strong>{{archetype.name | translate}} :
-                      </strong>{{archetype.description | translate}}</li>
-                  </ul>
-                </mat-expansion-panel>
-              </mat-accordion>
+                <div class="NgxEditor__Wrapper">
+                  <ngx-editor-menu [editor]="backDead"> </ngx-editor-menu>
+                  <ngx-editor [editor]="backDead" formControlName="backgroundDead" [disabled]="false"
+                    [placeholder]="'Quelques mots sur votre personnage après son étreinte...'"></ngx-editor>
+                </div>
 
-              <mat-form-field class="w-100 mt-2">
-                <mat-label>{{'FIRST_CHARACTER_CREATION_STEP_ARCHETYPE' | translate}}</mat-label>
-                <select matInput matNativeControl formControlName="archetype" required>
-                  <option [value]="archetype.name" *ngFor="let archetype of archetypes">{{archetype.name |
-                    translate}}
-                  </option>
-                </select>
-              </mat-form-field>
+                <div class="col-12 mt-4">
+                  <button type="submit" mat-button matStepperNext class="stepper-button"
+                    [disabled]="!createCharacterStepOneForm.valid">
+                    {{ "NEXT" | translate }}
+                  </button>
+                </div>
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </mat-step>
 
-              <div class="col-12 mt-4">
+      <mat-step [stepControl]="createCharacterStepTwoForm" [label]="'SECOND_CHARACTER_CREATION_STEP' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createCharacterStepTwoForm" (ngSubmit)="validationStepTwo()">
+            <mat-card>
+              <mat-card-title>{{"SECOND_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
+              <mat-card-content class="col mt-3">
+                <p [innerHTML]="'SECOND_CHARACTER_CREATION_STEP_CONCEPT_TEXT' | translate"></p>
+                <p [innerHTML]="'SECOND_CHARACTER_CREATION_STEP_CONCEPT_TEXT_2' | translate"></p>
+
+                <ng-container *ngIf="currentChronicle !== undefined">
+                  <div *ngFor="let cr of clanService.clanImportances">
+                    <div class="clan-importance" [ngSwitch]="cr">
+                      <h4 *ngSwitchCase="'MAJOR'">{{"MAJORS_CLANS" | translate}}</h4>
+                      <h4 *ngSwitchCase="'MINOR'">{{"MINORS_CLANS" | translate}}</h4>
+                      <h4 *ngSwitchCase="'RARE'">{{"RARES_CLANS" | translate}}</h4>
+                    </div>
+                    <div class="container-card">
+                      <div class="clan-card"
+                        *ngFor="let clan of currentChronicle.clans | filterAutorizedClans | filterClans : cr">
+                        <button type="button" mat-stroked-button color="primary"
+                          [ngClass]="{'selected': selectedClan?.key === clan.key || selectedClan?.parentId === clan.key}"
+                          (click)="selectedClan = clan; clanDescriptor.show()">
+                          <span>{{clan.name | translate }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+              </mat-card-content>
+              <div class="col">
                 <button type="submit" mat-button matStepperNext class="stepper-button"
-                  [disabled]="!createCharacterStepOneForm.valid">
+                  [disabled]="!createCharacterStepTwoForm.valid">
                   {{ "NEXT" | translate }}
                 </button>
               </div>
-            </form>
-          </mat-card-content>
-        </mat-card>
-      </ng-template>
-    </mat-step>
+            </mat-card>
+          </form>
+        </ng-template>
+      </mat-step>
 
-    <mat-step [stepControl]="createCharacterStepTwoForm" [label]="'SECOND_CHARACTER_CREATION_STEP' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepTwoForm" (ngSubmit)="validationStepTwo()">
-          <mat-card>
-            <mat-card-title>{{"SECOND_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
-            <mat-card-content class="col mt-3">
-              <p [innerHTML]="'SECOND_CHARACTER_CREATION_STEP_CONCEPT_TEXT' | translate"></p>
-              <p [innerHTML]="'SECOND_CHARACTER_CREATION_STEP_CONCEPT_TEXT_2' | translate"></p>
+      <mat-step [stepControl]="createCharacterStepThreeForm" [label]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createCharacterStepThreeForm" (ngSubmit)="validationStepThree()">
+            <mat-card>
+              <mat-card-title>{{"STEP_3_CHOOSE_INITIAL_ATTRIBUTS" | translate}}</mat-card-title>
+              <mat-card-content>
+                <p [innerHTML]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS_EXPLAIN_HEADER' | translate"></p>
+                <p [innerHTML]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS_EXPLAIN_TEXT' | translate"></p>
 
-              <ng-container *ngIf="currentChronicle !== undefined">
-                <div *ngFor="let cr of clanService.clanImportances">
-                  <div class="clan-importance" [ngSwitch]="cr">
-                    <h4 *ngSwitchCase="'MAJOR'">{{"MAJORS_CLANS" | translate}}</h4>
-                    <h4 *ngSwitchCase="'MINOR'">{{"MINORS_CLANS" | translate}}</h4>
-                    <h4 *ngSwitchCase="'RARE'">{{"RARES_CLANS" | translate}}</h4>
-                  </div>
-                  <div class="container-card">
-                    <div class="clan-card"
-                      *ngFor="let clan of currentChronicle.clans | filterAutorizedClans | filterClans : cr">
-                      <button type="button" mat-stroked-button color="primary"
-                        [ngClass]="{'selected': selectedClan?.key === clan.key || selectedClan?.parentId === clan.key}"
-                        (click)="selectedClan = clan; clanDescriptor.show()">
-                        <span>{{clan.name | translate }}</span>
-                      </button>
+                <p [innerHTML]="'ATTRIBUT_FOCUS' | translate"></p>
+                <p [innerHTML]="'ATTRIBUT_FOCUS_TEXT' | translate"></p>
+
+
+                <div class="stuff-container">
+                  <div class="attribute" (mouseenter)="setAttributeHelper('physical')">
+                    <div class="skill-item">
+                      <p>{{'PHYSICAL' | translate}}</p>
+                      <div class="rating" [attr.data-skill-id]="'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'">
+                        <input type="radio" [id]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 10)" />
+                        <label [for]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 9)" />
+                        <label [for]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 8)" />
+                        <label [for]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 7)" />
+                        <label [for]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('physical', 6)" />
+                        <label [for]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          style="padding-left: 0.5em;"></label>
+
+
+                        <input type="radio" [id]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 5)" />
+                        <label [for]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 4)" />
+                        <label [for]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 3)" />
+                        <label [for]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('physical', 2)" />
+                        <label [for]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('physical', 1)" />
+                        <label [for]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                      </div>
                     </div>
+
+                    <mat-form-field>
+                      <mat-label>{{'GAME_PHYSICAL_FOCUS' | translate}}</mat-label>
+                      <mat-select formControlName="physicalFocus">
+                        <mat-option *ngFor="let focu of focus | focusfilter: 'PHYSICAL'" [value]="focu"
+                          (mouseenter)="setAttributeHelper(focu.name)">
+                          {{focu.name |translate}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="attribute" (mouseenter)="setAttributeHelper('social')">
+                    <div class="skill-item">
+                      <p>{{'SOCIAL' | translate}}</p>
+                      <div class="rating" [attr.data-skill-id]="'STEP_3_SOCIAL_ATTRIBUTE_HEADER'">
+
+                        <input type="radio" [id]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 10)" />
+                        <label [for]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 9)" />
+                        <label [for]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 8)" />
+                        <label [for]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 7)" />
+                        <label [for]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('social', 6)" />
+                        <label [for]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+
+
+                        <input type="radio" [id]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 5)" />
+                        <label [for]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 4)" />
+                        <label [for]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 3)" />
+                        <label [for]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('social', 2)" />
+                        <label [for]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('social', 1)" />
+                        <label [for]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+                      </div>
+                    </div>
+
+                    <mat-form-field>
+                      <mat-label>{{'GAME_SOCIAL_FOCUS' | translate}}</mat-label>
+                      <mat-select formControlName="socialFocus">
+                        <mat-option *ngFor="let focu of focus | focusfilter: 'SOCIAL'" [value]="focu"
+                          (mouseenter)="setAttributeHelper(focu.name)">
+                          {{focu.name |translate}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="attribute" (mouseenter)="setAttributeHelper('mental')">
+                    <div class="skill-item">
+                      <p>{{'MENTAL' | translate}}</p>
+                      <div class="rating" [attr.data-skill-id]="'STEP_3_MENTAL_ATTRIBUTE_HEADER'">
+                        <input type="radio" [id]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 10)" />
+                        <label [for]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 9)" />
+                        <label [for]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 8)" />
+                        <label [for]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 7)" />
+                        <label [for]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('mental', 6)" />
+                        <label [for]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+
+
+                        <input type="radio" [id]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 5)" />
+                        <label [for]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 4)" />
+                        <label [for]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 3)" />
+                        <label [for]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (change)="ratingAttributes('mental', 2)" />
+                        <label [for]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                        <input type="radio" [id]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
+                          (click)="ratingAttributes('mental', 1)" />
+                        <label [for]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+                      </div>
+                    </div>
+
+                    <mat-form-field>
+                      <mat-label>{{'GAME_MENTAL_FOCUS' | translate}}</mat-label>
+                      <mat-select formControlName="mentalFocus">
+                        <mat-option *ngFor="let focu of focus | focusfilter: 'MENTAL'" [value]="focu"
+                          (mouseenter)="setAttributeHelper(focu.name)">
+                          {{focu.name |translate}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
-              </ng-container>
 
-            </mat-card-content>
-            <div class="col">
+              </mat-card-content>
+
               <button type="submit" mat-button matStepperNext class="stepper-button"
-                [disabled]="!createCharacterStepTwoForm.valid">
+                [disabled]="!createCharacterStepThreeForm.valid">
                 {{ "NEXT" | translate }}
               </button>
-            </div>
-          </mat-card>
-        </form>
-      </ng-template>
-    </mat-step>
+            </mat-card>
+          </form>
+        </ng-template>
+      </mat-step>
 
-    <mat-step [stepControl]="createCharacterStepThreeForm" [label]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepThreeForm" (ngSubmit)="validationStepThree()">
-          <mat-card>
-            <mat-card-title>{{"STEP_3_CHOOSE_INITIAL_ATTRIBUTS" | translate}}</mat-card-title>
-            <mat-card-content>
-              <p [innerHTML]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS_EXPLAIN_HEADER' | translate"></p>
-              <p [innerHTML]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS_EXPLAIN_TEXT' | translate"></p>
+      <mat-step [stepControl]="createCharacterStepFourForm" [label]="'STEP_4_CHOOSE_INITIAL_SKILLS' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createCharacterStepFourForm" (ngSubmit)="validationStepFour()"
+            *ngIf="createCharacterStepFourForm !== undefined">
+            <mat-card>
+              <mat-card-title>{{"STEP_4_CHOOSE_INITIAL_SKILLS" | translate}}</mat-card-title>
 
-              <p [innerHTML]="'ATTRIBUT_FOCUS' | translate"></p>
-              <p [innerHTML]="'ATTRIBUT_FOCUS_TEXT' | translate"></p>
+              <mat-card-content>
+                <p [innerHTML]="'STEP_4_CHOOSE_INITIAL_SKILLS_TEXT' | translate"></p>
+                <p [innerHTML]="'STEP_4_CHOOSE_INITIAL_SKILLS_TEXT_2' | translate"></p>
 
-
-              <div class="stuff-container">
-                <div class="attribute">
-                  <div class="skill-item">
-                    <p>{{'PHYSICAL' | translate}}</p>
-                    <div class="rating" [attr.data-skill-id]="'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'">
-                      <input type="radio" [id]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 10)" />
-                      <label [for]="'star10-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 9)" />
-                      <label [for]="'star9-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 8)" />
-                      <label [for]="'star8-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 7)" />
-                      <label [for]="'star7-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (click)="ratingAttributes('physical', 6)" />
-                      <label [for]="'star6-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
-
-
-                      <input type="radio" [id]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 5)" />
-                      <label [for]="'star5-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 4)" />
-                      <label [for]="'star4-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 3)" />
-                      <label [for]="'star3-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('physical', 2)" />
-                      <label [for]="'star2-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"
-                        (click)="ratingAttributes('physical', 1)" />
-                      <label [for]="'star1-' + 'STEP_3_PHYSICAL_ATTRIBUTE_HEADER'"></label>
+                <div class="skills-container">
+                  <div class="skill-item" *ngFor="let skill of skills" (mouseenter)="setSkillHelper(skill)">
+                    <p>{{skill.name | translate}}</p>
+                    <div class="rating" [attr.data-skill-id]="skill.name" [ngClass]="{'no-rating' : skill.level === 0}">
+                      <input type="radio" [id]="'star5-' + skill.name" [name]="'rating-' + skill.name"
+                        (change)="rating(skill, 5)" />
+                      <label [for]="'star5-' + skill.name"></label>
+                      <input type="radio" [id]="'star4-' + skill.name" [name]="'rating-' + skill.name"
+                        (change)="rating(skill, 4)" />
+                      <label [for]="'star4-' + skill.name"></label>
+                      <input type="radio" [id]="'star3-' + skill.name" [name]="'rating-' + skill.name"
+                        (change)="rating(skill, 3)" />
+                      <label [for]="'star3-' + skill.name"></label>
+                      <input type="radio" [id]="'star2-' + skill.name" [name]="'rating-' + skill.name"
+                        (change)="rating(skill, 2)" />
+                      <label [for]="'star2-' + skill.name"></label>
+                      <input type="radio" [id]="'star1-' + skill.name" [name]="'rating-' + skill.name"
+                        (click)="rating(skill, 1)" />
+                      <label [for]="'star1-' + skill.name"></label>
                     </div>
                   </div>
-
-                  <mat-form-field>
-                    <mat-label>{{'GAME_PHYSICAL_FOCUS' | translate}}</mat-label>
-                    <mat-select formControlName="physicalFocus">
-                      <mat-option *ngFor="let focu of focus | focusfilter: 'PHYSICAL'" [value]="focu">
-                        {{focu.name |translate}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
                 </div>
+              </mat-card-content>
 
-                <div class="attribute">
-                  <div class="skill-item">
-                    <p>{{'SOCIAL' | translate}}</p>
-                    <div class="rating" [attr.data-skill-id]="'STEP_3_SOCIAL_ATTRIBUTE_HEADER'">
+              <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifSkills()">
+                {{ "NEXT" | translate }}
+              </button>
+            </mat-card>
+          </form>
 
-                      <input type="radio" [id]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 10)" />
-                      <label [for]="'star10-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 9)" />
-                      <label [for]="'star9-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 8)" />
-                      <label [for]="'star8-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 7)" />
-                      <label [for]="'star7-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('social', 6)" />
-                      <label [for]="'star6-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+        </ng-template>
+      </mat-step>
 
+      <mat-step [stepControl]="createChracterStepFiveForm" [label]="'STEP_5_CHOOSE_INITIAL_HISTORICS' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createChracterStepFiveForm" (ngSubmit)="validationStepFive()">
+            <mat-card>
+              <mat-card-title>{{"STEP_5_CHOOSE_INITIAL_HISTORICS" | translate}}</mat-card-title>
 
-                      <input type="radio" [id]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 5)" />
-                      <label [for]="'star5-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 4)" />
-                      <label [for]="'star4-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 3)" />
-                      <label [for]="'star3-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('social', 2)" />
-                      <label [for]="'star2-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('social', 1)" />
-                      <label [for]="'star1-' + 'STEP_3_SOCIAL_ATTRIBUTE_HEADER'"></label>
+              <mat-card-content>
+                <p [innerHTML]="'STEP_5_CHOOSE_INITIAL_HISTORICS_TITLE' | translate"></p>
+                <h4>{{'STEP_5_CHOOSE_INITIAL_HISTORICS_TITLE_2' | translate}}</h4>
+                <p [innerHTML]="'STEP_5_CHOOSE_INITIAL_HISTORICS_TEXT' | translate"></p>
+
+                <div class="skills-container">
+                  <div class="skill-item" *ngFor="let historic of historics" (mouseenter)="setHistoHelper(historic)">
+                    <p>{{historic.name | translate}}</p>
+                    <div class="rating" [attr.data-historic-id]="historic.name"
+                      [ngClass]="{'no-rating' : historic.level === 0}">
+                      <input type="radio" [id]="'star5-' + historic.name" [name]="'rating-' + historic.name"
+                        (change)="rating(historic, 5)" />
+                      <label [for]="'star5-' + historic.name" title="5 stars"></label>
+                      <input type="radio" [id]="'star4-' + historic.name" [name]="'rating-' + historic.name"
+                        (change)="rating(historic, 4)" />
+                      <label [for]="'star4-' + historic.name" title="4 stars"></label>
+                      <input type="radio" [id]="'star3-' + historic.name" [name]="'rating-' + historic.name"
+                        (change)="rating(historic, 3)" />
+                      <label [for]="'star3-' + historic.name" title="3 stars"></label>
+                      <input type="radio" [id]="'star2-' + historic.name" [name]="'rating-' + historic.name"
+                        (change)="rating(historic, 2)" />
+                      <label [for]="'star2-' + historic.name" title="2 stars"></label>
+                      <input type="radio" [id]="'star1-' + historic.name" [name]="'rating-' + historic.name"
+                        (click)="rating(historic, 1)" />
+                      <label [for]="'star1-' + historic.name" title="1 star"></label>
                     </div>
                   </div>
-
-                  <mat-form-field>
-                    <mat-label>{{'GAME_SOCIAL_FOCUS' | translate}}</mat-label>
-                    <mat-select formControlName="socialFocus">
-                      <mat-option *ngFor="let focu of focus | focusfilter: 'SOCIAL'" [value]="focu">
-                        {{focu.name |translate}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
                 </div>
 
-                <div class="attribute">
-                  <div class="skill-item">
-                    <p>{{'MENTAL' | translate}}</p>
-                    <div class="rating" [attr.data-skill-id]="'STEP_3_MENTAL_ATTRIBUTE_HEADER'">
-                      <input type="radio" [id]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 10)" />
-                      <label [for]="'star10-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 9)" />
-                      <label [for]="'star9-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 8)" />
-                      <label [for]="'star8-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 7)" />
-                      <label [for]="'star7-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('mental', 6)" />
-                      <label [for]="'star6-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" style="padding-left: 0.5em;"></label>
+              </mat-card-content>
+              <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifHistorics()">
+                {{ "NEXT" | translate }}
+              </button>
 
+            </mat-card>
+          </form>
+        </ng-template>
+      </mat-step>
 
-                      <input type="radio" [id]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 5)" />
-                      <label [for]="'star5-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 4)" />
-                      <label [for]="'star4-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 3)" />
-                      <label [for]="'star3-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        (change)="ratingAttributes('mental', 2)" />
-                      <label [for]="'star2-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
-                      <input type="radio" [id]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"
-                        [name]="'rating-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'" (click)="ratingAttributes('mental', 1)" />
-                      <label [for]="'star1-' + 'STEP_3_MENTAL_ATTRIBUTE_HEADER'"></label>
+      <mat-step [stepControl]="createCharacterStepSixForm" [label]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createCharacterStepSixForm" (ngSubmit)="validationStepSix()">
+            <mat-card>
+              <mat-card-title>{{"STEP_6_CHOOSE_INITIAL_DISCIPLINE" | translate}}</mat-card-title>
+
+              <mat-card-content>
+                <h4>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TITLE' | translate}}</h4>
+                <p [innerHTML]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TEXT' | translate"></p>
+
+                <div class="stuff-container">
+                  <div class="skill-item" *ngFor="let disc of selectedClan.disciplines"
+                    (mouseenter)="setDisciplineHelper(disc)">
+                    <p>{{disc.name | translate}}</p>
+                    <div class="rating" [attr.data-skill-id]="disc.name" [ngClass]="{'no-rating' : disc.level === 0}">
+                      <input type="radio" [id]="'star10-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 10)" />
+                      <label [for]="'star10-' + disc.name"></label>
+                      <input type="radio" [id]="'star9-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 9)" />
+                      <label [for]="'star9-' + disc.name"></label>
+                      <input type="radio" [id]="'star8-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 8)" />
+                      <label [for]="'star8-' + disc.name"></label>
+                      <input type="radio" [id]="'star7-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 7)" />
+                      <label [for]="'star7-' + disc.name"></label>
+                      <input type="radio" [id]="'star6-' + disc.name" [name]="'rating-' + disc.name"
+                        (click)="rating(disc, 6)" />
+                      <label [for]="'star6-' + disc.name" style="margin-left: 0.5em;"></label>
+
+                      <input type="radio" [id]="'star5-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 5)" />
+                      <label [for]="'star5-' + disc.name"></label>
+                      <input type="radio" [id]="'star4-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 4)" />
+                      <label [for]="'star4-' + disc.name"></label>
+                      <input type="radio" [id]="'star3-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 3)" />
+                      <label [for]="'star3-' + disc.name"></label>
+                      <input type="radio" [id]="'star2-' + disc.name" [name]="'rating-' + disc.name"
+                        (change)="rating(disc, 2)" />
+                      <label [for]="'star2-' + disc.name"></label>
+                      <input type="radio" [id]="'star1-' + disc.name" [name]="'rating-' + disc.name"
+                        (click)="rating(disc, 1)" />
+                      <label [for]="'star1-' + disc.name"></label>
                     </div>
                   </div>
-
-                  <mat-form-field>
-                    <mat-label>{{'GAME_MENTAL_FOCUS' | translate}}</mat-label>
-                    <mat-select formControlName="mentalFocus">
-                      <mat-option *ngFor="let focu of focus | focusfilter: 'MENTAL'" [value]="focu">
-                        {{focu.name |translate}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
                 </div>
-              </div>
 
-            </mat-card-content>
+              </mat-card-content>
+              <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifDisciplines()">
+                {{ "NEXT" | translate }}
+              </button>
+            </mat-card>
+          </form>
+        </ng-template>
+      </mat-step>
 
-            <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!createCharacterStepThreeForm.valid">
-              {{ "NEXT" | translate }}
-            </button>
-          </mat-card>
-        </form>
-      </ng-template>
-    </mat-step>
+      <mat-step [stepControl]="createCharacterStepSevenForm" [label]="'STEP_7_CHOOSE_ATOUTS_FLAWS' | translate">
+        <ng-template matStepContent>
+          <form [formGroup]="createCharacterStepSevenForm">
+            <mat-card>
+              <mat-card-title>{{"STEP_7_CHOOSE_ATOUTS_FLAWS" | translate}}</mat-card-title>
+              <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE" | translate}}</h4>
+              <p [innerHTML]="'STEP_7_CHOOSE_ATOUTS_TEXT' | translate"></p>
+              <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE_2" | translate}}</h4>
+              <p [innerHTML]="'STEP_7_CHOOSE_ATOUTS_TEXT_2' | translate"></p>
 
-    <mat-step [stepControl]="createCharacterStepFourForm" [label]="'STEP_4_CHOOSE_INITIAL_SKILLS' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepFourForm" (ngSubmit)="validationStepFour()"
-          *ngIf="createCharacterStepFourForm !== undefined">
-          <mat-card>
-            <mat-card-title>{{"STEP_4_CHOOSE_INITIAL_SKILLS" | translate}}</mat-card-title>
-
-            <mat-card-content>
-              <p [innerHTML]="'STEP_4_CHOOSE_INITIAL_SKILLS_TEXT' | translate"></p>
-              <p [innerHTML]="'STEP_4_CHOOSE_INITIAL_SKILLS_TEXT_2' | translate"></p>
-
-              <div class="skills-container">
-                <div class="skill-item" *ngFor="let skill of skills">
-                  <p>{{skill.name | translate}}</p>
-                  <div class="rating" [attr.data-skill-id]="skill.name" [ngClass]="{'no-rating' : skill.level === 0}">
-                    <input type="radio" [id]="'star5-' + skill.name" [name]="'rating-' + skill.name"
-                      (change)="rating(skill, 5)" />
-                    <label [for]="'star5-' + skill.name"></label>
-                    <input type="radio" [id]="'star4-' + skill.name" [name]="'rating-' + skill.name"
-                      (change)="rating(skill, 4)" />
-                    <label [for]="'star4-' + skill.name"></label>
-                    <input type="radio" [id]="'star3-' + skill.name" [name]="'rating-' + skill.name"
-                      (change)="rating(skill, 3)" />
-                    <label [for]="'star3-' + skill.name"></label>
-                    <input type="radio" [id]="'star2-' + skill.name" [name]="'rating-' + skill.name"
-                      (change)="rating(skill, 2)" />
-                    <label [for]="'star2-' + skill.name"></label>
-                    <input type="radio" [id]="'star1-' + skill.name" [name]="'rating-' + skill.name"
-                      (click)="rating(skill, 1)" />
-                    <label [for]="'star1-' + skill.name"></label>
+              <div class="atout-flaws-container">
+                <div>
+                  <div class="header-atout">
+                    <h2>Atouts génériques</h2>
+                    <button mat-mini-fab color="primary" type="button" (click)="addGenericAtout()">
+                      <mat-icon>add</mat-icon>
+                    </button>
                   </div>
-                </div>
-              </div>
-            </mat-card-content>
 
-            <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifSkills()">
-              {{ "NEXT" | translate }}
-            </button>
-          </mat-card>
-        </form>
+                  <ng-container formArrayName="genericAtouts">
+                    <ng-container *ngFor="let atout of gAtouts.controls; let i=index">
+                      <div [formGroupName]="i">
 
-      </ng-template>
-    </mat-step>
+                        <div>
+                          <mat-form-field>
+                            <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
+                            <mat-select formControlName="atouts">
+                              <mat-option *ngFor="let a of genericsAtouts" [value]="a">
+                                {{a.name | translate}} ({{a.cost}} points)
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <button mat-mini-fab color="warn" type="button" (click)="removeGenericAtout(i)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                        </div>
 
-    <mat-step [stepControl]="createChracterStepFiveForm" [label]="'STEP_5_CHOOSE_INITIAL_HISTORICS' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createChracterStepFiveForm" (ngSubmit)="validationStepFive()">
-          <mat-card>
-            <mat-card-title>{{"STEP_5_CHOOSE_INITIAL_HISTORICS" | translate}}</mat-card-title>
-
-            <mat-card-content>
-              <p [innerHTML]="'STEP_5_CHOOSE_INITIAL_HISTORICS_TITLE' | translate"></p>
-              <h4>{{'STEP_5_CHOOSE_INITIAL_HISTORICS_TITLE_2' | translate}}</h4>
-              <p [innerHTML]="'STEP_5_CHOOSE_INITIAL_HISTORICS_TEXT' | translate"></p>
-
-              <div class="skills-container">
-                <div class="skill-item" *ngFor="let historic of historics">
-                  <p>{{historic.name | translate}}</p>
-                  <div class="rating" [attr.data-historic-id]="historic.name"
-                    [ngClass]="{'no-rating' : historic.level === 0}">
-                    <input type="radio" [id]="'star5-' + historic.name" [name]="'rating-' + historic.name"
-                      (change)="rating(historic, 5)" />
-                    <label [for]="'star5-' + historic.name" title="5 stars"></label>
-                    <input type="radio" [id]="'star4-' + historic.name" [name]="'rating-' + historic.name"
-                      (change)="rating(historic, 4)" />
-                    <label [for]="'star4-' + historic.name" title="4 stars"></label>
-                    <input type="radio" [id]="'star3-' + historic.name" [name]="'rating-' + historic.name"
-                      (change)="rating(historic, 3)" />
-                    <label [for]="'star3-' + historic.name" title="3 stars"></label>
-                    <input type="radio" [id]="'star2-' + historic.name" [name]="'rating-' + historic.name"
-                      (change)="rating(historic, 2)" />
-                    <label [for]="'star2-' + historic.name" title="2 stars"></label>
-                    <input type="radio" [id]="'star1-' + historic.name" [name]="'rating-' + historic.name"
-                      (click)="rating(historic, 1)" />
-                    <label [for]="'star1-' + historic.name" title="1 star"></label>
-                  </div>
-                </div>
-              </div>
-
-            </mat-card-content>
-            <button type="submit" mat-button matStepperNext class="stepper-button" [disabled]="!verifHistorics()">
-              {{ "NEXT" | translate }}
-            </button>
-
-          </mat-card>
-        </form>
-      </ng-template>
-    </mat-step>
-
-    <mat-step [stepControl]="createCharacterStepSixForm" [label]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepSixForm" (ngSubmit)="validationStepSix()">
-          <mat-card>
-            <mat-card-title>{{"STEP_6_CHOOSE_INITIAL_DISCIPLINE" | translate}}</mat-card-title>
-
-            <mat-card-content>
-              <h4>{{'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TITLE' | translate}}</h4>
-              <p [innerHTML]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE_TEXT' | translate"></p>
-
-              <div class="stuff-container">
-                <div class="skill-item" *ngFor="let disc of selectedClan.disciplines">
-                  <p>{{disc.name | translate}}</p>
-                  <div class="rating" [attr.data-skill-id]="disc.name" [ngClass]="{'no-rating' : disc.level === 0}">
-                    <input type="radio" [id]="'star5-' + disc.name" [name]="'rating-' + disc.name"
-                      (change)="rating(disc, 5)" />
-                    <label [for]="'star5-' + disc.name"></label>
-                    <input type="radio" [id]="'star4-' + disc.name" [name]="'rating-' + disc.name"
-                      (change)="rating(disc, 4)" />
-                    <label [for]="'star4-' + disc.name"></label>
-                    <input type="radio" [id]="'star3-' + disc.name" [name]="'rating-' + disc.name"
-                      (change)="rating(disc, 3)" />
-                    <label [for]="'star3-' + disc.name"></label>
-                    <input type="radio" [id]="'star2-' + disc.name" [name]="'rating-' + disc.name"
-                      (change)="rating(disc, 2)" />
-                    <label [for]="'star2-' + disc.name"></label>
-                    <input type="radio" [id]="'star1-' + disc.name" [name]="'rating-' + disc.name"
-                      (click)="rating(disc, 1)" />
-                    <label [for]="'star1-' + disc.name"></label>
-                  </div>
-                </div>
-              </div>
-
-            </mat-card-content>
-            <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!verifDisciplines()">
-              {{ "NEXT" | translate }}
-            </button>
-          </mat-card>
-        </form>
-      </ng-template>
-    </mat-step>
-
-    <mat-step [stepControl]="createCharacterStepSevenForm" [label]="'STEP_7_CHOOSE_ATOUTS_FLAWS' | translate">
-      <ng-template matStepContent>
-        <form [formGroup]="createCharacterStepSevenForm">
-          <mat-card>
-            <mat-card-title>{{"STEP_7_CHOOSE_ATOUTS_FLAWS" | translate}}</mat-card-title>
-            <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE" | translate}}</h4>
-            <p [innerHTML]="'STEP_7_CHOOSE_ATOUTS_TEXT' | translate"></p>
-            <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE_2" | translate}}</h4>
-            <p [innerHTML]="'STEP_7_CHOOSE_ATOUTS_TEXT_2' | translate"></p>
-
-            <div class="atout-flaws-container">
-              <div>
-                <div class="header-atout">
-                  <h2>Atouts génériques</h2>
-                  <button mat-mini-fab color="primary" type="button" (click)="addGenericAtout()">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div>
-
-                <ng-container formArrayName="genericAtouts">
-                  <ng-container *ngFor="let atout of gAtouts.controls; let i=index">
-                    <div [formGroupName]="i">
-
-                      <div>
-                        <mat-form-field>
-                          <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                          <mat-select formControlName="atouts">
-                            <mat-option *ngFor="let a of genericsAtouts" [value]="a">
-                              {{a.name | translate}} ({{a.cost}} points)
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <button mat-mini-fab color="warn" type="button" (click)="removeGenericAtout(i)">
-                          <mat-icon>remove</mat-icon>
-                        </button>
                       </div>
-
-                    </div>
+                    </ng-container>
                   </ng-container>
-                </ng-container>
-              </div>
-
-              <div>
-                <div class="header-atout">
-                  <h2>Atouts de Clan</h2>
-                  <button mat-mini-fab color="primary" type="button" (click)="addClanAtout()">
-                    <mat-icon>add</mat-icon>
-                  </button>
                 </div>
-                <ng-container formArrayName="clanAtouts">
-                  <ng-container *ngFor="let atout of cAtouts.controls; let i=index">
-                    <div [formGroupName]="i">
 
-                      <div>
-                        <mat-form-field>
-                          <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                          <mat-select formControlName="atouts">
-                            <mat-option *ngFor="let a of clansAtouts" [value]="a">
-                              {{a.name | translate}} ({{a.cost}} points)
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <button mat-mini-fab color="warn" type="button" (click)="removeClanAtout(i)">
-                          <mat-icon>remove</mat-icon>
-                        </button>
+                <div>
+                  <div class="header-atout">
+                    <h2>Atouts de Clan</h2>
+                    <button mat-mini-fab color="primary" type="button" (click)="addClanAtout()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <ng-container formArrayName="clanAtouts">
+                    <ng-container *ngFor="let atout of cAtouts.controls; let i=index">
+                      <div [formGroupName]="i">
+
+                        <div>
+                          <mat-form-field>
+                            <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
+                            <mat-select formControlName="atouts">
+                              <mat-option *ngFor="let a of clansAtouts" [value]="a">
+                                {{a.name | translate}} ({{a.cost}} points)
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <button mat-mini-fab color="warn" type="button" (click)="removeClanAtout(i)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                        </div>
+
                       </div>
-
-                    </div>
+                    </ng-container>
                   </ng-container>
-                </ng-container>
-              </div>
-
-              <div>
-                <div class="header-atout">
-                  <h2>Atouts de Secte</h2>
-                  <button mat-mini-fab color="primary" type="button" (click)="addAlligianceAtout()">
-                    <mat-icon>add</mat-icon>
-                  </button>
                 </div>
-                <ng-container formArrayName="alligenceAtouts">
-                  <ng-container *ngFor="let atout of aAtouts.controls; let i=index">
-                    <div [formGroupName]="i">
 
-                      <div>
-                        <mat-form-field>
-                          <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                          <mat-select formControlName="atouts">
-                            <mat-option *ngFor="let a of allegianceAtouts" [value]="a">
-                              {{a.name | translate}} ({{a.cost}} points)
-                            </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                        <button mat-mini-fab color="warn" type="button" (click)="removeAlliganceAtout(i)">
-                          <mat-icon>remove</mat-icon>
-                        </button>
+                <div>
+                  <div class="header-atout">
+                    <h2>Atouts de Secte</h2>
+                    <button mat-mini-fab color="primary" type="button" (click)="addAlligianceAtout()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <ng-container formArrayName="alligenceAtouts">
+                    <ng-container *ngFor="let atout of aAtouts.controls; let i=index">
+                      <div [formGroupName]="i">
+
+                        <div>
+                          <mat-form-field>
+                            <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
+                            <mat-select formControlName="atouts">
+                              <mat-option *ngFor="let a of allegianceAtouts" [value]="a">
+                                {{a.name | translate}} ({{a.cost}} points)
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <button mat-mini-fab color="warn" type="button" (click)="removeAlliganceAtout(i)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                        </div>
+
                       </div>
-
-                    </div>
+                    </ng-container>
                   </ng-container>
-                </ng-container>
+                </div>
               </div>
-            </div>
 
-            <button type="submit" mat-button matStepperNext class="stepper-button"
-              [disabled]="!createCharacterStepSevenForm.valid">
-              {{ "NEXT" | translate }}
-            </button>
-          </mat-card>
-        </form>
-      </ng-template>
-    </mat-step>
+              <button type="submit" mat-button matStepperNext class="stepper-button"
+                [disabled]="!createCharacterStepSevenForm.valid">
+                {{ "NEXT" | translate }}
+              </button>
+            </mat-card>
+          </form>
+        </ng-template>
+      </mat-step>
 
-  </mat-stepper>
+    </mat-stepper>
+  </div>
 
-  <bn-stepper class="helper" [stepperType]="'characterCreation'" [currentCreationStep]="currentCreationStep"></bn-stepper>
+  <bn-stepper class="helper" [stepperType]="'characterCreation'"
+    [currentCreationStep]="currentCreationStep"></bn-stepper>
 </div>
