@@ -12,6 +12,10 @@ export class HelperComponent implements OnInit {
     return this.helperService.getHeaderTitle();
   }
 
+  get SubHeader(): string {
+    return this.helperService.getSubHeaderTitle();
+  }
+
   get Text(): string {
     return this.helperService.getTextHelp();
   }

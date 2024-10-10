@@ -17,4 +17,6 @@ export class Clan {
   disciplines: Discipline[];
   bloodlines: Clan[];
   atoutsFlaws: AtoutFlaws[];
+
+  bloodlineAtout: AtoutFlaws;
 }

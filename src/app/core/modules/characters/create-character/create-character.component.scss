@@ -129,3 +129,19 @@
 .rating input:focus ~ label {
   color: rgb(218, 87, 87) !important;
 }
+
+.atoutPoints {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  p {
+    font-weight: bolder;
+    font-size: larger;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 0.5em 2em;
+    background-color: brown;
+    color: white;
+  }
+}

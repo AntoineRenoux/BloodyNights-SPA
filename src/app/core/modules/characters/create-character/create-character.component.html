@@ -109,7 +109,7 @@
             {{'BACK_TO_MAIN_CLAN' | translate}}
           </button>
         </div>
-        <div class="col">
+        <div class="col" *ngIf="selectedClan?.rarity?.key !== 'FORBIDDEN'">
           <button class="w-100" type="button" mat-stroked-button color="primary" (click)="selectClan(clanDescriptor);">
             <span *ngIf="selectedClan?.parentId === null">{{'PLAY_THE_CLAN' | translate}}</span>
             <span *ngIf="selectedClan?.parentId">{{'PLAY_THE_BLOODLINE' | translate}}</span>
@@ -125,8 +125,8 @@
   <bn-helper class="helper"></bn-helper>
 
   <div class="scrollable">
-    <mat-stepper [linear]="false" #stepper>
-      <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate">
+    <mat-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="createCharacterStepOneForm" [label]="'FIRST_CHARACTER_CREATION_STEP' | translate" [completed]="true">
         <ng-template matStepContent>
           <mat-card class="row">
             <mat-card-title>{{"FIRST_CHARACTER_CREATION_STEP" | translate}}</mat-card-title>
@@ -175,7 +175,7 @@
         </ng-template>
       </mat-step>
 
-      <mat-step [stepControl]="createCharacterStepTwoForm" [label]="'SECOND_CHARACTER_CREATION_STEP' | translate">
+      <mat-step [stepControl]="createCharacterStepTwoForm" [label]="'SECOND_CHARACTER_CREATION_STEP' | translate" [completed]="true">
         <ng-template matStepContent>
           <form [formGroup]="createCharacterStepTwoForm" (ngSubmit)="validationStepTwo()">
             <mat-card>
@@ -193,7 +193,7 @@
                     </div>
                     <div class="container-card">
                       <div class="clan-card"
-                        *ngFor="let clan of currentChronicle.clans | filterAutorizedClans | filterClans : cr">
+                        *ngFor="let clan of currentChronicle.clans |  filterClans : cr">
                         <button type="button" mat-stroked-button color="primary"
                           [ngClass]="{'selected': selectedClan?.key === clan.key || selectedClan?.parentId === clan.key}"
                           (click)="selectedClan = clan; clanDescriptor.show()">
@@ -216,7 +216,7 @@
         </ng-template>
       </mat-step>
 
-      <mat-step [stepControl]="createCharacterStepThreeForm" [label]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS' | translate">
+      <mat-step [stepControl]="createCharacterStepThreeForm" [label]="'STEP_3_CHOOSE_INITIAL_ATTRIBUTS' | translate" [completed]="true">
         <ng-template matStepContent>
           <form [formGroup]="createCharacterStepThreeForm" (ngSubmit)="validationStepThree()">
             <mat-card>
@@ -424,7 +424,7 @@
         </ng-template>
       </mat-step>
 
-      <mat-step [stepControl]="createCharacterStepFourForm" [label]="'STEP_4_CHOOSE_INITIAL_SKILLS' | translate">
+      <mat-step [stepControl]="createCharacterStepFourForm" [label]="'STEP_4_CHOOSE_INITIAL_SKILLS' | translate" [completed]="true">
         <ng-template matStepContent>
           <form [formGroup]="createCharacterStepFourForm" (ngSubmit)="validationStepFour()"
             *ngIf="createCharacterStepFourForm !== undefined">
@@ -468,7 +468,7 @@
         </ng-template>
       </mat-step>
 
-      <mat-step [stepControl]="createChracterStepFiveForm" [label]="'STEP_5_CHOOSE_INITIAL_HISTORICS' | translate">
+      <mat-step [stepControl]="createChracterStepFiveForm" [label]="'STEP_5_CHOOSE_INITIAL_HISTORICS' | translate" [completed]="true">
         <ng-template matStepContent>
           <form [formGroup]="createChracterStepFiveForm" (ngSubmit)="validationStepFive()">
             <mat-card>
@@ -513,7 +513,7 @@
         </ng-template>
       </mat-step>
 
-      <mat-step [stepControl]="createCharacterStepSixForm" [label]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE' | translate">
+      <mat-step [stepControl]="createCharacterStepSixForm" [label]="'STEP_6_CHOOSE_INITIAL_DISCIPLINE' | translate" [completed]="true">
         <ng-template matStepContent>
           <form [formGroup]="createCharacterStepSixForm" (ngSubmit)="validationStepSix()">
             <mat-card>
@@ -574,7 +574,8 @@
 
       <mat-step [stepControl]="createCharacterStepSevenForm" [label]="'STEP_7_CHOOSE_ATOUTS_FLAWS' | translate">
         <ng-template matStepContent>
-          <form [formGroup]="createCharacterStepSevenForm">
+          <form [formGroup]="createCharacterStepSevenForm" (ngSubmit)="validationStepSeven()">
+
             <mat-card>
               <mat-card-title>{{"STEP_7_CHOOSE_ATOUTS_FLAWS" | translate}}</mat-card-title>
               <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE" | translate}}</h4>
@@ -582,11 +583,15 @@
               <h4>{{"STEP_7_CHOOSE_ATOUTS_TITLE_2" | translate}}</h4>
               <p [innerHTML]="'STEP_7_CHOOSE_ATOUTS_TEXT_2' | translate"></p>
 
+              <div class="atoutPoints">
+                <p>Point d'avantages : {{atoutAndFlowsPoints}}</p>
+              </div>
+
               <div class="atout-flaws-container">
                 <div>
                   <div class="header-atout">
                     <h2>Atouts génériques</h2>
-                    <button mat-mini-fab color="primary" type="button" (click)="addGenericAtout()">
+                    <button mat-mini-fab color="primary" type="button" (click)="addGenericAtout()" [disabled]="atoutAndFlowsPoints <= 0">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -598,13 +603,13 @@
                         <div>
                           <mat-form-field>
                             <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                            <mat-select formControlName="atouts">
-                              <mat-option *ngFor="let a of genericsAtouts" [value]="a">
+                            <mat-select formControlName="atouts" [compareWith]="compareAtouts" [disabled]="isMandatoryAtoutOrFlaw(atout.value.atouts)" (selectionChange)="setAtoutPoints($event.value)">
+                              <mat-option *ngFor="let a of genericsAtouts" [value]="a" (mouseover)="displayHelper(a)">
                                 {{a.name | translate}} ({{a.cost}} points)
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
-                          <button mat-mini-fab color="warn" type="button" (click)="removeGenericAtout(i)">
+                          <button mat-mini-fab color="warn" type="button" (click)="removeGenericAtout(i)" *ngIf="!isMandatoryAtoutOrFlaw(atout.value.atouts)">
                             <mat-icon>remove</mat-icon>
                           </button>
                         </div>
@@ -617,7 +622,7 @@
                 <div>
                   <div class="header-atout">
                     <h2>Atouts de Clan</h2>
-                    <button mat-mini-fab color="primary" type="button" (click)="addClanAtout()">
+                    <button mat-mini-fab color="primary" type="button" (click)="addClanAtout()" [disabled]="atoutAndFlowsPoints <= 0">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -628,13 +633,13 @@
                         <div>
                           <mat-form-field>
                             <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                            <mat-select formControlName="atouts">
-                              <mat-option *ngFor="let a of clansAtouts" [value]="a">
-                                {{a.name | translate}} ({{a.cost}} points)
+                            <mat-select formControlName="atouts" [compareWith]="compareAtouts" [disabled]="isMandatoryBloodlineAtoutOrFlaw(atout.value.atouts)"  (selectionChange)="setAtoutPoints($event.value)">
+                              <mat-option *ngFor="let cat of clansAtouts" [value]="cat" (mouseover)="displayHelper(cat)">
+                                {{cat.name | translate}} ({{cat.cost}} points)
                               </mat-option>
                             </mat-select>
                           </mat-form-field>
-                          <button mat-mini-fab color="warn" type="button" (click)="removeClanAtout(i)">
+                          <button mat-mini-fab color="warn" type="button" (click)="removeClanAtout(i)" *ngIf="!isMandatoryBloodlineAtoutOrFlaw(atout.value.atouts)">
                             <mat-icon>remove</mat-icon>
                           </button>
                         </div>
@@ -647,7 +652,7 @@
                 <div>
                   <div class="header-atout">
                     <h2>Atouts de Secte</h2>
-                    <button mat-mini-fab color="primary" type="button" (click)="addAlligianceAtout()">
+                    <button mat-mini-fab color="primary" type="button" (click)="addAlligianceAtout()" [disabled]="atoutAndFlowsPoints <= 0">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -658,8 +663,8 @@
                         <div>
                           <mat-form-field>
                             <mat-label>{{'STEP_7_CHOOSE_ATOUTS_TITLE' | translate}}</mat-label>
-                            <mat-select formControlName="atouts">
-                              <mat-option *ngFor="let a of allegianceAtouts" [value]="a">
+                            <mat-select formControlName="atouts" (selectionChange)="setAtoutPoints($event.value)">
+                              <mat-option *ngFor="let a of allegianceAtouts" [value]="a" (mouseover)="displayHelper(a)">
                                 {{a.name | translate}} ({{a.cost}} points)
                               </mat-option>
                             </mat-select>

@@ -11,10 +11,4 @@ export class Chronicle {
   initialXp: number;
   monthlyXp: number;
   clans: Clan[];
-
-  constructor() {
-    this.name = 'Test name'; 
-    this.allegianceId = 'CAMARILLA';
-    this.hook ='Test hook';
-  }
 }

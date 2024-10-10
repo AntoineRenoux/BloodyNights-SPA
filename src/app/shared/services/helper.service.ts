@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class HelperService {
 
   private headerHelp = 'HELP';
+  private subHeader = '';
   private textHelp = 'HELP_TEXT';
 
   constructor() { }
@@ -16,6 +17,14 @@ export class HelperService {
 
   getHeaderTitle(): string {
     return this.headerHelp;
+  }
+
+  setSubHeaderTitle(text: string) {
+    this.subHeader = text;
+  }
+
+  getSubHeaderTitle(): string {
+    return this.subHeader;
   }
 
   setTextHelp(text: string) {

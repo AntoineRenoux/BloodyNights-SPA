@@ -68,6 +68,8 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
   clansAtouts: AtoutFlaws[];
   allegianceAtouts: AtoutFlaws[];
 
+  atoutAndFlowsPoints = 7;
+
   createCharacterStepOneForm: FormGroup;
   createCharacterStepTwoForm: FormGroup;
   createCharacterStepThreeForm: FormGroup;
@@ -80,64 +82,65 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
 
   modalRef?: BsModalRef;
 
-  constructor(private modalService: BsModalService,
-    private archetypeService: ArchetypeService,
-    private chronicleService: ChronicleService,
-    private focusService: FocusService,
-    private skillService: SkillsService,
-    private historicService: HistoricService,
-    private atoutFlawService: AtoutsFlawsService,
+  constructor(private readonly modalService: BsModalService,
+    private readonly archetypeService: ArchetypeService,
+    private readonly chronicleService: ChronicleService,
+    private readonly focusService: FocusService,
+    private readonly skillService: SkillsService,
+    private readonly historicService: HistoricService,
+    private readonly atoutFlawService: AtoutsFlawsService,
     public characterService: CharacterService,
     public clanService: ClanService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private helperService: HelperService,
-    private trad: TranslateService) {
+    private readonly route: ActivatedRoute,
+    private readonly fb: FormBuilder,
+    private readonly helperService: HelperService,
+    private readonly trad: TranslateService) {
 
     this.route.params.subscribe(params => {
       this.chronicleService.getById(params['chronicleId']).subscribe({
         next: (c: Chronicle) => {
           this.currentChronicle = c;
           this.characterService.setCurrentExperience(c.initialXp);
+
+          this.atoutFlawService.get().subscribe({
+            next: (af: AtoutFlaws[]) => {
+              this.allAtoutsFlaws = af;
+              console.log(this.allAtoutsFlaws);
+              this.genericsAtouts = af.filter(x => x.clanKey === null && x.allegianceKey === null && x.cost > 0);
+              this.allegianceAtouts = af.filter(x => x.allegianceKey === this.currentChronicle.allegianceId && x.cost > 0);
+            }
+          });
+
+          this.skillService.getSkills().subscribe({
+            next: (s: Skill[]) => {
+              this.skills = s;
+
+              this.createCharacterStepFourForm = this.fb.group({
+                skills: [this.fb.array([], Validators.required)]
+              });
+
+              this.initStepFour();
+            }
+          });
+
+          this.archetypeService.getArchetypes().subscribe((archetypes: Archetype[]) => {
+            this.archetypes = archetypes;
+          });
+
+          this.focusService.getFocus().subscribe({
+            next: (focus: Focus[]) => {
+              this.focus = focus;
+            }
+          });
+
+          this.historicService.getHistorics().subscribe({
+            next: (histo: Historic[]) => {
+              this.historics = histo;
+            }
+          })
         }
       });
     });
-
-    this.atoutFlawService.get().subscribe({
-      next: (af: AtoutFlaws[]) => {
-        this.allAtoutsFlaws = af;
-        this.genericsAtouts = af.filter(x => x.clanKey === null && x.allegianceKey === null && x.cost > 0);
-        this.allegianceAtouts = af.filter(x => x.allegianceKey === this.currentChronicle.allegianceId && x.cost > 0);
-      }
-    });
-
-    this.skillService.getSkills().subscribe({
-      next: (s: Skill[]) => {
-        this.skills = s;
-
-        this.createCharacterStepFourForm = this.fb.group({
-          skills: [this.fb.array([], Validators.required)]
-        });
-
-        this.initStepFour();
-      }
-    });
-
-    this.archetypeService.getArchetypes().subscribe((archetypes: Archetype[]) => {
-      this.archetypes = archetypes;
-    });
-
-    this.focusService.getFocus().subscribe({
-      next: (focus: Focus[]) => {
-        this.focus = focus;
-      }
-    });
-
-    this.historicService.getHistorics().subscribe({
-      next: (histo: Historic[]) => {
-        this.historics = histo;
-      }
-    })
   }
 
   get gAtouts(): FormArray {
@@ -206,35 +209,48 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
   validationStepTwo() {
     if (this.createCharacterStepTwoForm.valid) {
       this.characterService.setClan(this.selectedClan);
+      this.atoutAndFlowsPoints = 7;
 
-      debugger;
+      this.initStepSeven();
 
-      if (this.selectedClan.rarity?.cost) {
-        const rarityClanAtout = this.clansAtouts?.find(x => x.clanKey.includes(this.selectedClan.key));
-
-        const atout = this.fb.group({
-          atouts: [rarityClanAtout],
-        });
-
-        this.cAtouts.push(atout);
-      }
-
-      if (this.selectedClan.parentId !== null) {
-        this.clansAtouts = this.allAtoutsFlaws.filter(x => x.clanKey === this.selectedClan.parentId && x.cost > 0);
-
+      if (this.selectedClan.parentId == null) {
         if (this.selectedClan.rarity?.cost > 0) {
-
-          const rarityClanAtout = this.clansAtouts.find(x => x.name.includes(this.selectedClan.key));
+          const clanRarityAtout = this.allAtoutsFlaws.find(x => x.cost == this.selectedClan.rarity?.cost && (x.name == 'ATOUT_UNCOMMUN_NAME' || x.name == 'ATOUT_RARE_NAME' || x.name == 'ATOUT_RESTRAINED_NAME'));
+  
+          this.atoutAndFlowsPoints -= this.selectedClan.rarity?.cost;
 
           const atout = this.fb.group({
-            atouts: [rarityClanAtout],
+            atouts: [clanRarityAtout],
+          });
+  
+          this.gAtouts.push(atout);
+        }
+
+        this.clansAtouts = this.selectedClan.atoutsFlaws;
+      }
+      else if (this.selectedClan.parentId !== null) {
+        const parentClan = this.currentChronicle.clans.find(x => x.key == this.selectedClan.parentId);
+
+        if (parentClan.rarity?.cost > 0) {
+          const clanRarityAtout = this.allAtoutsFlaws.find(x => x.cost == this.selectedClan.rarity?.cost && (x.name == 'ATOUT_UNCOMMUN_NAME' || x.name == 'ATOUT_RARE_NAME' || x.name == 'ATOUT_RESTRAINED_NAME'));
+
+          this.atoutAndFlowsPoints -= clanRarityAtout.cost;
+
+          const atout = this.fb.group({
+            atouts: [clanRarityAtout],
           });
 
-          this.cAtouts.push(atout);
+          this.gAtouts.push(atout);
         }
-      }
-      else {
-        this.clansAtouts = this.allAtoutsFlaws.filter(x => x.clanKey === this.selectedClan.key && x.cost > 0);
+
+        this.atoutAndFlowsPoints -= this.selectedClan.bloodlineAtout.cost;
+
+        const cAtout = this.fb.group({
+          atouts: [this.selectedClan.bloodlineAtout],
+        });
+
+        this.cAtouts.push(cAtout);
+        this.clansAtouts = parentClan.atoutsFlaws;
       }
 
       this.characterService.setDiscplines(undefined);
@@ -315,6 +331,10 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
     }
   }
 
+  validationStepSeven() {
+
+  }
+
   rating(stuff: Skill | Historic | Discipline, rating: number) {
     if (stuff.level === 1 && rating === 1) {
       stuff.level = 0;
@@ -362,15 +382,36 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
     this.aAtouts.push(atout);
   }
 
+  compareAtouts(a: AtoutFlaws, b: AtoutFlaws): boolean {
+    return a && b && a.name === b.name;
+  }
+
+  isMandatoryBloodlineAtoutOrFlaw(atout: AtoutFlaws): boolean {
+    return this.selectedClan.bloodlineAtout?.name == atout?.name;
+  }
+
+  isMandatoryAtoutOrFlaw(atout: AtoutFlaws) : boolean {
+    return atout?.name === 'ATOUT_UNCOMMUN_NAME' || atout?.name == 'ATOUT_RARE_NAME' || atout?.name == 'ATOUT_RESTRAINED_NAME';
+  }
+
+  displayHelper(atout: AtoutFlaws) {
+    this.helperService.setHeaderTitle(atout.name);
+    this.helperService.setSubHeaderTitle(`${atout.cost} points`);
+    this.helperService.setTextHelp(atout.description);
+  }
+
   removeGenericAtout(index: number) {
+    this.atoutAndFlowsPoints += this.gAtouts.value[index].atouts.cost;
     this.gAtouts.removeAt(index);
   }
 
   removeClanAtout(index: number) {
+    this.atoutAndFlowsPoints += this.cAtouts.value[index].atouts.cost;
     this.cAtouts.removeAt(index);
   }
 
   removeAlliganceAtout(index: number) {
+    this.atoutAndFlowsPoints += this.aAtouts.value[index].atouts.cost;
     this.aAtouts.removeAt(index);
   }
 
@@ -535,7 +576,7 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
         powers += `o`;
       }
       powers += ` <strong>${this.trad.instant(p.name)}</strong> : <span>${this.trad.instant(p.description)}</span>`;
-      
+
       if (p.focusDescription !== null) {
         powers += `<p><strong>Focus (${this.trad.instant(p.focus.name)})</strong> : ${this.trad.instant(p.focusDescription)}</p>`
       }
@@ -545,6 +586,10 @@ export class CreateCharacterComponent implements OnInit, OnDestroy {
     description += powers;
 
     this.helperService.setTextHelp(description);
+  }
+
+  setAtoutPoints(atouts: AtoutFlaws){
+    this.atoutAndFlowsPoints -= atouts.cost;
   }
 
   private initStepOne() {

@@ -9,7 +9,7 @@
           </div>
         </mat-card-title>
         <mat-card-content>
-          <mat-stepper [linear]="true">
+          <mat-stepper [linear]="false">
             <mat-step [stepControl]="newChronicleInformationsFormGroup" (interacted)="changeStepper(1)">
               <ng-template matStepContent>
                 <form [formGroup]="newChronicleInformationsFormGroup">
